@@ -1,12 +1,12 @@
-import { createBrowserRouter, Navigate } from "react-router-dom";
+import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
 
 /* Layouts */
-import MainLayout from "../layouts/MainLayout";
 import AdminLayout from "../layouts/AdminLayout";
+import MainLayout from "../layouts/MainLayOut";
 
 /* Auth Guards */
-import ProtectedRoute from "../components/auth/ProtectedRoute";
-import AdminRoute from "../components/auth/AdminRoute";
+import ProtectedRoute from "../router/ProtectedRoute";
+import AdminRoute from "../router/AdminRoute";
 
 /* Pages - Public */
 import Home from "../pages/home/Home";
@@ -16,8 +16,7 @@ import CheckResult from "../pages/ImeiSearch/CheckResult";
 /* Pages - Payment (Standalone - بدون Layout) */
 import CheckoutPage from "../pages/payment/CheckoutPage";
 import PaymentSuccess from "../pages/payment/PaymentSuccess";
-import PaymentFailed from "../pages/payment/PaymentFailed";
-
+import PaymentFaild from "../pages/payment/PaymentFaild";
 /* Pages - User Protected */
 import AddCredit from "../pages/payment/AddCredit";
 import SearchHistory from "../pages/user/SearchHistory";
@@ -62,7 +61,7 @@ export const router = createBrowserRouter([
   },
   {
     path: "/payment-failed",
-    element: <PaymentFailed />,
+    element: <PaymentFaild />,
   },
 
   // 👑 3. Admin Panel Routes
@@ -81,6 +80,13 @@ export const router = createBrowserRouter([
       },
     ],
   },
-
-
 ]);
+
+
+function AppRouter() {
+  return (
+    <RouterProvider router={router} />
+  )
+}
+
+export default AppRouter

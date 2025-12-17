@@ -1,11 +1,16 @@
-import React from 'react'
+import React from 'react';
+import { Outlet } from 'react-router-dom';
+import NavBar from '../components/common/NavBar';
 
-function MainLayOut() {
+function MainLayout() {
   return (
-    <div>
-      
+    <div className="relative min-h-screen bg-white">
+      <NavBar />
+      <main>
+        <Outlet />
+      </main>
     </div>
-  )
+  );
 }
 
-export default MainLayOut
+export default MainLayout;
