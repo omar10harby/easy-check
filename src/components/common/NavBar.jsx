@@ -20,6 +20,8 @@ function NavBar() {
   };
 
   return (
+    <>
+    
     <nav className="absolute md:sticky top-0 left-0 right-0 z-50 bg-white/95 md:bg-white backdrop-blur-sm md:backdrop-blur-none border-b border-gray-200 md:shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
@@ -163,9 +165,8 @@ function NavBar() {
               <X className="w-5 h-5" />
             </button>
           </div>
-
           {/* Mobile Menu Content */}
-          <div className="px-4 py-6 space-y-4 overflow-y-auto h-[calc(100vh-4rem)]">
+          <div className="px-4 py-6 space-y-4 overflow-y-auto bg-white shadow-md ">
             {/* Mobile: Guest View */}
             {!isAuthenticated && (
               <button className="w-full px-4 py-3 text-sm font-bold bg-[#e5fb34] text-[#181818] rounded-lg hover:bg-[#d4ea23] transition-all shadow-md">
@@ -252,6 +253,7 @@ function NavBar() {
         </div>
       )}
     </nav>
+    </>
   );
 }
 
