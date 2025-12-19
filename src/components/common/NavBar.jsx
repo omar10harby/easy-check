@@ -21,10 +21,9 @@ function NavBar() {
 
   return (
     <>
-    
-    <nav className="absolute md:sticky top-0 left-0 right-0 z-50 bg-white/95 md:bg-white backdrop-blur-sm md:backdrop-blur-none border-b border-gray-200 md:shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+
+    <nav className="sticky top-0 z-40 px-4 sm:px-6 md:px-[8vw] py-3 bg-white border-b border-gray-200 shadow">
+        <div className="flex justify-between items-center ">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group">
             <div className="bg-[#181818] p-2 rounded-lg group-hover:bg-[#073e1d] transition-colors">
@@ -145,7 +144,6 @@ function NavBar() {
             {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
-      </div>
 
       {/* Mobile Menu - Full Screen Overlay */}
       {isMobileMenuOpen && (
@@ -258,3 +256,57 @@ function NavBar() {
 }
 
 export default NavBar;
+
+// import { Link } from "react-router-dom";
+// import { Shield } from "lucide-react";
+// import React, { useState } from "react";
+
+// function NavBar() {
+//   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+//   const isAuthenticated = true; // TODO: Replace with actual auth state
+//   const user = {
+//     balance: 0,
+//   };
+//   return (
+//     <nav className=" sticky top-0 z-40 px-4 sm:px-6 md:px-[8vw] py-5 bg-white border-b border-gray-200 shadow">
+//       <div className="flex justify-between items-center">
+//         <div className="">
+//           <Link to="/" className="flex items-center gap-2 ">
+//             {" "}
+//             <div className="bg-dark p-2 rounded-lg group-hover:bg-main-green transition-colors">
+//               <Shield className="w-5 h-5 md:w-6 md:h-6 text-lime-yellow" />{" "}
+//             </div>{" "}
+//             <span className="text-lg md:text-xl font-bold text-dark">
+//               Easy Check
+//             </span>{" "}
+//           </Link>
+//         </div>
+//         <div>
+//           {isAuthenticated ? (
+//             <div>
+//               <ul className="flex items-center gap-2.5">
+//                 <li>
+//                   <Link to="/search-history" className="text-main-green">Search History</Link>
+//                 </li>
+//                 <li>
+//                   <Link to="/payment-history" className="text-main-green">Payment History</Link>
+//                 </li>
+//               </ul>
+//             </div>
+//           ) : (
+//             <div className="hidden md:flex items-center gap-3">
+//               <button className="px-6 py-2 text-sm font-bold bg-lime-yellow text-dark rounded-lg hover:bg-[#d4ea23] transition-all shadow-md hover:shadow-lg">
+//                 Login
+//               </button>
+//                 <button className="px-6 py-2 text-sm font-bold bg-lime-yellow text-dark rounded-lg hover:bg-[#d4ea23]  transition-all shadow-md hover:shadow-lg">
+//                 Register
+//               </button>
+//             </div>
+//           )}
+//         </div>
+//       </div>
+//     </nav>
+//   );
+// }
+
+// export default NavBar;
