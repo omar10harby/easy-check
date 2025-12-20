@@ -22,13 +22,6 @@ import AddCredit from "../pages/payment/AddCredit";
 import SearchHistory from "../pages/user/SearchHistory";
 import PaymentHistory from "../pages/user/PaymentHistory";
 
-/* Pages - Admin */
-import AdminDashboard from "../pages/admin/AdminDashboard";
-import Users from "../pages/admin/Users";
-import UserDetails from "../pages/admin/UserDetails";
-import ServicesPricing from "../pages/admin/ServicesPricing";
-
-
 export const router = createBrowserRouter([
   // 🌍 1. Public Routes with MainLayout
   {
@@ -64,22 +57,7 @@ export const router = createBrowserRouter([
     element: <PaymentFaild />,
   },
 
-  // 👑 3. Admin Panel Routes
-  {
-    path: "/admin",
-    element: <AdminRoute />, // ✅ صح (زي ProtectedRoute)
-    children: [
-      {
-        element: <AdminLayout />, // AdminLayout جوا الـ children
-        children: [
-          { index: true, element: <AdminDashboard /> }, // /admin
-          { path: "users", element: <Users /> }, // /admin/users
-          { path: "users/:userId", element: <UserDetails /> }, // /admin/users/:id
-          { path: "pricing", element: <ServicesPricing /> }, // /admin/pricing
-        ],
-      },
-    ],
-  },
+
 ]);
 
 
