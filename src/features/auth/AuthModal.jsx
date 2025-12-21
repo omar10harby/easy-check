@@ -123,7 +123,7 @@ function AuthModal({ isOpen, onClose }) {
     >
       {/* Modal Container */}
       <div
-        className="relative w-full max-w-md bg-white rounded-4xl shadow-2xl border-[3px] border-main-green overflow-hidden animate-in fade-in zoom-in duration-300"
+        className="relative w-full max-w-md bg-white rounded-4xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Toggle Header */}

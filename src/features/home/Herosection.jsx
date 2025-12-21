@@ -39,7 +39,7 @@ function HeroSection({ onSearchClick }) {
       {/* CTA Button */}
       <button
         onClick={onSearchClick}
-        className="group inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 bg-lime-yellow text-dark text-base sm:text-lg font-bold rounded-xl hover:bg-[#d4ea23] transition-all shadow-lg hover:shadow-xl hover:scale-105 active:scale-95"
+        className="group inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 bg-lime-yellow  text-dark text-base sm:text-lg font-bold rounded-xl hover:bg-[#d4ea23] transition-all shadow-lg hover:shadow-xl hover:scale-105 active:scale-95"
       >
         <Search className="w-4 h-4 sm:w-5 sm:h-5" />
         <span className="hidden sm:inline">Go to IMEI Search Page</span>

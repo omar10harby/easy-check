@@ -12,7 +12,7 @@ function NavBar() {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false); // 🆕 State for AuthModal
 
   // TODO: Replace with actual auth state from Redux
-  const isAuthenticated = true; // Change to false to test guest view
+  const isAuthenticated = false; // Change to false to test guest view
   const user = {
     balance: 150.50,
   };

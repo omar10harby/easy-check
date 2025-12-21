@@ -22,7 +22,7 @@ function ImeiInput({ value, onChange, maxLength = 15 }) {
       </div>
       <div className="flex items-center gap-2 mt-2 text-xs text-gray-500">
         <Info className="w-4 h-4" />
-        <span className="text-right flex-1">للحصول على IMEI اطلب #06#*</span>
+        <span dir="rtl" className="text-right flex-1">للحصول علي imei اطلب #06#*</span>
       </div>
     </div>
   );
