@@ -28,10 +28,10 @@ function App() {
     <>
       {/* Toast Notifications */}
       <Toaster
-        position="top-center"
+        position="top-right"
         reverseOrder={false}
         toastOptions={{
-          duration: 4000,
+          duration: 1000,
           style: {
             background: '#fff',
             color: '#181818',
