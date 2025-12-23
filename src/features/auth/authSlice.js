@@ -4,7 +4,7 @@ import * as authAPI from '../../services/authApi';
 const initialState = {
   user: null, 
   isAuthenticated: false,
-  loading: true, 
+  loading: false, 
   error: null,
 };
 
@@ -22,7 +22,7 @@ export const verifyAuthThunk = createAsyncThunk(
 );
 
 
-export const loginUserThunk = createAsyncThunk(
+export const loginThunk = createAsyncThunk(
   'auth/login',
   async (credentials, { rejectWithValue }) => {
     try {
@@ -36,7 +36,7 @@ export const loginUserThunk = createAsyncThunk(
 );
 
 
-export const registerUserThunk = createAsyncThunk(
+export const registerThunk = createAsyncThunk(
   'auth/register',
   async (userData, { rejectWithValue }) => {
     try {
