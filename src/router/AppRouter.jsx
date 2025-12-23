@@ -6,7 +6,6 @@ import MainLayout from "../layouts/MainLayOut";
 
 /* Auth Guards */
 import ProtectedRoute from "../router/ProtectedRoute";
-import AdminRoute from "../router/AdminRoute";
 
 /* Pages - Public */
 import Home from "../pages/home/Home";
@@ -44,10 +43,7 @@ export const router = createBrowserRouter([
   },
 
   // 💳 2. Payment Routes (No Layout - Standalone Pages)
-  {
-    path: "/checkout",
-    element: <CheckoutPage />,
-  },
+
   {
     path: "/payment-success",
     element: <PaymentSuccess />,

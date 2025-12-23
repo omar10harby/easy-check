@@ -15,7 +15,7 @@ function ImeiChecker() {
   const isAuthenticated = true;
   const userBalance = 0; 
   
-  const services = mockServices; // TODO: Get from Redux
+  const services = mockServices; // TODO: get services from Redux or API
 
   const handleImeiChange = (e) => {
     const value = e.target.value.replace(/\D/g, ''); // Only numbers
@@ -35,8 +35,8 @@ function ImeiChecker() {
     }
 
     if (!isAuthenticated) {
-      // Guest → Redirect to checkout
-      navigate('/checkout', { state: { imei, serviceId: selectedService.id } });
+      // Guest → Redirect to checkout with Kashier
+       console.log("Redirecting to Kashier checkout...")
     } else {
       // Logged-in user
       if (userBalance >= selectedService.price) {
@@ -50,13 +50,12 @@ function ImeiChecker() {
     }
   };
 
-  // const insufficientBalance = isAuthenticated && selectedService && userBalance < selectedService.price;
   const isSearchDisabled = !selectedService || imei.length !== 15;
 
   return (
-    <div className=" bg-white md:py-10  px-4 sm:px-6 lg:px-8">
+    <div className="  md:py-10  px-4 sm:px-6 lg:px-8">
     
-      <div className="max-w-2xl mx-auto relative">
+      <div className=" relative">
 
         {/* Main Card */}
         <div className="bg-white rounded-3xl shadow-lg border-2 border-gray-100 p-8 sm:p-10">

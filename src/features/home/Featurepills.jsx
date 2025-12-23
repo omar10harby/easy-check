@@ -1,9 +1,9 @@
-import { Lock } from 'lucide-react';
+import { Lock, Cloud, ShieldCheck } from 'lucide-react';
 
 const features = [
   {
     id: 1,
-    icon: 'dot',
+    icon: 'check', // غيرنا الـ dot لشكل احترافي أكتر
     label: 'Global Blacklist',
   },
   {
@@ -21,33 +21,27 @@ const features = [
 function FeaturePills() {
   const renderIcon = (iconType) => {
     switch (iconType) {
-      case 'dot':
-        return <div className="w-2 h-2 bg-main-green rounded-full" />;
+      case 'check':
+        return <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-main-green" />;
       case 'lock':
-        return <Lock className="w-3 h-3 sm:w-4 sm:h-4 text-main-green" />;
+        return <Lock className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-main-green" />;
       case 'icloud':
-        return (
-          <svg className="w-3 h-3 sm:w-4 sm:h-4 fill-current" viewBox="0 0 24 24">
-            <path
-              d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"
-              fill="#ff9500"
-            />
-          </svg>
-        );
+        // أيقونة السحابة هي الأنسب لـ iCloud
+        return <Cloud className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#007AFF]" />; // لون أبل الأزرق
       default:
-        return null;
+        return <div className="w-2 h-2 bg-main-green rounded-full" />;
     }
   };
 
   return (
-    <div className="flex flex-wrap justify-center gap-3 sm:gap-4  mt-10 px-4">
+    <div className="flex flex-wrap justify-center gap-3 sm:gap-4 mt-10 px-4">
       {features.map((feature) => (
         <div
           key={feature.id}
-          className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-white border border-gray-200 rounded-full shadow-sm hover:shadow-md transition-shadow"
+          className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-white/80 backdrop-blur-sm border border-gray-100 rounded-full shadow-sm hover:shadow-md hover:border-main-green/30 transition-all cursor-default"
         >
           {renderIcon(feature.icon)}
-          <span className="text-xs sm:text-sm font-medium text-dark">
+          <span className="text-xs sm:text-sm font-semibold text-dark/80">
             {feature.label}
           </span>
         </div>

@@ -1,13 +1,83 @@
-import axios from "axios";
+import axiosInstance from "./axios";
+import Cookies from "js-cookie";
 
-export async function login(loginData) {
-    const res=await axios.post('/api/login', loginData);
-    return res.data;
+export function saveAuthToken(token) {
+  try {
+    Cookies.set("auth_token", token, {
+      expires: 7,
+      secure: import.meta.env.PROD,
+      sameSite: "strict",
+    });
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
+
+export function getAuthToken() {
+  return Cookies.get("auth_token") || null;
+};
+
+export function removeAuthToken() {
+  Cookies.remove("auth_token");
+  return true;
+};
+
+export async function register({ phone_number, password, confirm_password }) {
+  try {
+    const response = await axiosInstance.post("users/register", {
+      phone_number,
+      password,
+      confirm_password,
+    });
+    return response.data;
+  } catch (error) {
+    const message = error.response?.data?.message || "فشل إنشاء الحساب";
+    throw new Error(message);
+  }
 }
-export async function register(registerData) {
-    const res=await axios.post('/api/register', registerData);
-    if (res.status) {
-        throw new Error('Registration failed');
+
+export async function login({ phone_number, password }) {
+  try {
+    const response = await axiosInstance.post("/login", {
+      phone_number,
+      password,
+    });
+
+    if (response.data.token) {
+      saveAuthToken(response.data.token);
     }
-    return res.data;
-}
+
+    return response.data;
+  } catch (error) {
+    const message = error.response?.data?.message || "خطأ في بيانات الدخول";
+    throw new Error(message);
+  }
+};
+
+export async function verifyAuth() {
+  try {
+    const token = getAuthToken();
+    if (!token) return null;
+
+    const response = await axiosInstance.get("/users/user_info");
+    return response.data;
+  } catch (error) {
+    removeAuthToken();
+    return null;
+  }
+};
+
+export async function logout() {
+  try {
+    const token = getAuthToken();
+    if (token) {
+      await axiosInstance.get("/users/logout");
+    }
+  } catch (error) {
+    console.error("Logout error details:", error.response?.data);
+  } finally {
+    removeAuthToken();
+    return true;
+  }
+};

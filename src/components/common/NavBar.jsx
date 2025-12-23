@@ -1,27 +1,34 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import toast from 'react-hot-toast';
 import { Menu, X } from 'lucide-react';
 import Logo from './Logo';
 import BalanceDisplay from './BalanceDisplay';
 import ProfileDropdown from './ProfileDropdown';
 import MobileMenu from './MobileMenu';
 import AuthModal from '../../features/auth/AuthModal';
+import { 
+  logoutUserThunk, 
+} from '../../features/auth/authSlice';
 
 function NavBar() {
+  const dispatch = useDispatch();
+  const { user, isAuthenticated } = useSelector((state) => state.auth);
+
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false); // 🆕 State for AuthModal
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
-  // TODO: Replace with actual auth state from Redux
-  const isAuthenticated = false; // Change to false to test guest view
-  const user = {
-    balance: 150.50,
-  };
-
-  const handleLogout = () => {
-    // TODO: Implement logout logic
-    console.log('Logging out...');
-    setIsDropdownOpen(false);
-    setIsMobileMenuOpen(false);
+  const handleLogout = async () => {
+    try {
+      await dispatch(logoutUserThunk()).unwrap();
+      setIsDropdownOpen(false);
+      setIsMobileMenuOpen(false);
+      toast.success('Logged out successfully! See you soon! 👋');
+    } catch (error) {
+      console.error('Logout failed:', error);
+      toast.error('Logout failed. Please try again.');
+    }
   };
 
   const handleLoginClick = () => {
@@ -52,7 +59,7 @@ function NavBar() {
           )}
 
           {/* Desktop: User View */}
-          {isAuthenticated && (
+          {isAuthenticated && user && (
             <div className="hidden md:flex items-center gap-4">
               {/* Balance Display */}
               <BalanceDisplay balance={user.balance} />
@@ -62,7 +69,6 @@ function NavBar() {
                 isOpen={isDropdownOpen}
                 onToggle={() => setIsDropdownOpen(!isDropdownOpen)}
                 onClose={() => setIsDropdownOpen(false)}
-                userRole={user.role}
                 onLogout={handleLogout}
               />
             </div>
@@ -85,7 +91,7 @@ function NavBar() {
         isAuthenticated={isAuthenticated}
         user={user}
         onLogout={handleLogout}
-        onLoginClick={handleLoginClick} // 🆕 Pass login handler
+        onLoginClick={handleLoginClick}
       />
 
       {/* Auth Modal */}

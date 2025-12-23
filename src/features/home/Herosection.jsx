@@ -1,5 +1,5 @@
-import React from 'react';
-import { Search } from 'lucide-react';
+import React from "react";
+import { Search, ChevronRight } from "lucide-react";
 
 function HeroSection({ onSearchClick }) {
   return (
@@ -44,19 +44,7 @@ function HeroSection({ onSearchClick }) {
         <Search className="w-4 h-4 sm:w-5 sm:h-5" />
         <span className="hidden sm:inline">Go to IMEI Search Page</span>
         <span className="sm:hidden">Search IMEI</span>
-        <svg
-          className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M9 5l7 7-7 7"
-          />
-        </svg>
+        <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
       </button>
     </>
   );
