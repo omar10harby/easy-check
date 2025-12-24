@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Lock, AlertCircle } from 'lucide-react';
 import PhoneInput from './PhoneInput';
-import { isValidPhoneNumber } from 'libphonenumber-js';
+import { isValidPhoneNumber, parsePhoneNumberWithError } from 'libphonenumber-js';
 
 function RegisterForm({ onSubmit, loading, error }) {
   const {
@@ -24,34 +24,51 @@ function RegisterForm({ onSubmit, loading, error }) {
   const password = watch('password');
 
   const handlePhoneChange = (value) => {
+    // ✅ react-phone-input-2 already returns value with +
     setValue('phone_number', value, { shouldValidate: true });
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      {/* Phone Number Field */}
-            <input
+      {/* Phone Number Field - Hidden input for form validation */}
+      <input
         type="hidden"
         {...register("phone_number", {
           required: "Phone number is required",
           validate: (value) => {
-            if (!value || value === "+") return "Phone number is required";
-            // التحقق من صحة الرقم باستخدام المكتبة
-            return (
-              isValidPhoneNumber(value) ||
-              "Invalid phone number for this country"
-            );
+            // Check 1: Empty or just "+"
+            if (!value || value === "+") {
+              return "Phone number is required";
+            }
+
+            // Check 2: Minimum length
+            if (value.length < 8) {
+              return "Phone number is too short";
+            }
+
+            // Check 3: Validate using libphonenumber-js
+            try {
+              if (!isValidPhoneNumber(value)) {
+                return "Invalid phone number";
+              }
+              
+              // ✅ Optional: Ensure it's a mobile number (not landline)
+              const phoneNumber = parsePhoneNumberWithError(value);
+              if (phoneNumber && phoneNumber.getType() && phoneNumber.getType() !== 'MOBILE') {
+                return "Please enter a mobile number";
+              }
+              
+              return true;
+            } catch (error) {
+              return "Invalid phone number format";
+            }
           },
         })}
       />
 
       <PhoneInput
         value={phoneValue}
-        onChange={(val) => {
-          // إضافة الـ + دايماً عشان الباك إند
-          const formatted = val.startsWith("+") ? val : `+${val}`;
-          setValue("phone_number", formatted, { shouldValidate: true });
-        }}
+        onChange={handlePhoneChange}
         error={errors.phone_number?.message}
         disabled={loading}
       />
