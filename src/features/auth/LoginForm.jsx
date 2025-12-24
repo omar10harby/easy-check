@@ -2,7 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { Lock, AlertCircle } from "lucide-react";
 import PhoneInput from "./PhoneInput";
-import { isValidPhoneNumber, parsePhoneNumber, parsePhoneNumberWithError } from 'libphonenumber-js';
+import parsePhoneNumberFromString from "libphonenumber-js";
 
 function LoginForm({ onSubmit, loading, error }) {
   const {
@@ -22,37 +22,49 @@ function LoginForm({ onSubmit, loading, error }) {
   const phoneValue = watch("phone_number");
 
   const handlePhoneChange = (value) => {
-    setValue("phone_number", value, { shouldValidate: true });
+    if (!value) {
+      setValue("phone_number", "", { shouldValidate: true });
+      return;
+    }
+    let cleaned = value.startsWith("+") ? value : `+${value}`;
+    cleaned = cleaned.replace(/[^\d+]/g, "");
+
+    if (cleaned.startsWith("+200")) {
+      cleaned = cleaned.replace("+200", "+20");
+    }
+    setValue("phone_number", cleaned, { shouldValidate: true });
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      {/* Phone Number Field */}
       <input
         type="hidden"
         {...register("phone_number", {
           required: "Phone number is required",
           validate: (value) => {
-            if (!value || value === "+") {
-              return "Phone number is required";
-            }
+            if (!value || value === "+") return "Phone number is required";
 
-            if (value.length < 8) {
-              return "Phone number is too short";
-            }
-
-            try {
-              if (!isValidPhoneNumber(value)) {
-                return "Invalid phone number";
-              }
-              
-              const phoneNumber = parsePhoneNumberWithError(value);
-              if (phoneNumber && phoneNumber.getType() && phoneNumber.getType() !== 'MOBILE') {
-                return "Please enter a mobile number";
-              }
-              
+            // Egypt-specific strict validation
+            if (value.startsWith("+20")) {
+              if (value.length !== 13)
+                return "Egypt mobile must be 11 digits total";
+              const validPrefixes = ["10", "11", "12", "15"];
+              const prefix = value.substring(3, 5);
+              if (!validPrefixes.includes(prefix))
+                return "Invalid Egypt mobile provider";
               return true;
-            } catch (error) {
-              return "Invalid phone number format";
+            }
+
+            // Global validation for other countries
+            try {
+              const phoneNumber = parsePhoneNumberFromString(value);
+              return (
+                (phoneNumber && phoneNumber.isValid()) ||
+                "Invalid international number"
+              );
+            } catch (e) {
+              return "Invalid format";
             }
           },
         })}
@@ -116,10 +128,10 @@ function LoginForm({ onSubmit, loading, error }) {
         {loading ? (
           <>
             <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-            <span>Login...</span>
+            <span>Logging...</span>
           </>
         ) : (
-          <span>Login Now</span>
+          <span>Login</span>
         )}
       </button>
     </form>
