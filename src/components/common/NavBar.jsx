@@ -8,7 +8,7 @@ import ProfileDropdown from './ProfileDropdown';
 import MobileMenu from './MobileMenu';
 import AuthModal from '../../features/auth/AuthModal';
 import { 
-  logoutUserThunk, 
+  logoutThunk, 
 } from '../../features/auth/authSlice';
 
 function NavBar() {
@@ -21,7 +21,7 @@ function NavBar() {
 
   const handleLogout = async () => {
     try {
-      await dispatch(logoutUserThunk()).unwrap();
+      await dispatch(logoutThunk()).unwrap();
       setIsDropdownOpen(false);
       setIsMobileMenuOpen(false);
       toast.success('Logged out successfully! See you soon! 👋');

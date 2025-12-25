@@ -8,11 +8,10 @@ import { clearError, loginThunk, registerThunk } from './authSlice';
 
 function AuthModal({ isOpen, onClose }) {
   const dispatch = useDispatch();
-  const { loading, error } = useSelector((state) => state.auth);
+  const { actionLoading, error } = useSelector((state) => state.auth);
 
   const [isLogin, setIsLogin] = useState(true);
 
-  // Clear errors when modal opens/closes
   useEffect(() => {
     if (isOpen) {
       dispatch(clearError());
@@ -21,7 +20,7 @@ function AuthModal({ isOpen, onClose }) {
 
   // Handle ESC key
   useEffect(() => {
-    const handleKeyDown = (e) => {
+    function handleKeyDown(e){
       if (e.key === 'Escape') {
         onClose();
       }
@@ -36,7 +35,7 @@ function AuthModal({ isOpen, onClose }) {
     };
   }, [isOpen, onClose]);
 
-  const handleLoginSubmit = async (data) => {
+  async function handleLoginSubmit(data){
     try {
       await dispatch(
         loginThunk({
@@ -48,11 +47,12 @@ function AuthModal({ isOpen, onClose }) {
       toast.success('Login successful! Welcome back! 🎉');
       onClose();
     } catch (error) {
-      toast.error(error || 'An error occurred. Please try again.');
+      toast.error( error);
     }
+    
   };
 
-  const handleRegisterSubmit = async (data) => {
+  async function handleRegisterSubmit(data) {
     try {
       await dispatch(
         registerThunk({
@@ -65,13 +65,13 @@ function AuthModal({ isOpen, onClose }) {
       toast.success('Registration successful! Please login. ✅');
       setIsLogin(true);
     } catch (error) {
-      toast.error(error || 'An error occurred. Please try again.');
+      toast.error(error);
     }
-    console.log(data);
+
     
   };
 
-  const handleToggleMode = () => {
+  function handleToggleMode() {
     setIsLogin(!isLogin);
     dispatch(clearError());
   };
@@ -91,7 +91,7 @@ function AuthModal({ isOpen, onClose }) {
           <button
             onClick={handleToggleMode}
             type="button"
-            disabled={loading}
+            disabled={actionLoading}
             className={`flex-1 py-3 rounded-xl font-bold text-sm transition-all ${
               isLogin ? 'bg-lime-yellow text-dark' : 'text-white/60'
             }`}
@@ -101,7 +101,7 @@ function AuthModal({ isOpen, onClose }) {
           <button
             onClick={handleToggleMode}
             type="button"
-            disabled={loading}
+            disabled={actionLoading}
             className={`flex-1 py-3 rounded-xl font-bold text-sm transition-all ${
               !isLogin ? 'bg-lime-yellow text-dark' : 'text-white/60'
             }`}
@@ -131,13 +131,13 @@ function AuthModal({ isOpen, onClose }) {
           {isLogin ? (
             <LoginForm
               onSubmit={handleLoginSubmit}
-              loading={loading}
+              loading={actionLoading}
               error={error}
             />
           ) : (
             <RegisterForm
               onSubmit={handleRegisterSubmit}
-              loading={loading}
+              loading={actionLoading}
               error={error}
             />
           )}

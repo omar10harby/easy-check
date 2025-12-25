@@ -4,7 +4,8 @@ import * as authAPI from '../../services/authApi';
 const initialState = {
   user: null, 
   isAuthenticated: false,
-  loading: false, 
+  loading: true, 
+  actionLoading: false,
   error: null,
 };
 
@@ -49,7 +50,7 @@ export const registerThunk = createAsyncThunk(
 );
 
 
-export const logoutUserThunk = createAsyncThunk(
+export const logoutThunk = createAsyncThunk(
   'auth/logout',
   async (_, { rejectWithValue }) => {
     try {
@@ -102,40 +103,40 @@ const authSlice = createSlice({
       })
 
       // --- LOGIN ---
-      .addCase(loginUserThunk.pending, (state) => {
-        state.loading = true;
+      .addCase(loginThunk.pending, (state) => {
+        state.actionLoading = true;
         state.error = null;
       })
-      .addCase(loginUserThunk.fulfilled, (state, action) => {
-        state.loading = false;
+      .addCase(loginThunk.fulfilled, (state, action) => {
+        state.actionLoading = false;
         state.isAuthenticated = true;
         state.user = action.payload; // الكائن الذي يحتوي على التوكن والبيانات
         state.error = null;
       })
-      .addCase(loginUserThunk.rejected, (state, action) => {
-        state.loading = false;
+      .addCase(loginThunk.rejected, (state, action) => {
+        state.actionLoading = false;
         state.error = action.payload;
       })
 
       // --- REGISTER ---
-      .addCase(registerUserThunk.pending, (state) => {
-        state.loading = true;
+      .addCase(registerThunk.pending, (state) => {
+        state.actionLoading = true;
         state.error = null;
       })
-      .addCase(registerUserThunk.fulfilled, (state) => {
-        state.loading = false;
+      .addCase(registerThunk.fulfilled, (state) => {
+        state.actionLoading = false;
         // لا نسجل الدخول تلقائياً، ننتظر تسجيل الدخول من الـ Modal
       })
-      .addCase(registerUserThunk.rejected, (state, action) => {
-        state.loading = false;
+      .addCase(registerThunk.rejected, (state, action) => {
+        state.actionLoading = false;
         state.error = action.payload;
       })
 
       // --- LOGOUT ---
-      .addCase(logoutUserThunk.fulfilled, (state) => {
+      .addCase(logoutThunk.fulfilled, (state) => {
         state.user = null;
         state.isAuthenticated = false;
-        state.loading = false;
+        state.actionLoading = false;
       });
   },
 });
