@@ -7,13 +7,11 @@ import BalanceDisplay from './BalanceDisplay';
 import ProfileDropdown from './ProfileDropdown';
 import MobileMenu from './MobileMenu';
 import AuthModal from '../../features/auth/AuthModal';
-import { 
-  logoutThunk, 
-} from '../../features/auth/authSlice';
+import { logoutThunk } from '../../features/auth/authSlice';
 
 function NavBar() {
   const dispatch = useDispatch();
-  const { user, isAuthenticated } = useSelector((state) => state.auth);
+  const { user, isAuthenticated, actionLoading } = useSelector((state) => state.auth);
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -26,7 +24,6 @@ function NavBar() {
       setIsMobileMenuOpen(false);
       toast.success('Logged out successfully! See you soon! 👋');
     } catch (error) {
-      console.error('Logout failed:', error);
       toast.error('Logout failed. Please try again.');
     }
   };
@@ -51,9 +48,10 @@ function NavBar() {
             <div className="hidden md:flex items-center gap-3">
               <button 
                 onClick={handleLoginClick}
-                className="px-6 py-2 text-sm font-bold bg-lime-yellow text-dark rounded-lg hover:bg-[#d4ea23] transition-all shadow-md hover:shadow-lg"
+                disabled={actionLoading}
+                className="px-6 py-2 text-sm font-bold bg-lime-yellow text-dark rounded-lg hover:bg-[#d4ea23] disabled:bg-gray-300 disabled:cursor-not-allowed transition-all shadow-md hover:shadow-lg"
               >
-                Login
+                {actionLoading ? 'Loading...' : 'Login'}
               </button>
             </div>
           )}
@@ -70,6 +68,7 @@ function NavBar() {
                 onToggle={() => setIsDropdownOpen(!isDropdownOpen)}
                 onClose={() => setIsDropdownOpen(false)}
                 onLogout={handleLogout}
+                loading={actionLoading}
               />
             </div>
           )}
@@ -77,7 +76,8 @@ function NavBar() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden p-2 text-dark hover:bg-gray-100 rounded-lg transition-colors"
+            disabled={actionLoading}
+            className="md:hidden p-2 text-dark hover:bg-gray-100 disabled:bg-gray-100 disabled:cursor-not-allowed rounded-lg transition-colors"
           >
             {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
@@ -92,6 +92,7 @@ function NavBar() {
         user={user}
         onLogout={handleLogout}
         onLoginClick={handleLoginClick}
+        loading={actionLoading}
       />
 
       {/* Auth Modal */}

@@ -8,7 +8,7 @@ function SearchButton({ onClick, disabled, selectedServicePrice }) {
       disabled={disabled}
       className="w-full flex items-center justify-center gap-3 px-6 py-5 bg-main-green hover:bg-[#0a5428] disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-black text-lg rounded-2xl transition-all shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-95 disabled:hover:scale-100"
     >
-      <span>Search Now</span>
+      <span>Check Now</span>
       {selectedServicePrice && (
         <>
           <span className="text-lime-yellow">|</span>

@@ -34,31 +34,18 @@ function ImeiChecker() {
       return;
     }
 
-    if (!isAuthenticated) {
-      // Guest → Redirect to checkout with Kashier
-       console.log("Redirecting to Kashier checkout...")
-    } else {
-      // Logged-in user
-      if (userBalance >= selectedService.price) {
-        // Sufficient balance → Perform check
-        console.log('Performing IMEI check...');
-        // TODO: dispatch(performImeiCheck({ imei, serviceId }))
-        // navigate(`/result/${result.id}`);
-      }else{
-        navigate('/add-credit')
-      }
-    }
+ 
   };
 
   const isSearchDisabled = !selectedService || imei.length !== 15;
 
   return (
-    <div className="  md:py-10  px-4 sm:px-6 lg:px-8">
+    <section className="  md:py-10  px-4 sm:px-6 lg:px-8">
     
       <div className=" relative">
 
         {/* Main Card */}
-        <div className="bg-white rounded-3xl shadow-lg border-2 border-gray-100 p-8 sm:p-10">
+        <div className="bg-white rounded-3xl shadow-md border-2 border-gray-100 p-8 sm:p-10">
           {/* Header */}
           <div className="text-center mb-8">
             <h1 className="text-3xl sm:text-4xl font-black text-dark mb-3 tracking-tight">
@@ -69,7 +56,7 @@ function ImeiChecker() {
             </p>
           </div>
 
-       <div className='flex flex-col gap-3'>
+       <div className='space-y-3'>
           {/* Service Selection */}
           <ServiceSelector
             selectedService={selectedService}
@@ -97,7 +84,7 @@ function ImeiChecker() {
 
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 

@@ -25,7 +25,7 @@ export function removeAuthToken() {
 
 export async function register({ phone_number, password, confirm_password }) {
   try {
-    const response = await axiosInstance.post("users/register", {
+    const response = await axiosInstance.post("users/register/", {
       phone_number,
       password,
       confirm_password,
@@ -39,8 +39,8 @@ export async function register({ phone_number, password, confirm_password }) {
 
 export async function login({ phone_number, password }) {
   try {
-    const response = await axiosInstance.post("/login", {
-      phone_number,
+    const response = await axiosInstance.post("/login/", {
+      username:phone_number,
       password,
     });
 
@@ -66,7 +66,7 @@ export async function verifyAuth() {
     const token = getAuthToken();
     if (!token) return null;
 
-    const response = await axiosInstance.get("/users/user_info");
+    const response = await axiosInstance.get("/users/user_info/");
     return {
       id: response.data.user_id,
       username: response.data.username,
@@ -84,7 +84,7 @@ export async function logout() {
   try {
     const token = getAuthToken();
     if (token) {
-      await axiosInstance.get("/users/logout");
+      await axiosInstance.post("/users/logout/");
     }
   } catch (error) {
     console.error("Logout error details:", error.response?.data);

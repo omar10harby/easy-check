@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Lock, AlertCircle } from "lucide-react";
+import { Lock, AlertCircle, Eye, EyeOff } from "lucide-react";
 import PhoneInput from "./PhoneInput";
 import parsePhoneNumberFromString from "libphonenumber-js";
 
@@ -20,6 +20,7 @@ function LoginForm({ onSubmit, loading, error }) {
   });
 
   const phoneValue = watch("phone_number");
+  const [showPassword, setShowPassword] = useState(false);
 
   const handlePhoneChange = (value) => {
     if (!value) {
@@ -88,7 +89,7 @@ function LoginForm({ onSubmit, loading, error }) {
             size={18}
           />
           <input
-            type="password"
+            type={showPassword ? "text" : "password"}
             {...register("password", {
               required: "Password is required",
               minLength: {
@@ -98,10 +99,17 @@ function LoginForm({ onSubmit, loading, error }) {
             })}
             className={`w-full bg-gray-50 border-2 ${
               errors.password ? "border-red-500" : "border-dark/10"
-            } rounded-2xl py-4 pl-12 pr-4 font-bold focus:border-lime-yellow focus:ring-4 focus:ring-lime-yellow/20 outline-none transition-all`}
+            } rounded-2xl py-4 pl-12 pr-12 font-bold focus:border-lime-yellow focus:ring-4 focus:ring-lime-yellow/20 outline-none transition-all`}
             placeholder="••••••••"
             disabled={loading}
           />
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-dark/30 hover:text-dark/60 transition-colors"
+          >
+            {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+          </button>
         </div>
         {errors.password && (
           <div className="flex items-center gap-2 text-red-500 text-xs mt-1 ml-1">

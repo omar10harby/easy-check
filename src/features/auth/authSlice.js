@@ -28,7 +28,6 @@ export const loginThunk = createAsyncThunk(
   async (credentials, { rejectWithValue }) => {
     try {
       const data = await authAPI.login(credentials);
-
       return data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -62,34 +61,30 @@ export const logoutThunk = createAsyncThunk(
   }
 );
 
-// ============================================
-// 🎨 SLICE
-// ============================================
+
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    // تحديث الرصيد يدوياً (مثلاً بعد عملية دفع ناجحة)
     updateBalance: (state, action) => {
       if (state.user) {
         state.user.balance = action.payload;
       }
     },
-    // مسح الأخطاء عند إغلاق الـ Modal
     clearError: (state) => {
       state.error = null;
     },
   },
   extraReducers: (builder) => {
     builder
-      // --- VERIFY AUTH ---
+      // ---- VERIFY AUTH ----
       .addCase(verifyAuthThunk.pending, (state) => {
-        state.loading = true;
+        state.loading = true; 
       })
       .addCase(verifyAuthThunk.fulfilled, (state, action) => {
         state.loading = false;
         if (action.payload) {
-          state.user = action.payload; // البيانات القادمة من user_info
+          state.user = action.payload;
           state.isAuthenticated = true;
         } else {
           state.user = null;
@@ -102,15 +97,15 @@ const authSlice = createSlice({
         state.isAuthenticated = false;
       })
 
-      // --- LOGIN ---
+      // ---- LOGIN ----
       .addCase(loginThunk.pending, (state) => {
-        state.actionLoading = true;
+        state.actionLoading = true; 
         state.error = null;
       })
       .addCase(loginThunk.fulfilled, (state, action) => {
         state.actionLoading = false;
         state.isAuthenticated = true;
-        state.user = action.payload; // الكائن الذي يحتوي على التوكن والبيانات
+        state.user = action.payload;
         state.error = null;
       })
       .addCase(loginThunk.rejected, (state, action) => {
@@ -118,25 +113,32 @@ const authSlice = createSlice({
         state.error = action.payload;
       })
 
-      // --- REGISTER ---
+      // ---- REGISTER ----
       .addCase(registerThunk.pending, (state) => {
         state.actionLoading = true;
         state.error = null;
       })
       .addCase(registerThunk.fulfilled, (state) => {
         state.actionLoading = false;
-        // لا نسجل الدخول تلقائياً، ننتظر تسجيل الدخول من الـ Modal
+        state.error = null;
       })
       .addCase(registerThunk.rejected, (state, action) => {
         state.actionLoading = false;
         state.error = action.payload;
       })
 
-      // --- LOGOUT ---
+      // ---- LOUGOUT ----
+      .addCase(logoutThunk.pending, (state) => {
+        state.actionLoading = true; 
+      })
       .addCase(logoutThunk.fulfilled, (state) => {
         state.user = null;
         state.isAuthenticated = false;
         state.actionLoading = false;
+        state.error = null;
+      })
+      .addCase(logoutThunk.rejected, (state) => {
+        state.actionLoading = false; 
       });
   },
 });

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { getAuthToken, removeAuthToken } from './authApi';
 
-const API_URL =  'http://localhost:8000/';
+const API_URL =  'http://localhost:8000';
 
 const axiosInstance = axios.create({
   baseURL: API_URL,

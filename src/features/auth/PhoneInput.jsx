@@ -1,5 +1,6 @@
 import React from 'react';
 import PhoneInput2 from 'react-phone-input-2';
+import './PhoneInput.css';
 import 'react-phone-input-2/lib/style.css';
 import { AlertCircle } from 'lucide-react';
 
@@ -23,6 +24,7 @@ function PhoneInput({ value, onChange, error, disabled }) {
           buttonClass="phone-button-style"
           dropdownClass="phone-dropdown-style"
           placeholder="123 456 7890"
+          disableFormatting={true}
           countryCodeEditable={false}
         />
       </div>

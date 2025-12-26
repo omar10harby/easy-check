@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Search, CreditCard, Wallet, LogOut, X } from 'lucide-react';
 import Logo from './Logo';
 
-function MobileMenu({ isOpen, onClose, isAuthenticated, user, onLogout, onLoginClick }) {
+function MobileMenu({ isOpen, onClose, isAuthenticated, user, onLogout, onLoginClick, loading }) {
   if (!isOpen) return null;
 
   return (
@@ -13,7 +13,8 @@ function MobileMenu({ isOpen, onClose, isAuthenticated, user, onLogout, onLoginC
         <Logo />
         <button
           onClick={onClose}
-          className="p-2 text-dark hover:bg-gray-100 rounded-lg transition-colors"
+          disabled={loading}
+          className="p-2 text-dark hover:bg-gray-100 disabled:bg-gray-100 disabled:cursor-not-allowed rounded-lg transition-colors"
         >
           <X className="w-5 h-5" />
         </button>
@@ -26,9 +27,10 @@ function MobileMenu({ isOpen, onClose, isAuthenticated, user, onLogout, onLoginC
           <button 
             onClick={() => {
               onClose();
-              onLoginClick(); // 🆕 Open AuthModal
+              onLoginClick();
             }}
-            className="w-full px-4 py-3 text-sm font-bold bg-lime-yellow text-dark rounded-lg hover:bg-[#d4ea23] transition-all shadow-md"
+            disabled={loading}
+            className="w-full px-4 py-3 text-sm font-bold bg-lime-yellow text-dark rounded-lg hover:bg-[#d4ea23] disabled:bg-gray-300 disabled:cursor-not-allowed transition-all shadow-md"
           >
             Login
           </button>
@@ -56,7 +58,7 @@ function MobileMenu({ isOpen, onClose, isAuthenticated, user, onLogout, onLoginC
                 className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-lg transition-colors border border-gray-200"
                 onClick={onClose}
               >
-                <Search  className="w-5 h-5 text-main-green" />
+                <Search className="w-5 h-5 text-main-green" />
                 <span>Search History</span>
               </Link>
 
@@ -70,20 +72,30 @@ function MobileMenu({ isOpen, onClose, isAuthenticated, user, onLogout, onLoginC
               </Link>
 
               <Link
-                to="/add-credit"
+                to="/add-balance"
                 className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-lg transition-colors border border-gray-200"
                 onClick={onClose}
               >
                 <Wallet className="w-5 h-5 text-main-green" />
-                <span>Add Credit</span>
+                <span>Add Balance</span>
               </Link>
 
               <button
                 onClick={onLogout}
-                className="flex items-center gap-3 w-full px-4 py-3 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg transition-colors border border-red-200"
+                disabled={loading}
+                className="flex items-center gap-3 w-full px-4 py-3 text-sm font-medium text-red-600 hover:bg-red-50 disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed rounded-lg transition-colors border border-red-200"
               >
-                <LogOut className="w-5 h-5" />
-                <span>Logout</span>
+                {loading ? (
+                  <>
+                    <div className="w-5 h-5 border-2 border-gray-400 border-t-red-600 rounded-full animate-spin"></div>
+                    <span>Logging out...</span>
+                  </>
+                ) : (
+                  <>
+                    <LogOut className="w-5 h-5" />
+                    <span>Logout</span>
+                  </>
+                )}
               </button>
             </div>
           </>

@@ -12,12 +12,11 @@ function Footer() {
   return (
     <footer className="border-t border-gray-200 py-4 sm:py-6 px-4 bg-white">
       <div className="max-w-7xl mx-auto">
-        <div className="flex flex-wrap justify-center items-center gap-3 sm:gap-8 text-xs sm:text-sm text-gray-400">
+        <div className="flex  justify-between items-center gap-3 sm:gap-8 text-xs sm:text-sm text-gray-400">
           {/* Copyright */}
-          <span className="font-medium">© 2025 IMEI Check Inc.</span>
+          <span className="font-medium">© 2025 Easy Check Inc.</span>
             
 
-          <span className="hidden sm:inline flex-1"></span>
           
           {/* Brands */}
           <div className="flex items-center gap-3 sm:gap-6">
