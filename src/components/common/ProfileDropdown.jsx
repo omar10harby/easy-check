@@ -8,13 +8,13 @@ function ProfileDropdown({ isOpen, onToggle, onClose, onLogout, loading }) {
       <button
         onClick={onToggle}
         disabled={loading}
-        className="flex items-center gap-2 px-4 py-2 bg-gray-50 hover:bg-gray-100 disabled:bg-gray-100 disabled:cursor-not-allowed rounded-lg border border-gray-200 transition-colors"
+        className="flex items-center gap-2 px-4 py-1 bg-light hover:bg-medium-gray disabled:bg-light-gray disabled:cursor-not-allowed rounded-lg border border-light-gray transition-colors"
       >
-        <div className="w-8 h-8 bg-main-green rounded-full flex items-center justify-center">
-          <Wallet className="w-4 h-4 text-lime-yellow" />
+        <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+          <Wallet className="w-4 h-4 text-light" />
         </div>
-        <span className="text-sm font-medium text-dark">Account</span>
-        <ChevronDown className={`w-4 h-4 text-gray-600 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+        <span className="text-sm font-medium text-primary">Account</span>
+        <ChevronDown className={`w-4 h-4 text-primary/60 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
       </button>
 
       {isOpen && (
@@ -26,40 +26,40 @@ function ProfileDropdown({ isOpen, onToggle, onClose, onLogout, loading }) {
           ></div>
 
           {/* Dropdown Content */}
-          <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-20">
+          <div className="absolute right-0 mt-2 w-56 bg-light rounded-lg shadow-lg border border-light-gray py-2 z-20">
             <Link
               to="/search-history"
-              className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+              className="flex items-center gap-3 px-4 py-2 text-sm text-primary hover:bg-light-gray transition-colors"
               onClick={onClose}
             >
-              <Search className="w-4 h-4 text-main-green" />
+              <Search className="w-4 h-4 text-primary" />
               <span>Search History</span>
             </Link>
 
             <Link
               to="/payment-history"
-              className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+              className="flex items-center gap-3 px-4 py-2 text-sm text-primary hover:bg-light-gray transition-colors"
               onClick={onClose}
             >
-              <CreditCard className="w-4 h-4 text-main-green" />
+              <CreditCard className="w-4 h-4 text-primary" />
               <span>Payment History</span>
             </Link>
 
             <Link
               to="/add-balance"
-              className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+              className="flex items-center gap-3 px-4 py-2 text-sm text-primary hover:bg-light-gray transition-colors"
               onClick={onClose}
             >
-              <Wallet className="w-4 h-4 text-main-green" />
+              <Wallet className="w-4 h-4 text-primary" />
               <span>Add balance</span>
             </Link>
 
-            <div className="my-2 border-t border-gray-200"></div>
+            <div className="my-2 border-t border-light-gray"></div>
 
             <button
               onClick={onLogout}
               disabled={loading}
-              className="flex items-center gap-3 w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50 disabled:bg-gray-50 disabled:text-gray-400 disabled:cursor-not-allowed transition-colors"
+              className="flex items-center gap-3 w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50 disabled:bg-light-gray disabled:text-gray-400 disabled:cursor-not-allowed transition-colors"
             >
               {loading ? (
                 <>

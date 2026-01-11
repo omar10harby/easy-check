@@ -80,12 +80,12 @@ function LoginForm({ onSubmit, loading, error }) {
 
       {/* Password Field */}
       <div className="space-y-1">
-        <label className="text-[10px] font-black uppercase text-main-green ml-1">
+        <label className="text-[10px] font-black uppercase text-dark-bg ml-1">
           Password
         </label>
         <div className="relative">
           <Lock
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-dark/30"
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-dark-bg"
             size={18}
           />
           <input
@@ -97,16 +97,16 @@ function LoginForm({ onSubmit, loading, error }) {
                 message: "Password must be at least 8 characters",
               },
             })}
-            className={`w-full bg-gray-50 border-2 ${
-              errors.password ? "border-red-500" : "border-dark/10"
-            } rounded-2xl py-4 pl-12 pr-12 font-bold focus:border-lime-yellow focus:ring-4 focus:ring-lime-yellow/20 outline-none transition-all`}
+            className={`w-full bg-light-gray border-2 ${
+              errors.password ? "border-red-500" : "border-medium-gray"
+            } rounded-2xl py-4 pl-12 pr-12 font-bold focus:bg-light focus:border-dark-bg focus:ring-4 focus:ring-primary/30 outline-none transition-all`}
             placeholder="••••••••"
             disabled={loading}
           />
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-4 top-1/2 -translate-y-1/2 text-dark/30 hover:text-dark/60 transition-colors"
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-dark-bg hover:text-dark-bg/70 transition-colors"
           >
             {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
           </button>
@@ -119,23 +119,15 @@ function LoginForm({ onSubmit, loading, error }) {
         )}
       </div>
 
-      {/* Server Error */}
-      {error && (
-        <div className="flex items-center gap-2 text-red-500 text-sm p-3 bg-red-50 rounded-xl">
-          <AlertCircle size={16} />
-          <span>{error}</span>
-        </div>
-      )}
-
       {/* Submit Button */}
       <button
         type="submit"
         disabled={loading}
-        className="w-full bg-dark hover:bg-main-green disabled:bg-gray-400 disabled:cursor-not-allowed text-white py-5 rounded-2xl font-black text-sm uppercase tracking-widest flex items-center justify-center gap-3 transition-all mt-6 shadow-xl shadow-gray-200"
+        className="w-full bg-primary hover:bg-primary/80 disabled:bg-medium-gray disabled:cursor-not-allowed text-light py-5 rounded-2xl font-black text-sm uppercase tracking-widest flex items-center justify-center gap-3 transition-all mt-6 shadow-xl shadow-gray-200"
       >
         {loading ? (
           <>
-            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+            <div className="w-5 h-5 border-2 border-ligth border-t-light-gray rounded-full animate-spin"></div>
             <span>Logging...</span>
           </>
         ) : (

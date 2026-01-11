@@ -11,20 +11,20 @@ function ServiceSelector({
 }) {
   return (
     <div >
-      <label className="block text-sm font-bold text-dark mb-3">
+      <label className="block text-sm font-bold text-dark-bg mb-3">
         Service
       </label>
       <div className="relative">
         <button
           onClick={onToggle}
-          className="w-full flex items-center justify-between gap-3 px-5 py-4 bg-gray-50 border-2 border-gray-200 rounded-2xl hover:border-lime-yellow transition-all focus:outline-none focus:border-lime-yellow focus:ring-4 focus:ring-lime-yellow/20"
+          className="w-full flex items-center text-primary justify-between gap-3 px-5 py-4  border-2 border-medium-gray bg-light-gray  rounded-2xl hover:text-primary/90 transition-all focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary/30"
         >
           {selectedService ? (
             <div className="flex items-center gap-3">
               <span className="text-2xl">{selectedService.icon}</span>
               <div className="text-left">
-                <p className="font-bold text-dark">{selectedService.name}</p>
-                <p className="text-xs text-gray-500">
+                <p className="font-bold text-primary">{selectedService.name}</p>
+                <p className="text-xs text-dark-bg">
                   Time: {selectedService.time} • Success: {selectedService.success}
                 </p>
               </div>

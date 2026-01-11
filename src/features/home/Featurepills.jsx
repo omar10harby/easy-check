@@ -3,7 +3,7 @@ import { Lock, Cloud, ShieldCheck } from 'lucide-react';
 const features = [
   {
     id: 1,
-    icon: 'check', // غيرنا الـ dot لشكل احترافي أكتر
+    icon: 'check',
     label: 'Global Blacklist',
   },
   {
@@ -22,14 +22,13 @@ function FeaturePills() {
   const renderIcon = (iconType) => {
     switch (iconType) {
       case 'check':
-        return <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-main-green" />;
+        return <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-light" />;
       case 'lock':
-        return <Lock className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-main-green" />;
+        return <Lock className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-light" />;
       case 'icloud':
-        // أيقونة السحابة هي الأنسب لـ iCloud
-        return <Cloud className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#007AFF]" />; // لون أبل الأزرق
+        return <Cloud className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-light" />;
       default:
-        return <div className="w-2 h-2 bg-main-green rounded-full" />;
+        return <div className="w-2 h-2 bg-light rounded-full" />;
     }
   };
 
@@ -38,10 +37,10 @@ function FeaturePills() {
       {features.map((feature) => (
         <div
           key={feature.id}
-          className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-white/80 backdrop-blur-sm border border-gray-100 rounded-full shadow-sm hover:shadow-md hover:border-main-green/30 transition-all cursor-default"
+          className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-light/10 backdrop-blur-sm border border-light/20 rounded-full hover:bg-light/20 transition-all cursor-default"
         >
           {renderIcon(feature.icon)}
-          <span className="text-xs sm:text-sm font-semibold text-dark/80">
+          <span className="text-xs sm:text-sm font-semibold text-light/90">
             {feature.label}
           </span>
         </div>

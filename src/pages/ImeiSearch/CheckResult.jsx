@@ -9,3 +9,4 @@ function CheckResult() {
 }
 
 export default CheckResult
+``

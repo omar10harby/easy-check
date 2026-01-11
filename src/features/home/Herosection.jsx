@@ -5,15 +5,15 @@ function HeroSection({ onSearchClick }) {
   return (
     <>
       {/* Main Heading */}
-      <h1 className="text-4xl md:text-5xl lg:text-7xl font-black text-dark mb-4 sm:mb-6 leading-tight px-6">
+      <h1 className="text-4xl md:text-5xl lg:text-7xl font-black text-light mb-4 sm:mb-6 leading-tight px-6">
         Verify Device
         <br />
-        <p className=" text-main-green  mt-2 space-x-2">
+        <p className="text-light mt-2 space-x-2">
           <span>Authenticity</span>
-          <span className="relative inline-block  text-dark">
+          <span className="relative inline-block text-light">
             Instantly
             <svg
-              className="absolute -bottom-2 left-0 w-full h-3 text-lime-yellow"
+              className="absolute -bottom-2 left-0 w-full h-3 text-light-gray"
               viewBox="0 0 200 12"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -30,7 +30,7 @@ function HeroSection({ onSearchClick }) {
       </h1>
 
       {/* Description */}
-      <p className="max-w-2xl mx-auto text-sm sm:text-base lg:text-lg text-dark/50 mb-8 sm:mb-12 leading-relaxed px-4">
+      <p className="max-w-2xl mx-auto text-sm sm:text-base lg:text-lg text-medium-gray mb-8 sm:mb-12 leading-relaxed px-4">
         Check blacklist, warranty, and carrier lock status in seconds. Fast,
         accurate, and secure.
       </p>
@@ -38,7 +38,7 @@ function HeroSection({ onSearchClick }) {
       {/* CTA Button */}
       <button
         onClick={onSearchClick}
-        className="group inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 bg-lime-yellow  text-dark text-base sm:text-lg font-bold rounded-xl hover:bg-[#d4ea23] transition-all shadow-lg hover:shadow-xl hover:scale-105 active:scale-95"
+        className="group inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 bg-light text-primary text-base sm:text-lg font-bold rounded-xl hover:bg-light-gray transition-all shadow-lg hover:shadow-xl hover:scale-105 active:scale-95"
       >
         <Search className="w-4 h-4 sm:w-5 sm:h-5" />
         <span className="hidden sm:inline">Check Your Device Now</span>

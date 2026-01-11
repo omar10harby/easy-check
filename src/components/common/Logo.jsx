@@ -1,14 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Shield } from 'lucide-react';
-
+import logoImage from '../../assets/grayscale_transparent_nobuffer.webp'
 function Logo() {
   return (
     <Link to="/" className="flex items-center gap-2 group">
-      <div className="bg-dark p-2 rounded-lg group-hover:bg-main-green transition-colors">
-        <Shield className="w-5 h-5 md:w-6 md:h-6 text-lime-yellow" />
+      <div className=" p-2 rounded-lg text-main-green transition-colors">
+        <img src={logoImage} alt="" className='w-36'/>
       </div>
-      <span className="text-lg md:text-xl font-bold text-dark">Easy Check</span>
     </Link>
   );
 }

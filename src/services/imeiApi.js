@@ -1,0 +1,24 @@
+import axios from './axios';
+
+
+export const getServices = async () => {
+  try {
+    const response = await axios.get('/store/services/');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching services:', error);
+    throw error.response?.data || { message: 'Failed to fetch services' };
+  }
+};
+
+
+export const getImeiResult = async (resultId) => {
+  try {
+    const response = await axios.get(`/store/transactions/${resultId}/`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching IMEI result:', error);
+    throw error.response?.data || { message: 'Failed to fetch result' };
+  }
+};
+

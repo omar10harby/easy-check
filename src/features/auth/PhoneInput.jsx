@@ -7,7 +7,7 @@ import { AlertCircle } from 'lucide-react';
 function PhoneInput({ value, onChange, error, disabled }) {
   return (
     <div className="space-y-1">
-      <label className="text-[10px] font-black uppercase text-main-green ml-1">
+      <label className="text-[10px] font-black uppercase text-dark-bg ml-1">
         Phone Number
       </label>
       

@@ -1,9 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
-import authReducer from '../features/auth/authSlice';
-
+import auth from '../features/auth/authSlice';
+import payment from '../features/payment/PaymentSlice';
+import imei from '../features/ImeiSearch/ImeiSlice';
 export const store = configureStore({
   reducer: {
-    auth: authReducer,
+    auth,
+    payment,
+    imei
   },
   devTools: import.meta.env.DEV, 
 });

@@ -4,26 +4,28 @@
   position: relative;
 }
 
-.phone-field-style {
+/* Input Field */
+.phone-field-style{
   width: 100% !important;
   height: 58px !important;
-  background-color: #f9fafb !important;
-  border: 2px solid rgba(24, 24, 24, 0.1) !important;
+  background-color: #f5f5f5 !important;
+  border: 2px solid #d1d5db !important;
   border-radius: 1rem !important;
   padding-left: 55px !important;
   font-weight: 700 !important;
   font-size: 14px !important;
   transition: all 0.2s ease-in-out !important;
   outline: none !important;
-  color: #181818 !important;
+  color: #454545 !important;
 }
 
 .phone-field-style:focus {
-  border-color: #e5fb34 !important;
+  border-color: hsl(0, 0%, 27%) !important;
   background-color: #ffffff !important;
-  box-shadow: 0 0 0 4px rgba(229, 251, 52, 0.2) !important;
+  box-shadow: 0 0 0 4px #4545454d !important;
 }
 
+/* Flag Button */
 .phone-button-style {
   background-color: transparent !important;
   border: none !important;
@@ -57,7 +59,7 @@
 /* Dropdown Menu */
 .phone-dropdown-style {
   border-radius: 1rem !important;
-  border: 1px solid #eee !important;
+  border: 1px solid #e0e0e0 !important;
   box-shadow: 0 15px 30px rgba(0,0,0,0.1) !important;
   margin-top: 10px !important;
   padding: 8px !important;
@@ -72,6 +74,6 @@
 }
 
 .phone-dropdown-style .country.highlight {
-  background-color: #e5fb3433 !important;
+  background-color:  #d1d5db !important;
   color: #000 !important;
 }

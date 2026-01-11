@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import toast from 'react-hot-toast';
-import { X } from 'lucide-react';
-import LoginForm from './LoginForm';
-import RegisterForm from './RegisterForm';
-import { clearError, loginThunk, registerThunk } from './authSlice';
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import toast from "react-hot-toast";
+import { X } from "lucide-react";
+import LoginForm from "./LoginForm";
+import RegisterForm from "./RegisterForm";
+import { clearError, loginThunk, registerThunk } from "./authSlice";
 
 function AuthModal({ isOpen, onClose }) {
   const dispatch = useDispatch();
@@ -20,22 +20,22 @@ function AuthModal({ isOpen, onClose }) {
 
   // Handle ESC key
   useEffect(() => {
-    function handleKeyDown(e){
-      if (e.key === 'Escape') {
+    function handleKeyDown(e) {
+      if (e.key === "Escape") {
         onClose();
       }
-    };
+    }
 
     if (isOpen) {
-      document.addEventListener('keydown', handleKeyDown);
+      document.addEventListener("keydown", handleKeyDown);
     }
 
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener("keydown", handleKeyDown);
     };
   }, [isOpen, onClose]);
 
-  async function handleLoginSubmit(data){
+  async function handleLoginSubmit(data) {
     try {
       await dispatch(
         loginThunk({
@@ -44,13 +44,12 @@ function AuthModal({ isOpen, onClose }) {
         })
       ).unwrap();
 
-      toast.success('Login successful! Welcome back! 🎉');
+      toast.success("Login successful! Welcome back! 🎉");
       onClose();
     } catch (error) {
-      toast.error( error);
+      toast.error(error);
     }
-    
-  };
+  }
 
   async function handleRegisterSubmit(data) {
     try {
@@ -62,38 +61,36 @@ function AuthModal({ isOpen, onClose }) {
         })
       ).unwrap();
 
-      toast.success('Registration successful! Please login. ✅');
+      toast.success("Registration successful! Please login. ✅");
       setIsLogin(true);
     } catch (error) {
       toast.error(error);
     }
-
-    
-  };
+  }
 
   function handleToggleMode() {
     setIsLogin(!isLogin);
     dispatch(clearError());
-  };
+  }
 
   if (!isOpen) return null;
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-dark/60 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-primary/60 backdrop-blur-sm"
       onClick={onClose}
     >
       <div
         className="relative w-full max-w-md bg-white rounded-4xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex bg-dark p-1 m-4 rounded-2xl">
+        <div className="flex bg-dark-bg p-1 m-4 rounded-2xl">
           <button
             onClick={handleToggleMode}
             type="button"
             disabled={actionLoading}
             className={`flex-1 py-3 rounded-xl font-bold text-sm transition-all ${
-              isLogin ? 'bg-lime-yellow text-dark' : 'text-white/60'
+              isLogin ? "bg-primary text-light" : "text-medium-gray"
             }`}
           >
             Sign In
@@ -103,7 +100,7 @@ function AuthModal({ isOpen, onClose }) {
             type="button"
             disabled={actionLoading}
             className={`flex-1 py-3 rounded-xl font-bold text-sm transition-all ${
-              !isLogin ? 'bg-lime-yellow text-dark' : 'text-white/60'
+              !isLogin ? "bg-primary text-light" : "text-medium-gray"
             }`}
           >
             Register
@@ -113,18 +110,18 @@ function AuthModal({ isOpen, onClose }) {
         <button
           onClick={onClose}
           type="button"
-          className="absolute top-6 right-6 text-dark/40 hover:text-dark transition-colors z-10"
+          className="absolute top-6 right-6 text-dark-bg hover:text-dark transition-colors z-10"
         >
           <X size={24} />
         </button>
 
         <div className="p-8 pt-4">
           <div className="text-center mb-8">
-            <h2 className="text-3xl font-black text-dark uppercase tracking-tighter">
-              {isLogin ? 'Welcome Back' : 'Create Account'}
+            <h2 className="text-2xl sm:text-3xl font-black text-primary uppercase tracking-tighter">
+              {isLogin ? "Welcome Back" : "Create Account"}
             </h2>
-            <p className="text-sm text-gray-500 mt-2">
-              {isLogin ? 'Sign in to continue' : 'Sign up to get started'}
+            <p className="text-sm text-primary/70 mt-2">
+              {isLogin ? "Sign in to continue" : "Sign up to get started"}
             </p>
           </div>
 

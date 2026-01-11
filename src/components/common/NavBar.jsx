@@ -1,17 +1,19 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import toast from 'react-hot-toast';
-import { Menu, X } from 'lucide-react';
-import Logo from './Logo';
-import BalanceDisplay from './BalanceDisplay';
-import ProfileDropdown from './ProfileDropdown';
-import MobileMenu from './MobileMenu';
-import AuthModal from '../../features/auth/AuthModal';
-import { logoutThunk } from '../../features/auth/authSlice';
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import toast from "react-hot-toast";
+import { Menu, X } from "lucide-react";
+import Logo from "./Logo";
+import BalanceDisplay from "./BalanceDisplay";
+import ProfileDropdown from "./ProfileDropdown";
+import MobileMenu from "./MobileMenu";
+import AuthModal from "../../features/auth/AuthModal";
+import { logoutThunk } from "../../features/auth/authSlice";
 
 function NavBar() {
   const dispatch = useDispatch();
-  const { user, isAuthenticated, actionLoading } = useSelector((state) => state.auth);
+  const { user, isAuthenticated, actionLoading } = useSelector(
+    (state) => state.auth
+  );
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -22,9 +24,9 @@ function NavBar() {
       await dispatch(logoutThunk()).unwrap();
       setIsDropdownOpen(false);
       setIsMobileMenuOpen(false);
-      toast.success('Logged out successfully! See you soon! 👋');
+      toast.success("Logged out successfully! See you soon! 👋");
     } catch (error) {
-      toast.error('Logout failed. Please try again.');
+      toast.error("Logout failed. Please try again.");
     }
   };
 
@@ -38,20 +40,19 @@ function NavBar() {
 
   return (
     <>
-      <nav className="sticky top-0 z-40 px-4 sm:px-6 md:px-[8vw] py-3 bg-white border-b border-gray-200 shadow">
+      <nav className="sticky top-0 z-40 px-4 sm:px-6 md:px-[8vw] py-3 bg-primary   shadow-sm">
         <div className="flex justify-between items-center">
           {/* Logo */}
           <Logo />
 
-          {/* Desktop: Guest View */}
           {!isAuthenticated && (
-            <div className="hidden md:flex items-center gap-3">
-              <button 
+            <div className="flex items-center gap-3">
+              <button
                 onClick={handleLoginClick}
                 disabled={actionLoading}
-                className="px-6 py-2 text-sm font-bold bg-lime-yellow text-dark rounded-lg hover:bg-[#d4ea23] disabled:bg-gray-300 disabled:cursor-not-allowed transition-all shadow-md hover:shadow-lg"
+                className=" px-4 sm:px-6 py-2 text-sm font-bold bg-light text-primary rounded-lg hover:bg-light/90  transition-all shadow-md hover:shadow-lg"
               >
-                {actionLoading ? 'Loading...' : 'Login'}
+                Login
               </button>
             </div>
           )}
@@ -74,13 +75,19 @@ function NavBar() {
           )}
 
           {/* Mobile Menu Button */}
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            disabled={actionLoading}
-            className="md:hidden p-2 text-dark hover:bg-gray-100 disabled:bg-gray-100 disabled:cursor-not-allowed rounded-lg transition-colors"
-          >
-            {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
+          {isAuthenticated && user && (
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              disabled={actionLoading}
+              className="md:hidden p-2 text-light hover:bg-light-gray disabled:bg-light-gray disabled:cursor-not-allowed rounded-lg transition-colors"
+            >
+              {isMobileMenuOpen ? (
+                <X className="w-5 h-5" />
+              ) : (
+                <Menu className="w-5 h-5" />
+              )}
+            </button>
+          )}
         </div>
       </nav>
 
@@ -96,10 +103,7 @@ function NavBar() {
       />
 
       {/* Auth Modal */}
-      <AuthModal 
-        isOpen={isAuthModalOpen} 
-        onClose={handleCloseAuthModal} 
-      />
+      <AuthModal isOpen={isAuthModalOpen} onClose={handleCloseAuthModal} />
     </>
   );
 }

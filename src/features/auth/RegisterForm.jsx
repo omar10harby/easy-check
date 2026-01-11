@@ -2,7 +2,11 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Lock, AlertCircle, Eye, EyeOff } from "lucide-react";
 import PhoneInput from "./PhoneInput";
-import { confirmPasswordValidation, PasswordValidation, PhoneValidation } from "../../utils/validations";
+import {
+  confirmPasswordValidation,
+  PasswordValidation,
+  PhoneValidation,
+} from "../../utils/validations";
 import { SanitizePhoneNumber } from "../../utils/sanitizer";
 
 function RegisterForm({ onSubmit, loading, error }) {
@@ -23,21 +27,18 @@ function RegisterForm({ onSubmit, loading, error }) {
 
   const phoneValue = watch("phone_number");
   const password = watch("password");
-  
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handlePhoneChange = (value) => {
-   const sanitized = SanitizePhoneNumber(value);
+    const sanitized = SanitizePhoneNumber(value);
     setValue("phone_number", sanitized, { shouldValidate: true });
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <input
-        type="hidden"
-        {...register("phone_number", PhoneValidation)}
-      />
+      <input type="hidden" {...register("phone_number", PhoneValidation)} />
 
       <PhoneInput
         value={phoneValue}
@@ -48,13 +49,20 @@ function RegisterForm({ onSubmit, loading, error }) {
 
       {/* PASSWORD */}
       <div className="space-y-1">
-        <label className="text-[10px] font-black uppercase text-main-green ml-1">Password</label>
+        <label className="text-[10px] font-black uppercase text-dark-bg ml-1">
+          Password
+        </label>
         <div className="relative">
-          <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-dark/30" size={18} />
+          <Lock
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-dark-bg"
+            size={18}
+          />
           <input
             type={showPassword ? "text" : "password"}
             {...register("password", PasswordValidation)}
-            className={`w-full bg-gray-50 border-2 ${errors.password ? "border-red-500" : "border-dark/10"} rounded-2xl py-4 pl-12 pr-12 font-bold outline-none transition-all focus:border-lime-yellow focus:ring-4 focus:ring-lime-yellow/20`}
+            className={`w-full bg-light-gray border-2 ${
+              errors.password ? "border-red-500" : "border-medium-gray"
+            } rounded-2xl py-4 pl-12 pr-12 font-bold focus:bg-light focus:border-dark-bg focus:ring-4 focus:ring-primary/30 outline-none transition-all`}
             placeholder="••••••••"
             disabled={loading}
           />
@@ -76,13 +84,23 @@ function RegisterForm({ onSubmit, loading, error }) {
 
       {/* CONFIRM PASSWORD */}
       <div className="space-y-1">
-        <label className="text-[10px] font-black uppercase text-main-green ml-1">Confirm Password</label>
+        <label className="text-[10px] font-black uppercase text-dark-bg ml-1">
+          Confirm Password
+        </label>
         <div className="relative">
-          <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-dark/30" size={18} />
+          <Lock
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-dark/30"
+            size={18}
+          />
           <input
             type={showConfirmPassword ? "text" : "password"}
-            {...register("confirm_password", confirmPasswordValidation(password))}
-            className={`w-full bg-gray-50 border-2 ${errors.confirm_password ? "border-red-500" : "border-dark/10"} rounded-2xl py-4 pl-12 pr-12 font-bold outline-none transition-all focus:border-lime-yellow focus:ring-4 focus:ring-lime-yellow/20`}
+            {...register(
+              "confirm_password",
+              confirmPasswordValidation(password)
+            )}
+            className={`w-full bg-light-gray border-2 ${
+              errors.password ? "border-red-500" : "border-medium-gray"
+            } rounded-2xl py-4 pl-12 pr-12 font-bold focus:bg-light focus:border-dark-bg focus:ring-4 focus:ring-primary/30 outline-none transition-all`}
             placeholder="••••••••"
             disabled={loading}
           />
@@ -102,22 +120,16 @@ function RegisterForm({ onSubmit, loading, error }) {
         )}
       </div>
 
-      {/* Server Error */}
-      {error && (
-        <div className="flex items-center gap-2 text-red-500 text-sm p-3 bg-red-50 rounded-xl">
-          <AlertCircle size={16} />
-          <span>{error}</span>
-        </div>
-      )}
+    
 
       <button
         type="submit"
         disabled={loading}
-        className="w-full bg-dark hover:bg-main-green disabled:bg-gray-400 text-white py-5 rounded-2xl font-black text-sm uppercase tracking-widest flex items-center justify-center gap-3 transition-all mt-6 shadow-xl"
+        className="w-full bg-primary hover:bg-primary/80 disabled:bg-medium-gray disabled:cursor-not-allowed text-light py-5 rounded-2xl font-black text-sm uppercase tracking-widest flex items-center justify-center gap-3 transition-all mt-6 shadow-xl shadow-gray-200"
       >
         {loading ? (
           <>
-            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+            <div className="w-5 h-5 border-2 border-ligth border-t-light-gray rounded-full animate-spin"></div>
             <span>Registering...</span>
           </>
         ) : (

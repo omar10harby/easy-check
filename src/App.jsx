@@ -6,35 +6,35 @@ import AppRouter from './router/AppRouter';
 import './App.css';
 
 function App() {
-  const dispatch = useDispatch();
-  const {loading} = useSelector((state) => state.auth);
+  // const dispatch = useDispatch();
+  // const {loading} = useSelector((state) => state.auth);
 
-  useEffect(() => {
-    dispatch(verifyAuthThunk());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(verifyAuthThunk());
+  // }, [dispatch]);
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-white">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-main-green border-t-lime-yellow rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-dark font-bold text-lg">Loading...</p>
-        </div>
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div className="flex items-center justify-center min-h-screen bg-white">
+  //       <div className="text-center">
+  //         <div className="w-16 h-16 border-4 border-main-green border-t-lime-yellow rounded-full animate-spin mx-auto mb-4"></div>
+  //         <p className="text-dark font-bold text-lg">Loading...</p>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   return (
     <>
       {/* Toast Notifications */}
-      <Toaster
+        <Toaster
         position="top-right"
         reverseOrder={false}
         toastOptions={{
           duration: 1000,
           style: {
             background: '#fff',
-            color: '#181818',
+            color: '#454545',
             fontWeight: '600',
             fontSize: '14px',
             padding: '16px',
@@ -43,8 +43,8 @@ function App() {
           },
           success: {
             iconTheme: {
-              primary: '#073e1d',
-              secondary: '#e5fb34',
+              primary: '#454545',
+              secondary: '#ffffff',
             },
           },
           error: {
