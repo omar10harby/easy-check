@@ -5,8 +5,10 @@ export function saveAuthToken(token) {
   try {
     Cookies.set("auth_token", token, {
       expires: 7,
-      secure: import.meta.env.PROD,
-      sameSite: "strict",
+      // CHANGE 1: Force false so it works on your HTTP server
+      secure: false, 
+      // CHANGE 2: Use 'Lax' so the cookie works when returning from payment page
+      sameSite: "Lax", 
     });
     return true;
   } catch (error) {
