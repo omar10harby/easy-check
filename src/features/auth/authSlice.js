@@ -2,11 +2,9 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import * as authAPI from '../../services/authApi';
 
 const initialState = {
-  user: {
-    balance: 100.00,
-  }, 
-  isAuthenticated: true,
-  loading: false, 
+  user: null, 
+  isAuthenticated: false,
+  loading: true, 
   actionLoading: false,
   error: null,
 };
