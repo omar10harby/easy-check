@@ -1,11 +1,24 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import HeroSection from "../../features/home/Herosection";
 import FeaturePills from "../../features/home/Featurepills";
-
+import { useSelector } from "react-redux";
 
 function Home() {
   const navigate = useNavigate();
+  const { isAuthenticated } = useSelector((state) => state.auth);
+  const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    const paymentStatus = searchParams.get("paymentStatus");
+    if (paymentStatus === "SUCCESS" && isAuthenticated) {
+      toast.success("Payment successful! ✅");
+      window.history.replaceState({}, "", "/");
+    } else if (paymentStatus === "FAILED") {
+      toast.error("Payment failed. Please try again. ❌");
+      window.history.replaceState({}, "", "/");
+    }
+  }, [searchParams, isAuthenticated]);
 
   const handleSearchClick = () => {
     navigate("/imei-checker");
