@@ -8,7 +8,7 @@ import PayButton from "../../features/payment/PayButton";
 
 function AddBalance() {
   const dispatch = useDispatch();
-  const { loading, paymentUrl } = useSelector((state) => state.payment);
+  const { loading } = useSelector((state) => state.payment);
   const [amount, setAmount] = useState("");
 
   const quickAmounts = [5, 10, 50];
@@ -31,10 +31,10 @@ function AddBalance() {
     const numericAmount = parseFloat(amount).toString();
 
     try {
-      await dispatch(
+      const result = await dispatch(
         createTopupPaymentThunk({ amount: numericAmount })
       ).unwrap();
-      if (paymentUrl) window.location.href = paymentUrl;
+      if (result.paymentUrl) window.location.href = result.paymentUrl;
     } catch (error) {
       toast.error(error || "Failed to create payment");
     }

@@ -2,7 +2,6 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import * as paymentAPI from "../../services/paymentApi";
 
 const initialState = {
-  paymentUrl: null,
   loading: false,
   error: null,
 };
@@ -70,7 +69,6 @@ const paymentSlice = createSlice({
       state.error = null;
     },
     clearPaymentData: (state) => {
-      state.paymentUrl = null;
       state.loading = false;
       state.error = null;
     },
@@ -82,8 +80,9 @@ const paymentSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(buyWithWalletThunk.fulfilled, (state, action) => {
+      .addCase(buyWithWalletThunk.fulfilled, (state) => {
         state.loading = false;
+        // ✅ No need to store anything - component uses returned value
       })
       .addCase(buyWithWalletThunk.rejected, (state, action) => {
         state.loading = false;
@@ -95,8 +94,7 @@ const paymentSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(createTopupPaymentThunk.fulfilled, (state, action) => {
-        state.paymentUrl = action.payload.paymentUrl;
+      .addCase(createTopupPaymentThunk.fulfilled, (state) => {
         state.loading = false;
       })
       .addCase(createTopupPaymentThunk.rejected, (state, action) => {
@@ -109,8 +107,7 @@ const paymentSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(createGuestCheckoutThunk.fulfilled, (state, action) => {
-        state.paymentUrl = action.payload.paymentUrl;
+      .addCase(createGuestCheckoutThunk.fulfilled, (state) => {
         state.loading = false;
       })
       .addCase(createGuestCheckoutThunk.rejected, (state, action) => {
