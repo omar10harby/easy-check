@@ -23,10 +23,6 @@ export const fetchServicesThunk = createAsyncThunk(
   }
 );
 
-/**
- * Get IMEI check result by ID
- * Used after successful payment to retrieve result
- */
 export const getImeiResultThunk = createAsyncThunk(
   "imei/getResult",
   async (resultId, { rejectWithValue }) => {
@@ -38,11 +34,6 @@ export const getImeiResultThunk = createAsyncThunk(
     }
   }
 );
-
-
-
-
-
 
 const imeiSlice = createSlice({
   name: "imei",
