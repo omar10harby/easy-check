@@ -1,14 +1,17 @@
 import React, { useState, useMemo } from 'react';
 import { ChevronDown, Search, X } from 'lucide-react';
+import { useDispatch, useSelector } from 'react-redux';
+import { resetImeiState, setSelectedService } from './ImeiSlice';
 
 function ServiceSelector({ 
-  selectedService, 
   services, 
   isOpen, 
   onToggle, 
   onSelect, 
   onClose 
 }) {
+  const dispatch = useDispatch();
+  const {selectedService}=useSelector(state=>state.imei)
   const [searchQuery, setSearchQuery] = useState('');
 
   const filteredServices = useMemo(() => {
@@ -26,7 +29,7 @@ function ServiceSelector({
 
   const handleClear = (e) => {
     e.stopPropagation(); 
-    onSelect(null);
+    dispatch(resetImeiState())
   };
 
   return (
@@ -101,7 +104,7 @@ function ServiceSelector({
                     key={service.id}
                     type="button"
                     onClick={() => {
-                      onSelect(service);
+                      dispatch(setSelectedService(service))
                       setSearchQuery('');
                       onClose();
                     }}

@@ -50,7 +50,6 @@ const imeiSlice = createSlice({
     },
     resetImeiState: (state) => {
       state.selectedService = null;
-      state.result = null;
       state.error = null;
     },
   },
