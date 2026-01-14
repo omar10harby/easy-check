@@ -82,7 +82,8 @@ function CheckResult() {
 
         {/* Success State */}
         {data && !loading && (
-          <div className="space-y-4">
+          <div className="space-y-6">
+            {/* Success Banner */}
             <div className="bg-green-50 border-2 border-green-200 rounded-2xl p-4">
               <p className="text-green-600 font-bold text-center flex items-center justify-center gap-2">
                 <span className="text-xl">✅</span>
@@ -90,25 +91,88 @@ function CheckResult() {
               </p>
             </div>
 
-            {/* Data Display */}
-            <div className="bg-light-gray rounded-2xl p-6 border border-medium-gray">
-              <h3 className="text-lg font-bold text-primary mb-4 flex items-center gap-2">
-                <span>📋</span>
-                <span>Response Data:</span>
-              </h3>
-              <div className="bg-white rounded-xl overflow-hidden border border-medium-gray">
-                <pre className="p-4 overflow-x-auto text-xs sm:text-sm font-mono text-primary max-h-96 overflow-y-auto">
+            {/* Result Box - Beautiful HTML Display */}
+            <div className="bg-white rounded-3xl shadow-xl border-2 border-light-gray overflow-hidden">
+              {/* Header */}
+              <div className="bg-gradient-to-r from-primary to-dark-bg p-6">
+                <h3 className="text-xl font-black text-light flex items-center gap-3">
+                  <span className="text-2xl">📱</span>
+                  <span>IMEI Check Result</span>
+                </h3>
+                <p className="text-light/80 text-sm mt-1">Detailed device information</p>
+              </div>
+
+              {/* Content - HTML Rendered */}
+              <div className="p-8">
+                {data.result ? (
+                  <div 
+                    className="
+                      text-primary/90 leading-relaxed
+                      [&>*]:mb-3
+                      [&_br]:block [&_br]:mb-2
+                      [&_strong]:font-black [&_strong]:text-primary [&_strong]:block [&_strong]:mb-1
+                      [&_b]:font-black [&_b]:text-primary
+                      text-base
+                    "
+                    dangerouslySetInnerHTML={{ __html: data.result }}
+                  />
+                ) : (
+                  <div className="text-center py-8">
+                    <p className="text-primary/60 font-medium mb-4">No result field found in response</p>
+                    <div className="text-left bg-light-gray p-6 rounded-xl border border-medium-gray">
+                      <p className="text-sm font-bold text-primary mb-3">Available Data:</p>
+                      {Object.entries(data).map(([key, value]) => (
+                        <div key={key} className="mb-3 pb-3 border-b border-medium-gray last:border-0">
+                          <p className="text-xs font-bold text-primary/60 uppercase mb-1">{key}</p>
+                          <p className="text-sm text-primary font-medium break-words">
+                            {typeof value === 'object' ? JSON.stringify(value, null, 2) : String(value)}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Footer Metadata */}
+              {(data.status || data.transaction_id || data.timestamp) && (
+                <div className="bg-light-gray border-t-2 border-medium-gray p-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+                    {data.status && (
+                      <div>
+                        <p className="text-xs font-bold text-primary/60 uppercase tracking-wider mb-1">Status</p>
+                        <p className="text-sm font-black text-primary">{data.status}</p>
+                      </div>
+                    )}
+                    {data.transaction_id && (
+                      <div>
+                        <p className="text-xs font-bold text-primary/60 uppercase tracking-wider mb-1">Transaction ID</p>
+                        <p className="text-xs font-mono font-black text-primary">{data.transaction_id}</p>
+                      </div>
+                    )}
+                    {data.timestamp && (
+                      <div>
+                        <p className="text-xs font-bold text-primary/60 uppercase tracking-wider mb-1">Timestamp</p>
+                        <p className="text-xs font-black text-primary">{new Date(data.timestamp).toLocaleString()}</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Raw JSON - Collapsible */}
+            <details className="bg-light-gray rounded-2xl shadow-md border border-medium-gray p-4">
+              <summary className="cursor-pointer font-bold text-primary text-sm flex items-center gap-2 hover:text-primary/70 transition-colors">
+                <span>🔍</span>
+                <span>View Raw API Response (for debugging)</span>
+              </summary>
+              <div className="mt-4 bg-white rounded-xl p-4 border border-medium-gray">
+                <pre className="text-xs font-mono text-primary/70 overflow-x-auto max-h-64 overflow-y-auto">
 {JSON.stringify(data, null, 2)}
                 </pre>
               </div>
-            </div>
-
-            {/* Info Card */}
-            <div className="bg-blue-50 border border-blue-200 rounded-2xl p-4">
-              <p className="text-blue-600 text-sm font-medium text-center">
-                💡 This is a test endpoint to verify SICKW API integration
-              </p>
-            </div>
+            </details>
           </div>
         )}
       </div>
