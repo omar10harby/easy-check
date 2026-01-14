@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
-
+import { mockServices } from "../../features/ImeiSearch/Mockservices";
 import ServiceSelector from "../../features/ImeiSearch/Serviceselector";
 import ImeiInput from "../../features/ImeiSearch/Imeiinput";
 import SearchButton from "../../features/ImeiSearch/Searchbutton";
@@ -128,65 +128,65 @@ function ImeiChecker() {
     );
   }
 
-  // Error state
-  if (servicesError && services.length === 0) {
-    return (
-      <section className="px-4 sm:px-6 lg:px-8 bg-primary flex items-center">
-        <div className="max-w-2xl mx-auto w-full">
-          <div className="bg-light rounded-3xl shadow-2xl border border-light-gray p-8 sm:p-10">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-3xl">⚠️</span>
-              </div>
-              <h2 className="text-2xl font-black text-primary mb-2">
-                Failed to Load Services
-              </h2>
-              <p className="text-primary/70 mb-6">{servicesError}</p>
-              <button
-                onClick={() => dispatch(fetchServicesThunk())}
-                className="px-6 py-3 bg-primary text-light rounded-xl font-bold hover:bg-primary/90 transition-all"
-              >
-                Retry
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-    );
-  }
+  // // Error state
+  // if (servicesError && services.length === 0) {
+  //   return (
+  //     <section className="px-4 sm:px-6 lg:px-8 bg-primary flex items-center">
+  //       <div className="max-w-2xl mx-auto w-full">
+  //         <div className="bg-light rounded-3xl shadow-2xl border border-light-gray p-8 sm:p-10">
+  //           <div className="text-center">
+  //             <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+  //               <span className="text-3xl">⚠️</span>
+  //             </div>
+  //             <h2 className="text-2xl font-black text-primary mb-2">
+  //               Failed to Load Services
+  //             </h2>
+  //             <p className="text-primary/70 mb-6">{servicesError}</p>
+  //             <button
+  //               onClick={() => dispatch(fetchServicesThunk())}
+  //               className="px-6 py-3 bg-primary text-light rounded-xl font-bold hover:bg-primary/90 transition-all"
+  //             >
+  //               Retry
+  //             </button>
+  //           </div>
+  //         </div>
+  //       </div>
+  //     </section>
+  //   );
+  // }
 
-  // Empty state
-  if (!servicesLoading && services.length === 0) {
-    return (
-      <section className="px-4 sm:px-6 lg:px-8 bg-primary flex items-center">
-        <div className="max-w-2xl mx-auto w-full">
-          <div className="bg-light rounded-3xl shadow-2xl border border-light-gray p-8 sm:p-10">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-3xl">📭</span>
-              </div>
-              <h2 className="text-2xl font-black text-primary mb-2">
-                No Services Available
-              </h2>
-              <p className="text-primary/70 mb-6">Please check back later.</p>
-              <button
-                onClick={() => navigate("/")}
-                className="px-6 py-3 bg-primary text-light rounded-xl font-bold hover:bg-primary/90 transition-all"
-              >
-                Go Home
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-    );
-  }
+  // // Empty state
+  // if (!servicesLoading && services.length === 0) {
+  //   return (
+  //     <section className="px-4 sm:px-6 lg:px-8 bg-primary flex items-center">
+  //       <div className="max-w-2xl mx-auto w-full">
+  //         <div className="bg-light rounded-3xl shadow-2xl border border-light-gray p-8 sm:p-10">
+  //           <div className="text-center">
+  //             <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+  //               <span className="text-3xl">📭</span>
+  //             </div>
+  //             <h2 className="text-2xl font-black text-primary mb-2">
+  //               No Services Available
+  //             </h2>
+  //             <p className="text-primary/70 mb-6">Please check back later.</p>
+  //             <button
+  //               onClick={() => navigate("/")}
+  //               className="px-6 py-3 bg-primary text-light rounded-xl font-bold hover:bg-primary/90 transition-all"
+  //             >
+  //               Go Home
+  //             </button>
+  //           </div>
+  //         </div>
+  //       </div>
+  //     </section>
+  //   );
+  // }
 
   return (
-    <section className="px-4 sm:px-6 lg:px-8 bg-primary flex items-center">
-      <div className="max-w-2xl mx-auto w-full">
+    <section className="py-10 px-4 sm:px-6 lg:px-8 bg-primary flex items-center">
+      <div className="md:min-w-2xl mx-auto w-full max-w-3xl">
         {/* Main Card */}
-        <div className="bg-light rounded-3xl shadow-2xl border border-light-gray p-8 sm:p-10">
+        <div className="bg-light rounded-3xl shadow-2xl border border-light-gray p-6 sm:p-10">
           {/* Header */}
           <div className="text-center mb-8">
             <h1 className="text-3xl sm:text-4xl font-black text-primary mb-2 tracking-tight">
@@ -201,7 +201,7 @@ function ImeiChecker() {
             {/* Service Selection */}
             <ServiceSelector
               selectedService={selectedService}
-              services={services}
+              services={mockServices}
               isOpen={isServiceDropdownOpen}
               onToggle={() => setIsServiceDropdownOpen(!isServiceDropdownOpen)}
               onSelect={setSelectedService}

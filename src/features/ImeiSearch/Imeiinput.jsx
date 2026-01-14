@@ -22,7 +22,7 @@ function ImeiInput({ value, onChange, maxLength, onTypeChange }) {
           value={value}
           onChange={onChange}
           placeholder={inputType === 'imei' ? '356938035664380' : 'C02ABC12XYZ'}
-          className="w-full px-2 md:px-5 py-4 pr-32 bg-light-gray border-2 border-medium-gray rounded-2xl  text-lg 
+          className="w-full px-2 md:px-5 py-4 pr-32 bg-light-gray border-2 border-medium-gray rounded-2xl  text-base
            text-primary/50 placeholder:text-primary/30 focus:text-primary focus:outline-none  focus:border-dark-bg focus:ring-4 focus:ring-primary/30 transition-all uppercase"
           maxLength={maxLength}
         />
