@@ -110,7 +110,7 @@ function ServiceSelector({
                         {service.name}
                       </p>
                       <span className="font-bold text-primary whitespace-nowrap">
-                        {service.price.toFixed(2)} EGP
+                        {service.price} EGP
                       </span>
                     </button>
                   ))
