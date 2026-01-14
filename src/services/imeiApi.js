@@ -11,6 +11,14 @@ export const getServices = async () => {
   }
 };
 
+export const runSickwTest = async (token) => {
+  try {
+    const response = await axios.get("store/transactions/test-sickw-demo/");
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || { error: "Network Error" };
+  }
+}
 
 export const getImeiResult = async (resultId) => {
   try {
