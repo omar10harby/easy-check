@@ -16,7 +16,11 @@ export const fetchServicesThunk = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const services = await getServices();
-      return services.results;
+      
+      // ✅ FIX: Return the response directly because it IS the array now
+      // Check if it's already an array, or if it's wrapped (just in case)
+      return Array.isArray(services) ? services : services.results;
+      
     } catch (error) {
       return rejectWithValue(error.message || "Failed to fetch services");
     }
