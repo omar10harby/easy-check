@@ -33,10 +33,10 @@ function ImeiChecker() {
 
   // ✅ Fetch services on mount
   useEffect(() => {
-    if (!services) {
+    if (services.length === 0) {
       dispatch(fetchServicesThunk());
     }
-  }, [dispatch]);
+  }, [dispatch, services.length]);
 
   const handleImeiChange = (e) => {
     let value = e.target.value;
