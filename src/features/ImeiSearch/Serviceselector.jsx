@@ -50,7 +50,7 @@ function ServiceSelector({
                 {selectedService.name}
               </p>
               <span className="font-bold text-primary whitespace-nowrap">
-                {selectedService.price.toFixed(2)} EGP
+                {selectedService.final_price} EGP
               </span>
             </div>
           ) : (
@@ -110,7 +110,7 @@ function ServiceSelector({
                         {service.name}
                       </p>
                       <span className="font-bold text-primary whitespace-nowrap">
-                        {service.price} EGP
+                        {service.final_price} EGP
                       </span>
                     </button>
                   ))
