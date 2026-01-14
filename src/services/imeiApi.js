@@ -11,7 +11,7 @@ export const getServices = async () => {
   }
 };
 
-export const runSickwTest = async (token) => {
+export const runSickwTest = async () => {
   try {
     const response = await axios.get("store/transactions/test-sickw-demo/");
     return response.data;
