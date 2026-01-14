@@ -34,21 +34,21 @@ function ServiceSelector({
         <button
           onClick={onToggle}
           type="button"
-          className="w-full flex items-center text-primary justify-between gap-3 px-4 py-3 border-2 border-medium-gray bg-light-gray rounded-2xl hover:text-primary/90 transition-all focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary/30"
+          className="w-full flex items-center text-primary justify-between gap-3 px-5 py-4 border-2 border-medium-gray bg-light-gray rounded-2xl hover:text-primary/90 transition-all focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary/30"
         >
           {selectedService ? (
-            <div className="flex items-center justify-between gap-2 flex-1 min-h-[2.5rem]">
+            <div className="flex items-center justify-between gap-2 flex-1 min-h-10">
               <p className="font-semibold text-primary text-sm leading-snug">
                 {selectedService.name}
               </p>
               <span className="font-bold text-primary text-sm whitespace-nowrap">
-                {selectedService.price.toFixed(2)} EGP
+                {selectedService.final_price} EGP
               </span>
             </div>
           ) : (
             <span className="text-gray-400 font-medium text-sm">Select a service</span>
           )}
-          <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform flex-shrink-0 ${isOpen ? 'rotate-180' : ''}`} />
+          <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform flex-0 ${isOpen ? 'rotate-180' : ''}`} />
         </button>
 
         {/* Dropdown Menu */}
@@ -100,7 +100,7 @@ function ServiceSelector({
                       {service.name}
                     </p>
                     <span className="font-bold text-primary text-sm whitespace-nowrap">
-                      {service.price.toFixed(2)} EGP
+                      {service.final_price} EGP
                     </span>
                   </button>
                 ))}
