@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-// استدعاء الـ Thunk من الـ Slice
-import {
-  getImeiResultThunk,
-  resetImeiState,
-} from "../../redux/slices/imeiSlice";
+
 import { ArrowLeft, RefreshCw, AlertCircle } from "lucide-react";
 import toast from "react-hot-toast";
+import { getImeiResultThunk, resetImeiState } from "../../features/ImeiSearch/ImeiSlice";
 
 function CheckResult() {
   const { id } = useParams();
