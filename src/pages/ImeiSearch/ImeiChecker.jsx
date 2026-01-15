@@ -67,7 +67,7 @@ function ImeiChecker() {
     const checkData = {
       imeiOrSerial,
       serviceId: selectedService.id,
-      amount: selectedService.price,
+      amount: selectedService.final_price,
       isSerial: inputType === "serial",
     };
 

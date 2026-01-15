@@ -1,48 +1,64 @@
 import React, { useEffect, useState } from "react";
-import { runSickwTest } from "../../services/imeiApi";
-import { useNavigate } from "react-router-dom";
-import { ArrowLeft, RefreshCw } from "lucide-react";
+import { useParams, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+// استدعاء الـ Thunk من الـ Slice
+import {
+  getImeiResultThunk,
+  resetImeiState,
+} from "../../redux/slices/imeiSlice";
+import { ArrowLeft, RefreshCw, AlertCircle } from "lucide-react";
+import toast from "react-hot-toast";
 
 function CheckResult() {
+  const { id } = useParams();
   const navigate = useNavigate();
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const dispatch = useDispatch();
 
-  const fetchTestData = async () => {
-    setLoading(true);
-    setError(null);
-    setData(null);
+  // 1. استخدام Redux لحالة التحميل والأخطاء فقط
+  const { loading, error } = useSelector((state) => state.imei);
+
+  // 2. استخدام Local State لتخزين النتيجة اللي راجعة
+  const [data, setData] = useState(null);
+
+async function fetchResultData() {
+    if (!id) return;
+
+    // بنعمل Dispatch للعملية ونستلم النتيجة مباشرة باستخدام .unwrap()
     try {
-      const res = await runSickwTest();
-      setData(res);
-    } catch (err) {
-      setError(err?.message || JSON.stringify(err));
-    } finally {
-      setLoading(false);
+      const result = await dispatch(getImeiResultThunk(id)).unwrap();
+      setData(result);
+    } catch (error) {
+      toast.error(error || "Failed to fetch result")
     }
   };
 
   useEffect(() => {
-    fetchTestData();
-  }, []);
+    fetchResultData();
+
+    // تنظيف الـ Error لو موجود لما نخرج
+    return () => {
+      dispatch(resetImeiState());
+    };
+  }, [id, dispatch]);
 
   return (
     <div className="min-h-screen bg-primary flex items-center justify-center p-4">
       <div className="w-full max-w-4xl bg-light rounded-3xl shadow-2xl border border-light-gray p-6 sm:p-10">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
-          <h1 className="text-2xl sm:text-3xl font-black text-primary">
-            SICKW API Test
+          <h1 className="text-2xl sm:text-3xl font-black text-primary uppercase tracking-tighter">
+            Check Result
           </h1>
           <div className="flex items-center gap-2">
             <button
-              onClick={fetchTestData}
+              onClick={fetchResultData}
               disabled={loading}
-              className="flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary/90 disabled:bg-medium-gray disabled:cursor-not-allowed text-light font-bold rounded-xl transition-all"
+              className="flex items-center gap-2 px-4 py-2 bg-primary hover:opacity-90 disabled:bg-medium-gray disabled:cursor-not-allowed text-light font-bold rounded-xl transition-all"
             >
-              <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
-              <span className="hidden sm:inline">Retry</span>
+              <RefreshCw
+                className={`w-4 h-4 ${loading ? "animate-spin" : ""}`}
+              />
+              <span className="hidden sm:inline">Refresh</span>
             </button>
             <button
               onClick={() => navigate("/")}
@@ -54,125 +70,86 @@ function CheckResult() {
           </div>
         </div>
 
-        {/* Loading State */}
+        {/* Loading State (جي من Redux) */}
         {loading && (
-          <div className="text-center py-12">
-            <div className="w-16 h-16 border-4 border-primary border-t-light-gray rounded-full animate-spin mx-auto mb-4"></div>
-            <p className="text-primary font-bold text-lg">Loading test data...</p>
-            <p className="text-primary/60 text-sm mt-2">Testing SICKW API integration</p>
+          <div className="text-center py-20">
+            <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <p className="text-primary font-black uppercase italic animate-pulse">
+              Fetching result...
+            </p>
           </div>
         )}
 
-        {/* Error State */}
+        {/* Error State (جي من Redux) */}
         {error && !loading && (
-          <div className="bg-red-50 border-2 border-red-200 rounded-2xl p-6 text-center">
-            <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="text-3xl">⚠️</span>
-            </div>
-            <h2 className="text-xl font-bold text-red-600 mb-2">Test Failed</h2>
-            <p className="text-red-500 font-medium break-words mb-4">{error}</p>
+          <div className="bg-red-50 border-2 border-red-100 rounded-2xl p-8 text-center">
+            <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
+            <h2 className="text-xl font-bold text-red-700 mb-2">
+              Error loading result
+            </h2>
+            <p className="text-red-500 font-medium mb-6 break-words">
+              {typeof error === "string" ? error : "Something went wrong"}
+            </p>
             <button
-              onClick={fetchTestData}
-              className="px-6 py-3 bg-red-500 text-white font-bold rounded-xl hover:bg-red-600 transition-all"
+              onClick={fetchResultData}
+              className="px-8 py-3 bg-red-600 text-white font-bold rounded-xl hover:bg-red-700 transition-all"
             >
               Try Again
             </button>
           </div>
         )}
 
-        {/* Success State */}
+        {/* Success State (جي من Local State) */}
         {data && !loading && (
-          <div className="space-y-6">
-            {/* Success Banner */}
-            <div className="bg-green-50 border-2 border-green-200 rounded-2xl p-4">
-              <p className="text-green-600 font-bold text-center flex items-center justify-center gap-2">
-                <span className="text-xl">✅</span>
-                <span>API Test Completed Successfully!</span>
-              </p>
-            </div>
-
-            {/* Result Box - Beautiful HTML Display */}
-            <div className="bg-white rounded-3xl shadow-xl border-2 border-light-gray overflow-hidden">
-              {/* Header */}
-              <div className="bg-gradient-to-r from-primary to-dark-bg p-6">
-                <h3 className="text-xl font-black text-light flex items-center gap-3">
-                  <span className="text-2xl">📱</span>
-                  <span>IMEI Check Result</span>
+          <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <div className="bg-white rounded-[2rem] shadow-xl border-2 border-light-gray overflow-hidden">
+              <div className="bg-primary p-6">
+                <h3 className="text-xl font-black text-light flex items-center gap-3 italic">
+                  <span>📱</span>
+                  <span>DEVICE INFORMATION</span>
                 </h3>
-                <p className="text-light/80 text-sm mt-1">Detailed device information</p>
               </div>
 
-              {/* Content - HTML Rendered */}
               <div className="p-8">
                 {data.result ? (
-                  <div 
+                  <div
                     className="
-                      text-primary/90 leading-relaxed
-                      [&>*]:mb-3
-                      [&_br]:block [&_br]:mb-2
-                      [&_strong]:font-black [&_strong]:text-primary [&_strong]:block [&_strong]:mb-1
+                      text-primary/90 leading-relaxed text-base
+                      [&_strong]:font-black [&_strong]:text-primary [&_strong]:block [&_strong]:mt-3 [&_strong]:mb-1
                       [&_b]:font-black [&_b]:text-primary
-                      text-base
+                      [&_br]:mb-2
                     "
                     dangerouslySetInnerHTML={{ __html: data.result }}
                   />
                 ) : (
-                  <div className="text-center py-8">
-                    <p className="text-primary/60 font-medium mb-4">No result field found in response</p>
-                    <div className="text-left bg-light-gray p-6 rounded-xl border border-medium-gray">
-                      <p className="text-sm font-bold text-primary mb-3">Available Data:</p>
-                      {Object.entries(data).map(([key, value]) => (
-                        <div key={key} className="mb-3 pb-3 border-b border-medium-gray last:border-0">
-                          <p className="text-xs font-bold text-primary/60 uppercase mb-1">{key}</p>
-                          <p className="text-sm text-primary font-medium break-words">
-                            {typeof value === 'object' ? JSON.stringify(value, null, 2) : String(value)}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
+                  <div className="text-center py-10 italic text-primary/40">
+                    No result content available.
                   </div>
                 )}
               </div>
 
-              {/* Footer Metadata */}
-              {(data.status || data.transaction_id || data.timestamp) && (
-                <div className="bg-light-gray border-t-2 border-medium-gray p-6">
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
-                    {data.status && (
-                      <div>
-                        <p className="text-xs font-bold text-primary/60 uppercase tracking-wider mb-1">Status</p>
-                        <p className="text-sm font-black text-primary">{data.status}</p>
-                      </div>
-                    )}
-                    {data.transaction_id && (
-                      <div>
-                        <p className="text-xs font-bold text-primary/60 uppercase tracking-wider mb-1">Transaction ID</p>
-                        <p className="text-xs font-mono font-black text-primary">{data.transaction_id}</p>
-                      </div>
-                    )}
-                    {data.timestamp && (
-                      <div>
-                        <p className="text-xs font-bold text-primary/60 uppercase tracking-wider mb-1">Timestamp</p>
-                        <p className="text-xs font-black text-primary">{new Date(data.timestamp).toLocaleString()}</p>
-                      </div>
-                    )}
+              {/* metadata footer */}
+              {(data.status || data.order_id || id) && (
+                <div className="bg-light-gray/50 border-t border-light-gray p-6 flex flex-wrap gap-8 justify-center">
+                  <div className="text-center">
+                    <p className="text-[10px] font-black text-primary/40 uppercase mb-1">
+                      Status
+                    </p>
+                    <p className="text-sm font-bold text-primary">
+                      {data.status || "Completed"}
+                    </p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-[10px] font-black text-primary/40 uppercase mb-1">
+                      Order ID
+                    </p>
+                    <p className="text-sm font-mono font-bold text-primary">
+                      {id}
+                    </p>
                   </div>
                 </div>
               )}
             </div>
-
-            {/* Raw JSON - Collapsible */}
-            <details className="bg-light-gray rounded-2xl shadow-md border border-medium-gray p-4">
-              <summary className="cursor-pointer font-bold text-primary text-sm flex items-center gap-2 hover:text-primary/70 transition-colors">
-                <span>🔍</span>
-                <span>View Raw API Response (for debugging)</span>
-              </summary>
-              <div className="mt-4 bg-white rounded-xl p-4 border border-medium-gray">
-                <pre className="text-xs font-mono text-primary/70 overflow-x-auto max-h-64 overflow-y-auto">
-{JSON.stringify(data, null, 2)}
-                </pre>
-              </div>
-            </details>
           </div>
         )}
       </div>
