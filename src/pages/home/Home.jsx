@@ -21,9 +21,9 @@ function Home() {
   //   }
   // }, [searchParams, isAuthenticated]);
 
-  // const handleSearchClick = () => {
-  //   navigate("/imei-checker");
-  // };
+  const handleSearchClick = () => {
+    navigate("/imei-checker");
+  };
 
   return (
     <section className="md:py-10 px-4 sm:px-6 lg:px-8 flex items-center min-h-full ">
