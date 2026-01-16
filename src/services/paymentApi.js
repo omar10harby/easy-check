@@ -22,7 +22,8 @@ export async function buyWithWallet(imeiOrSerial, serviceId, amount, isSerial = 
       status: apiResult?.status || data.transaction_status, // استخراج الـ status من الداخل
       result: apiResult?.result || apiResult || "Processing", // استخراج النص الصافي
       created_at: new Date().toISOString(), 
-      amount: amount
+      amount: amount,
+      newBalance: data.new_balance,
     };
   } catch (error) {
     const message =
