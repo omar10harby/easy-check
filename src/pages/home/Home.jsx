@@ -35,7 +35,7 @@ function Home() {
 
         if (transaction.serviceDetails) {
           toast.success("Payment successful! Redirecting to results... ✅");
-          navigate(`/result/${transaction.id}`, {
+          navigate(`/result/${transaction.merchantTransactionId}`, {
             state: { resultData: transaction },
           });
         } else {
