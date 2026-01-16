@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import HeroSection from "../../features/home/Herosection";
 import FeaturePills from "../../features/home/Featurepills";
@@ -11,23 +11,17 @@ function Home() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [searchParams] = useSearchParams();
-  
-  // 1. استخدام Ref لمنع التكرار (الـ Ref لا يتأثر بإعادة الـ Render)
-  const isCalled = useRef(false);
 
   useEffect(() => {
     const paymentStatus = searchParams.get("paymentStatus");
     const merchantOrderId = searchParams.get("merchantOrderId");
 
-    // 2. التحقق إن البيانات موجودة وإننا لسه مخلصناش العملية دي
-    if ((paymentStatus || merchantOrderId) && !isCalled.current) {
+    if ((paymentStatus || merchantOrderId) ) {
       handleKashierCallback(paymentStatus, merchantOrderId);
     }
-  }, [searchParams]);
+  }, []);
 
   async function handleKashierCallback(paymentStatus, merchantOrderId) {
-    // 3. نقفل الباب فوراً عشان مفيش استدعاء تاني يدخل
-    isCalled.current = true;
 
     if (paymentStatus === "FAILED") {
       toast.error("Payment failed. Please try again. ❌");
@@ -52,7 +46,6 @@ function Home() {
         console.error("Kashier callback error:", error);
         toast.error(error.message || "Failed to process payment");
       } finally {
-        // 4. تنظيف الرابط عشان لو المستخدم عمل Refresh متبدأش العملية من جديد
         window.history.replaceState({}, "", "/");
       }
     }
