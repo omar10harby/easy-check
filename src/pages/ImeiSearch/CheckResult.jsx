@@ -7,6 +7,7 @@ import {
   getImeiResultThunk,
   resetImeiState,
 } from "../../features/ImeiSearch/ImeiSlice";
+import { runSickwTest } from "../../services/imeiApi";
 
 function CheckResult() {
   const { id } = useParams();
