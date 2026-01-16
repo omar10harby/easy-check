@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import HeroSection from "../../features/home/Herosection";
 import FeaturePills from "../../features/home/Featurepills";
-import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
 
 function Home() {
  const navigate = useNavigate();
