@@ -44,13 +44,12 @@ function CheckResult() {
       dispatch(resetImeiState());
     };
   }, [id, cachedData]); // Added cachedData dependency for safety
-  
+
   console.log(data);
-  
+
   return (
     <div className="min-h-screen bg-primary flex items-center justify-center p-4">
       <div className="w-full max-w-4xl bg-light rounded-3xl shadow-2xl border border-light-gray p-6 sm:p-10">
-        
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-2xl sm:text-3xl font-black text-primary uppercase tracking-tighter">
@@ -110,17 +109,31 @@ function CheckResult() {
         {data && (
           <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <div className="bg-white rounded-4xl shadow-xl border-2 border-light-gray overflow-hidden">
-              <div className="bg-primary p-6">
+              {/* ✅ FIX: Dynamic Header Color based on Status */}
+              <div
+                className={`${
+                  data.status === "REFUNDED" || data.status === "FAILED"
+                    ? "bg-red-600"
+                    : "bg-primary"
+                } p-6`}
+              >
                 <h3 className="text-xl font-black text-light flex items-center gap-3 italic">
-                  <span>📱</span>
-                  <span>DEVICE INFORMATION</span>
+                  <span>
+                    {data.status === "REFUNDED" || data.status === "FAILED"
+                      ? "⚠️"
+                      : "📱"}
+                  </span>
+                  <span>
+                    {data.status === "REFUNDED"
+                      ? "ORDER REJECTED"
+                      : "DEVICE INFORMATION"}
+                  </span>
                 </h3>
               </div>
-
               <div className="p-8">
                 {data.result ? (
                   /* ✅ DANGER: Renders HTML from Sickw API (<br> tags) */
-                  <div
+                   <div
                     className="
                       text-primary/90 leading-relaxed text-base
                       [&_strong]:font-black [&_strong]:text-primary [&_strong]:block [&_strong]:mt-3 [&_strong]:mb-1
@@ -135,19 +148,32 @@ function CheckResult() {
                       <span className="text-3xl">⏳</span>
                     </div>
                     <p className="text-primary/70 font-medium">
-                      Result is being processed. Please check back in a few minutes.
+                      Result is being processed. Please check back in a few
+                      minutes.
                     </p>
                   </div>
                 )}
               </div>
-
+                      {/* ✅ FIX: Show Refund Note if Rejected */}
+                {data.status === 'REFUNDED' && (
+                  <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm font-bold text-center">
+                    This order was rejected by the provider. Your balance has been fully refunded.
+                  </div>
+                )}
+              </div>
               {/* Metadata Footer */}
               <div className="bg-light-gray/50 border-t border-light-gray p-6 flex flex-wrap gap-8 justify-center">
                 <div className="text-center">
                   <p className="text-[10px] font-black text-primary/40 uppercase mb-1">
                     Status
                   </p>
-                  <p className={`text-sm font-bold ${data.status === 'REFUNDED' || data.status === 'rejected' ? 'text-red-600' : 'text-primary'}`}>
+                  <p
+                    className={`text-sm font-bold ${
+                      data.status === "REFUNDED" || data.status === "rejected"
+                        ? "text-red-600"
+                        : "text-primary"
+                    }`}
+                  >
                     {data.status || "Completed"}
                   </p>
                 </div>

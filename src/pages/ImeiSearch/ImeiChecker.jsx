@@ -12,9 +12,9 @@ import {
   createGuestCheckoutThunk,
 } from "../../features/payment/PaymentSlice";
 import { updateBalance } from "../../features/auth/authSlice";
-
+import { getErrorMessage } from "../../utils/errorHelpers";
 function ImeiChecker() {
- const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const { user, isAuthenticated } = useSelector((state) => state.auth);
@@ -72,21 +72,18 @@ function ImeiChecker() {
       if (user.balance >= selectedService.final_price) {
         try {
           const result = await dispatch(buyWithWalletThunk(checkData)).unwrap();
-          
+
           dispatch(updateBalance(result.newBalance));
           toast.success("Transaction successful! ✅");
-          
+
           navigate(`/result/${result.transactionId}`, {
-            state: { 
-              resultData: {
-                id: result.transactionId,
-                status: result.transactionStatus,
-                result: result.apiResult,
-              }
+            state: {
+              resultData: result,
             },
           });
         } catch (error) {
-          toast.error(error || "Transaction failed");
+          const message = getErrorMessage(error);
+          toast.error(message);
         }
       } else {
         toast.error(
@@ -99,7 +96,7 @@ function ImeiChecker() {
         const result = await dispatch(
           createGuestCheckoutThunk(checkData)
         ).unwrap();
-        
+
         if (result?.paymentUrl) {
           window.location.href = result.paymentUrl;
         } else {
@@ -214,7 +211,6 @@ function ImeiChecker() {
               maxLength={maxLength}
               onTypeChange={handleTypeChange}
             />
-
 
             {/* Search Button */}
             <SearchButton
