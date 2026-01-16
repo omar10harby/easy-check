@@ -7,25 +7,21 @@ import {
   getImeiResultThunk,
   resetImeiState,
 } from "../../features/ImeiSearch/ImeiSlice";
-import { runSickwTest } from "../../services/imeiApi";
 
 function CheckResult() {
   const { id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
-//  const [loading, setLoading] = useState(false);
-//   const [error, setError] = useState(null);
+
   const { loading, error } = useSelector((state) => state.imei);
   const [data, setData] = useState(null);
 
-  // 1. Check if we have data passed from the previous page (Instant Load)
   const cachedData = location.state?.resultData;
 
   async function fetchResultData() {
     if (!id) return;
     try {
-      // 2. Fetch fresh data from backend
       const result = await dispatch(getImeiResultThunk(id)).unwrap();
       setData(result);
     } catch (error) {
@@ -34,39 +30,16 @@ function CheckResult() {
   }
 
   useEffect(() => {
-    // 3. Logic: Use cached data if available, otherwise fetch from API
     if (cachedData) {
       setData(cachedData);
     } else {
       fetchResultData();
     }
 
-    // Cleanup on unmount
     return () => {
       dispatch(resetImeiState());
     };
   }, [id]); 
-
-
-
-//  const fetchTestData = async () => {
-//     setLoading(true);
-//     setError(null);
-//     setData(null);
-//     try {
-//       const res = await runSickwTest();
-//       setData(res);
-//     } catch (err) {
-//       setError(err?.message || JSON.stringify(err));
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-//    useEffect(() => {
-//     fetchTestData();
-//   }, []);
-
-//   console.log(data);
 
   return (
     <div className="min-h-screen bg-primary flex items-center justify-center p-4">

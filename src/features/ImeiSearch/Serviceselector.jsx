@@ -40,7 +40,7 @@ function ServiceSelector({
         <button
           onClick={onToggle}
           type="button"
-          className={`relative w-full flex items-center text-primary border-2 bg-light-gray rounded-2xl hover:text-primary/90 transition-all focus:outline-none min-h-[64px] py-3
+          className={`relative w-full flex items-center text-primary border-2 bg-light-gray rounded-2xl hover:text-primary/90 transition-all focus:outline-none min-h-16 py-3
             ${isOpen 
               ? 'border-dark-bg ring-4 ring-primary/30' 
               : 'border-medium-gray focus:border-dark-bg focus:ring-4 focus:ring-primary/30'
