@@ -7,7 +7,6 @@ function ServiceSelector({
   services, 
   isOpen, 
   onToggle, 
-  onSelect, 
   onClose 
 }) {
   const dispatch = useDispatch();
@@ -49,19 +48,16 @@ function ServiceSelector({
         >
           {selectedService ? (
             <div className="flex items-center justify-between w-full px-3 md:px-10">
-              {/* أيقونة X Absolute - يسار */}
               <X 
                 className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 cursor-pointer hover:text-red-500 z-10 shrink-0" 
                 onClick={handleClear} 
               />
               
               <div className="flex flex-1 items-center justify-between gap-3 overflow-hidden">
-                {/* الاسم: ينزل سطر جديد عادي بدون Truncate */}
                 <p className="font-semibold text-primary text-[13px] sm:text-base leading-tight text-left wrap-break-word">
                   {selectedService.name}
                 </p>
                 
-                {/* السعر: ثابت لا يتأثر بطول النص */}
                 <span className="font-bold text-primary text-xs sm:text-sm whitespace-nowrap bg-primary/10 px-2 py-1 rounded-lg shrink-0 self-center">
                   {selectedService.final_price} EGP
                 </span>
@@ -71,7 +67,6 @@ function ServiceSelector({
             <span className="text-gray-400 font-medium text-base pl-10">Select a service</span>
           )}
 
-          {/* أيقونة السهم Absolute - يمين */}
           <ChevronDown 
             className={`absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-dark-bg transition-transform ${isOpen ? 'rotate-180' : ''}`} 
           />
@@ -97,7 +92,6 @@ function ServiceSelector({
                 </div>
               </div>
 
-              {/* Services List - جعلنا الأسماء فيها تنزل سطر برضه عشان التناسق */}
               <div className="max-h-42 overflow-y-auto">
                 {filteredServices.map((service) => (
                   <button

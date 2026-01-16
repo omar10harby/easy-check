@@ -12,7 +12,7 @@ function SearchButton({ onClick, disabled, selectedServicePrice }) {
         <>
           <span className="text-light">|</span>
           <span className="text-light">
-            {selectedServicePrice.toFixed(2)} EGP
+            {selectedServicePrice} EGP
           </span>
         </>
       )}
