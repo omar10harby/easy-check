@@ -46,6 +46,18 @@ function CheckResult() {
       dispatch(resetImeiState());
     };
   }, [id]); 
+
+    useEffect(() => {
+    let interval;
+    if (data?.status === 'PENDING') {
+      interval = setInterval(() => {
+        fetchResultData(); // <--- Re-fetch data
+        toast.loading("Checking payment status...", { duration: 2000 });
+      }, 5000);
+    }
+    return () => clearInterval(interval);
+  }, [data?.status])
+
 //  const fetchTestData = async () => {
 //     setLoading(true);
 //     setError(null);
