@@ -40,16 +40,13 @@ function Home() {
         const transaction = await getTransactionByMerchantId(merchantOrderId);
 
         if (transaction.serviceDetails) {
-          // Guest checkout - redirect to result
           toast.success("Payment successful! Redirecting to results... ✅");
           navigate(`/result/${transaction.id}`, {
             state: { resultData: transaction },
           });
         } else {
-          // Balance topup - refresh user data and redirect
           await dispatch(verifyAuthThunk()).unwrap();
           toast.success("Balance updated successfully! ✅");
-          navigate("/imei-checker");
         }
       } catch (error) {
         console.error("Kashier callback error:", error);
