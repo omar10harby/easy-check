@@ -4,6 +4,7 @@ import HeroSection from "../../features/home/Herosection";
 import FeaturePills from "../../features/home/Featurepills";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
+import { verifyAuthThunk } from "../../features/auth/authSlice";
 import { getTransactionByMerchantId } from "../../services/imeiApi";
 
 function Home() {
@@ -56,7 +57,6 @@ function Home() {
     navigate("/imei-checker");
   };
 
-  // Show loading while processing payment callback
   if (isProcessing) {
     return (
       <section className="md:py-10 px-4 sm:px-6 lg:px-8 flex items-center min-h-full">
