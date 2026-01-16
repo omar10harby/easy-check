@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import HeroSection from "../../features/home/Herosection";
 import FeaturePills from "../../features/home/Featurepills";
 import toast from "react-hot-toast";
-import { getTransactionByMerchantId } from "../../services/imeiApi";
+import { getImeiResult, getTransactionByMerchantId } from "../../services/imeiApi";
 
 function Home() {
   const navigate = useNavigate();
@@ -31,7 +31,7 @@ function Home() {
 
     if (paymentStatus === "SUCCESS" && merchantOrderId) {
       try {
-        const transaction = await getTransactionByMerchantId(merchantOrderId);
+        const transaction = await getImeiResult(merchantOrderId);
 
         if (transaction.serviceDetails) {
           toast.success("Payment successful! Redirecting to results... ✅");
