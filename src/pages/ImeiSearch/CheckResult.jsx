@@ -74,7 +74,6 @@ function CheckResult() {
           </h1>
           <div className="flex items-center gap-2">
             <button
-              onClick={fetchResultData}
               disabled={loading}
               className="flex items-center gap-2 px-4 py-2 bg-primary hover:opacity-90 disabled:bg-medium-gray disabled:cursor-not-allowed text-light font-bold rounded-xl transition-all"
             >
@@ -114,7 +113,6 @@ function CheckResult() {
               {typeof error === "string" ? error : "Something went wrong"}
             </p>
             <button
-              onClick={fetchResultData}
               className="px-8 py-3 bg-red-600 text-white font-bold rounded-xl hover:bg-red-700 transition-all"
             >
               Try Again
