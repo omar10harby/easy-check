@@ -17,12 +17,13 @@ function CheckResult() {
   const { loading, error } = useSelector((state) => state.imei);
   const [data, setData] = useState(null);
 
+  // 1. Check if we have data passed from the previous page (Instant Load)
   const cachedData = location.state?.resultData;
 
   async function fetchResultData() {
     if (!id) return;
-
     try {
+      // 2. Fetch fresh data from backend
       const result = await dispatch(getImeiResultThunk(id)).unwrap();
       setData(result);
     } catch (error) {
@@ -31,20 +32,23 @@ function CheckResult() {
   }
 
   useEffect(() => {
+    // 3. Logic: Use cached data if available, otherwise fetch from API
     if (cachedData) {
       setData(cachedData);
     } else {
       fetchResultData();
     }
 
+    // Cleanup on unmount
     return () => {
       dispatch(resetImeiState());
     };
-  }, [id]);
+  }, [id, cachedData]); // Added cachedData dependency for safety
 
   return (
     <div className="min-h-screen bg-primary flex items-center justify-center p-4">
       <div className="w-full max-w-4xl bg-light rounded-3xl shadow-2xl border border-light-gray p-6 sm:p-10">
+        
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-2xl sm:text-3xl font-black text-primary uppercase tracking-tighter">
@@ -100,7 +104,7 @@ function CheckResult() {
           </div>
         )}
 
-        {/* Success State */}
+        {/* Success / Data State */}
         {data && (
           <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <div className="bg-white rounded-4xl shadow-xl border-2 border-light-gray overflow-hidden">
@@ -113,6 +117,7 @@ function CheckResult() {
 
               <div className="p-8">
                 {data.result ? (
+                  /* ✅ DANGER: Renders HTML from Sickw API (<br> tags) */
                   <div
                     className="
                       text-primary/90 leading-relaxed text-base
@@ -140,7 +145,7 @@ function CheckResult() {
                   <p className="text-[10px] font-black text-primary/40 uppercase mb-1">
                     Status
                   </p>
-                  <p className="text-sm font-bold text-primary">
+                  <p className={`text-sm font-bold ${data.status === 'REFUNDED' || data.status === 'rejected' ? 'text-red-600' : 'text-primary'}`}>
                     {data.status || "Completed"}
                   </p>
                 </div>
@@ -152,13 +157,13 @@ function CheckResult() {
                     {id}
                   </p>
                 </div>
-                {data.createdAt && (
+                {data.created_at && (
                   <div className="text-center">
                     <p className="text-[10px] font-black text-primary/40 uppercase mb-1">
                       Date
                     </p>
                     <p className="text-sm font-bold text-primary">
-                      {new Date(data.createdAt).toLocaleDateString()}
+                      {new Date(data.created_at).toLocaleDateString()}
                     </p>
                   </div>
                 )}
