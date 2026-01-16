@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import HeroSection from "../../features/home/Herosection";
 import FeaturePills from "../../features/home/Featurepills";
 import toast from "react-hot-toast";
-import { getImeiResult, getTransactionByMerchantId } from "../../services/imeiApi";
+import { getImeiResult } from "../../services/imeiApi";
 
 function Home() {
   const navigate = useNavigate();
