@@ -44,7 +44,9 @@ function CheckResult() {
       dispatch(resetImeiState());
     };
   }, [id, cachedData]); // Added cachedData dependency for safety
-
+  
+  console.log(data);
+  
   return (
     <div className="min-h-screen bg-primary flex items-center justify-center p-4">
       <div className="w-full max-w-4xl bg-light rounded-3xl shadow-2xl border border-light-gray p-6 sm:p-10">
