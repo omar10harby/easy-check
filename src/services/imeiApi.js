@@ -62,3 +62,12 @@ export const getImeiResult = async (resultId) => {
     throw error.response?.data || { message: 'Failed to fetch result' };
   }
 };
+
+export const runSickwTest = async () => {
+  try {
+    const response = await axios.get("store/transactions/test-sickw-demo/");
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || { error: "Network Error" };
+  }
+}
