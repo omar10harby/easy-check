@@ -23,9 +23,9 @@ function AmountInput({ amount, loading, onChange }) {
         />
       </div>
 
-      {amount && parseFloat(amount) < 5 && (
+      {amount && parseFloat(amount) < 10 && (
         <p className="text-red-500 text-xs mt-2 ml-1 font-medium italic">
-          ⚠️ Minimum deposit is 5.00 EGP
+          ⚠️ Minimum deposit is 10.00 EGP
         </p>
       )}
     </div>

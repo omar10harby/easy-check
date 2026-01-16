@@ -11,7 +11,7 @@ function AddBalance() {
   const { loading } = useSelector((state) => state.payment);
   const [amount, setAmount] = useState("");
 
-  const quickAmounts = [5, 10, 50];
+  const quickAmounts = [10, 50, 100];
 
   function handleAmountChange(e) {
     const rawValue = e.target.value.replace(/\D/g, "");
@@ -34,7 +34,12 @@ function AddBalance() {
       const result = await dispatch(
         createTopupPaymentThunk({ amount: numericAmount })
       ).unwrap();
-      if (result.paymentUrl) window.location.href = result.paymentUrl;
+      if (result.paymentUrl) {
+        toast.success("Redirecting to payment...");
+        window.location.href = result.paymentUrl;
+      } else {
+        toast.error("Payment link unavailable");
+      }
     } catch (error) {
       toast.error(error || "Failed to create payment");
     }

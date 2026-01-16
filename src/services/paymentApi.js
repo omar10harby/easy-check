@@ -1,11 +1,10 @@
 import axiosInstance from "./axios";
 
 
-
-export async function buyWithWallet(imeiOrSerial, serviceId, amount,isSerial=false) {
+export async function buyWithWallet(imeiOrSerial, serviceId, amount, isSerial = false) {
   const keyName = isSerial ? 'serial' : 'imei';
+  
   try {
-
     const response = await axiosInstance.post("/store/transactions/", {
       amount: amount.toString(),
       service_details: {
@@ -18,19 +17,20 @@ export async function buyWithWallet(imeiOrSerial, serviceId, amount,isSerial=fal
       transactionId: response.data.transaction_id,
       transactionStatus: response.data.transaction_status,
       newBalance: response.data.new_balance,
+      apiResult: response.data.api_result,
     };
   } catch (error) {
     const message =
-      error.response?.data?.message || error.message || "Failed to process transaction";
+      error.response?.data?.message || 
+      error.response?.data?.error ||
+      error.message || 
+      "Failed to process transaction";
     throw new Error(message);
   }
 }
 
-
 export async function createTopupPayment(amount) {
   try {
-
-
     const response = await axiosInstance.post("/store/transactions/", {
       amount: amount.toString(),
     });
@@ -42,14 +42,16 @@ export async function createTopupPayment(amount) {
     };
   } catch (error) {
     const message =
-      error.response?.data?.error || error.message || "Failed to create payment";
+      error.response?.data?.error || 
+      error.message || 
+      "Failed to create payment";
     throw new Error(message);
   }
 }
 
-
 export async function createGuestCheckout(imeiOrSerial, serviceId, amount, isSerial) {
   const keyName = isSerial ? 'serial' : 'imei';
+  
   try {
     const response = await axiosInstance.post("/store/transactions/", {
       amount: amount,
@@ -66,7 +68,9 @@ export async function createGuestCheckout(imeiOrSerial, serviceId, amount, isSer
     };
   } catch (error) {
     const message =
-      error.response?.data?.error || error.message || "Failed to create checkout";
+      error.response?.data?.error || 
+      error.message || 
+      "Failed to create checkout";
     throw new Error(message);
   }
 }

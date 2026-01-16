@@ -1,42 +1,46 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-
 import { ArrowLeft, RefreshCw, AlertCircle } from "lucide-react";
 import toast from "react-hot-toast";
-import { getImeiResultThunk, resetImeiState } from "../../features/ImeiSearch/ImeiSlice";
+import {
+  getImeiResultThunk,
+  resetImeiState,
+} from "../../features/ImeiSearch/ImeiSlice";
 
 function CheckResult() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useDispatch();
 
-  // 1. استخدام Redux لحالة التحميل والأخطاء فقط
   const { loading, error } = useSelector((state) => state.imei);
-
-  // 2. استخدام Local State لتخزين النتيجة اللي راجعة
   const [data, setData] = useState(null);
 
-async function fetchResultData() {
+  const cachedData = location.state?.resultData;
+
+  async function fetchResultData() {
     if (!id) return;
 
-    // بنعمل Dispatch للعملية ونستلم النتيجة مباشرة باستخدام .unwrap()
     try {
       const result = await dispatch(getImeiResultThunk(id)).unwrap();
       setData(result);
     } catch (error) {
-      toast.error(error || "Failed to fetch result")
+      toast.error(error || "Failed to fetch result");
     }
-  };
+  }
 
   useEffect(() => {
-    fetchResultData();
+    if (cachedData) {
+      setData(cachedData);
+    } else {
+      fetchResultData();
+    }
 
-    // تنظيف الـ Error لو موجود لما نخرج
     return () => {
       dispatch(resetImeiState());
     };
-  }, [id, dispatch]);
+  }, [id]);
 
   return (
     <div className="min-h-screen bg-primary flex items-center justify-center p-4">
@@ -67,8 +71,8 @@ async function fetchResultData() {
           </div>
         </div>
 
-        {/* Loading State (جي من Redux) */}
-        {loading && (
+        {/* Loading State */}
+        {loading && !data && (
           <div className="text-center py-20">
             <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
             <p className="text-primary font-black uppercase italic animate-pulse">
@@ -77,14 +81,14 @@ async function fetchResultData() {
           </div>
         )}
 
-        {/* Error State (جي من Redux) */}
-        {error && !loading && (
+        {/* Error State */}
+        {error && !loading && !data && (
           <div className="bg-red-50 border-2 border-red-100 rounded-2xl p-8 text-center">
             <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
             <h2 className="text-xl font-bold text-red-700 mb-2">
               Error loading result
             </h2>
-            <p className="text-red-500 font-medium mb-6 break-words">
+            <p className="text-red-500 font-medium mb-6 wrap-break-word">
               {typeof error === "string" ? error : "Something went wrong"}
             </p>
             <button
@@ -96,10 +100,10 @@ async function fetchResultData() {
           </div>
         )}
 
-        {/* Success State (جي من Local State) */}
-        {data && !loading && (
+        {/* Success State */}
+        {data && (
           <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <div className="bg-white rounded-[2rem] shadow-xl border-2 border-light-gray overflow-hidden">
+            <div className="bg-white rounded-4xl shadow-xl border-2 border-light-gray overflow-hidden">
               <div className="bg-primary p-6">
                 <h3 className="text-xl font-black text-light flex items-center gap-3 italic">
                   <span>📱</span>
@@ -119,33 +123,56 @@ async function fetchResultData() {
                     dangerouslySetInnerHTML={{ __html: data.result }}
                   />
                 ) : (
-                  <div className="text-center py-10 italic text-primary/40">
-                    No result content available.
+                  <div className="text-center py-10">
+                    <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <span className="text-3xl">⏳</span>
+                    </div>
+                    <p className="text-primary/70 font-medium">
+                      Result is being processed. Please check back in a few minutes.
+                    </p>
                   </div>
                 )}
               </div>
 
-              {/* metadata footer */}
-              {(data.status || data.order_id || id) && (
-                <div className="bg-light-gray/50 border-t border-light-gray p-6 flex flex-wrap gap-8 justify-center">
+              {/* Metadata Footer */}
+              <div className="bg-light-gray/50 border-t border-light-gray p-6 flex flex-wrap gap-8 justify-center">
+                <div className="text-center">
+                  <p className="text-[10px] font-black text-primary/40 uppercase mb-1">
+                    Status
+                  </p>
+                  <p className="text-sm font-bold text-primary">
+                    {data.status || "Completed"}
+                  </p>
+                </div>
+                <div className="text-center">
+                  <p className="text-[10px] font-black text-primary/40 uppercase mb-1">
+                    Order ID
+                  </p>
+                  <p className="text-sm font-mono font-bold text-primary">
+                    {id}
+                  </p>
+                </div>
+                {data.createdAt && (
                   <div className="text-center">
                     <p className="text-[10px] font-black text-primary/40 uppercase mb-1">
-                      Status
+                      Date
                     </p>
                     <p className="text-sm font-bold text-primary">
-                      {data.status || "Completed"}
+                      {new Date(data.createdAt).toLocaleDateString()}
                     </p>
                   </div>
-                  <div className="text-center">
-                    <p className="text-[10px] font-black text-primary/40 uppercase mb-1">
-                      Order ID
-                    </p>
-                    <p className="text-sm font-mono font-bold text-primary">
-                      {id}
-                    </p>
-                  </div>
-                </div>
-              )}
+                )}
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex gap-4">
+              <button
+                onClick={() => navigate("/imei-checker")}
+                className="flex-1 py-4 bg-primary text-light font-bold rounded-xl hover:bg-primary/90 transition-all"
+              >
+                Check Another Device
+              </button>
             </div>
           </div>
         )}

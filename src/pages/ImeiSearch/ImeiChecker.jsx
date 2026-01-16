@@ -14,7 +14,7 @@ import {
 import { updateBalance } from "../../features/auth/authSlice";
 
 function ImeiChecker() {
-  const dispatch = useDispatch();
+ const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const { user, isAuthenticated } = useSelector((state) => state.auth);
@@ -28,10 +28,9 @@ function ImeiChecker() {
 
   const [imeiOrSerial, setImeiOrSerial] = useState("");
   const [isServiceDropdownOpen, setIsServiceDropdownOpen] = useState(false);
-  const [inputType, setInputType] = useState("imei"); // 'imei' or 'serial'
-  const [maxLength, setMaxLength] = useState(15); // Default to IMEI length
+  const [inputType, setInputType] = useState("imei");
+  const [maxLength, setMaxLength] = useState(15);
 
-  // ✅ Fetch services on mount
   useEffect(() => {
     if (services.length === 0) {
       dispatch(fetchServicesThunk());
@@ -41,11 +40,9 @@ function ImeiChecker() {
   const handleImeiChange = (e) => {
     let value = e.target.value;
 
-    // IMEI: أرقام فقط
     if (inputType === "imei") {
-      value = value.replace(/\D/g, ""); // Only numbers
+      value = value.replace(/\D/g, "");
     } else {
-      // Serial: حروف وأرقام فقط (بدون مسافات أو رموز خاصة)
       value = value.replace(/[^a-zA-Z0-9]/g, "").toUpperCase();
     }
 
@@ -71,28 +68,39 @@ function ImeiChecker() {
       isSerial: inputType === "serial",
     };
 
-    // 🔐 User Flow
     if (isAuthenticated) {
-      if (user.balance >= selectedService.price) {
-        // 💰 Wallet Purchase (Instant)
+      if (user.balance >= selectedService.final_price) {
         try {
           const result = await dispatch(buyWithWalletThunk(checkData)).unwrap();
+          
           dispatch(updateBalance(result.newBalance));
-          navigate(`/result/${result.transactionId}`);
-          toast.success("Transaction successful!");
+          toast.success("Transaction successful! ✅");
+          
+          navigate(`/result/${result.transactionId}`, {
+            state: { 
+              resultData: {
+                id: result.transactionId,
+                status: result.transactionStatus,
+                result: result.apiResult,
+              }
+            },
+          });
         } catch (error) {
           toast.error(error || "Transaction failed");
         }
       } else {
-        // ⚠️ Insufficient Balance
-        toast.error("Insufficient balance. Redirecting to top up...");
+        toast.error(
+          `Insufficient balance. Required: ${selectedService.final_price} EGP | Current: ${user.balance} EGP`,
+          { duration: 4000 }
+        );
       }
     } else {
-      // 🛒 Guest Checkout
       try {
         const result = await dispatch(
           createGuestCheckoutThunk(checkData)
         ).unwrap();
+        
+        // ✅ Now using camelCase
         if (result?.paymentUrl) {
           window.location.href = result.paymentUrl;
         } else {
