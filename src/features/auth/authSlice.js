@@ -1,30 +1,28 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import * as authAPI from '../../services/authApi';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import * as authAPI from "../../services/authApi";
 
 const initialState = {
-  user: null, 
+  user: null,
   isAuthenticated: false,
-  loading: true, 
+  loading: true,
   actionLoading: false,
   error: null,
 };
 
-
 export const verifyAuthThunk = createAsyncThunk(
-  'auth/verifyAuth',
+  "auth/verifyAuth",
   async (_, { rejectWithValue }) => {
     try {
       const data = await authAPI.verifyAuth();
-      return data; 
+      return data;
     } catch (error) {
       return rejectWithValue(error.message);
     }
   }
 );
 
-
 export const loginThunk = createAsyncThunk(
-  'auth/login',
+  "auth/login",
   async (credentials, { rejectWithValue }) => {
     try {
       const data = await authAPI.login(credentials);
@@ -35,22 +33,20 @@ export const loginThunk = createAsyncThunk(
   }
 );
 
-
 export const registerThunk = createAsyncThunk(
-  'auth/register',
+  "auth/register",
   async (userData, { rejectWithValue }) => {
     try {
       const data = await authAPI.register(userData);
-      return data; 
+      return data;
     } catch (error) {
       return rejectWithValue(error.message);
     }
   }
 );
 
-
 export const logoutThunk = createAsyncThunk(
-  'auth/logout',
+  "auth/logout",
   async (_, { rejectWithValue }) => {
     try {
       await authAPI.logout();
@@ -61,14 +57,13 @@ export const logoutThunk = createAsyncThunk(
   }
 );
 
-
 const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState,
   reducers: {
     updateBalance: (state, action) => {
       if (state.user) {
-        state.user.balance = action.payload;
+        state.user.balance = Number(action.payload);
       }
     },
     clearError: (state) => {
@@ -79,7 +74,7 @@ const authSlice = createSlice({
     builder
       // ---- VERIFY AUTH ----
       .addCase(verifyAuthThunk.pending, (state) => {
-        state.loading = true; 
+        state.loading = true;
       })
       .addCase(verifyAuthThunk.fulfilled, (state, action) => {
         state.loading = false;
@@ -99,7 +94,7 @@ const authSlice = createSlice({
 
       // ---- LOGIN ----
       .addCase(loginThunk.pending, (state) => {
-        state.actionLoading = true; 
+        state.actionLoading = true;
         state.error = null;
       })
       .addCase(loginThunk.fulfilled, (state, action) => {
@@ -129,7 +124,7 @@ const authSlice = createSlice({
 
       // ---- LOUGOUT ----
       .addCase(logoutThunk.pending, (state) => {
-        state.actionLoading = true; 
+        state.actionLoading = true;
       })
       .addCase(logoutThunk.fulfilled, (state) => {
         state.user = null;
@@ -138,7 +133,7 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(logoutThunk.rejected, (state) => {
-        state.actionLoading = false; 
+        state.actionLoading = false;
       });
   },
 });
