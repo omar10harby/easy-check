@@ -76,7 +76,7 @@ function ImeiChecker() {
           dispatch(updateBalance(result.newBalance));
           toast.success("Transaction successful! ✅");
 
-          navigate(`/result/${result.transactionId}`, {
+          navigate(`/result/${result.id}`, {
             state: {
               resultData: result,
             },
