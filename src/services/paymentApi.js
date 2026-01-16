@@ -13,11 +13,16 @@ export async function buyWithWallet(imeiOrSerial, serviceId, amount, isSerial = 
       },
     });
 
+    const data = response.data;
+    const apiResult = data.api_result;
+
+    // توحيد الـ Response ليكون مطابقاً لما تنتظره صفحة CheckResult
     return {
-      transactionId: response.data.transaction_id,
-      transactionStatus: response.data.transaction_status,
-      newBalance: response.data.new_balance,
-      apiResult: response.data.api_result,
+      id: data.transaction_id, // توحيد الاسم ليكون id وليس transactionId
+      status: apiResult?.status || data.transaction_status, // استخراج الـ status من الداخل
+      result: apiResult?.result || apiResult || "Processing", // استخراج النص الصافي
+      created_at: new Date().toISOString(), 
+      amount: amount
     };
   } catch (error) {
     const message =

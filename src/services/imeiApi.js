@@ -28,7 +28,6 @@ export const getTransactionByMerchantId = async (merchantOrderId) => {
       isBalanceTopup: data.is_balance_topup,
       createdAt: data.created_at,
       
-      // ✅ FIX: Extract the text string, or fallback to status if result is empty
       result: apiResult?.result || apiResult?.status || null, 
     };
   } catch (error) {
