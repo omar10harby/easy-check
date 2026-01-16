@@ -100,7 +100,6 @@ function ImeiChecker() {
           createGuestCheckoutThunk(checkData)
         ).unwrap();
         
-        // ✅ Now using camelCase
         if (result?.paymentUrl) {
           window.location.href = result.paymentUrl;
         } else {
@@ -216,23 +215,12 @@ function ImeiChecker() {
               onTypeChange={handleTypeChange}
             />
 
-            {/* Insufficient Balance Warning (User Only) */}
-            {isAuthenticated &&
-              selectedService &&
-              user.balance < selectedService.price && (
-                <div className="bg-red-50 border border-red-200 rounded-xl p-4">
-                  <p className="text-red-600 text-sm font-bold text-center">
-                    ⚠️ Insufficient balance ({user.balance.toFixed(2)} EGP).
-                    Required: {selectedService.price.toFixed(2)} EGP
-                  </p>
-                </div>
-              )}
 
             {/* Search Button */}
             <SearchButton
               onClick={handleCheck}
               disabled={isSearchDisabled}
-              selectedServicePrice={selectedService?.price}
+              selectedServicePrice={selectedService?.final_price}
             />
           </div>
         </div>
