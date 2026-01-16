@@ -13,7 +13,6 @@ import {
 } from "../../features/payment/PaymentSlice";
 import { updateBalance } from "../../features/auth/authSlice";
 import { getErrorMessage } from "../../utils/errorHelpers";
-import { mockServices } from "../../features/ImeiSearch/Mockservices";
 function ImeiChecker() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -128,58 +127,58 @@ function ImeiChecker() {
   }
 
   // Error state
-  // if (servicesError && services.length === 0) {
-  //   return (
-  //     <section className="px-4 sm:px-6 lg:px-8 bg-primary flex items-center">
-  //       <div className="max-w-2xl mx-auto w-full">
-  //         <div className="bg-light rounded-3xl shadow-2xl border border-light-gray p-8 sm:p-10">
-  //           <div className="text-center">
-  //             <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-  //               <span className="text-3xl">⚠️</span>
-  //             </div>
-  //             <h2 className="text-2xl font-black text-primary mb-2">
-  //               Failed to Load Services
-  //             </h2>
-  //             <p className="text-primary/70 mb-6">{servicesError}</p>
-  //             <button
-  //               onClick={() => dispatch(fetchServicesThunk())}
-  //               className="px-6 py-3 bg-primary text-light rounded-xl font-bold hover:bg-primary/90 transition-all"
-  //             >
-  //               Retry
-  //             </button>
-  //           </div>
-  //         </div>
-  //       </div>
-  //     </section>
-  //   );
-  // }
+  if (servicesError && services.length === 0) {
+    return (
+      <section className="px-4 sm:px-6 lg:px-8 bg-primary flex items-center">
+        <div className="max-w-2xl mx-auto w-full">
+          <div className="bg-light rounded-3xl shadow-2xl border border-light-gray p-8 sm:p-10">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-3xl">⚠️</span>
+              </div>
+              <h2 className="text-2xl font-black text-primary mb-2">
+                Failed to Load Services
+              </h2>
+              <p className="text-primary/70 mb-6">{servicesError}</p>
+              <button
+                onClick={() => dispatch(fetchServicesThunk())}
+                className="px-6 py-3 bg-primary text-light rounded-xl font-bold hover:bg-primary/90 transition-all"
+              >
+                Retry
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
-  // // Empty state
-  // if (!servicesLoading && services.length === 0) {
-  //   return (
-  //     <section className="px-4 sm:px-6 lg:px-8 bg-primary flex items-center">
-  //       <div className="max-w-2xl mx-auto w-full">
-  //         <div className="bg-light rounded-3xl shadow-2xl border border-light-gray p-8 sm:p-10">
-  //           <div className="text-center">
-  //             <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-  //               <span className="text-3xl">📭</span>
-  //             </div>
-  //             <h2 className="text-2xl font-black text-primary mb-2">
-  //               No Services Available
-  //             </h2>
-  //             <p className="text-primary/70 mb-6">Please check back later.</p>
-  //             <button
-  //               onClick={() => navigate("/")}
-  //               className="px-6 py-3 bg-primary text-light rounded-xl font-bold hover:bg-primary/90 transition-all"
-  //             >
-  //               Go Home
-  //             </button>
-  //           </div>
-  //         </div>
-  //       </div>
-  //     </section>
-  //   );
-  // }
+  // Empty state
+  if (!servicesLoading && services.length === 0) {
+    return (
+      <section className="px-4 sm:px-6 lg:px-8 bg-primary flex items-center">
+        <div className="max-w-2xl mx-auto w-full">
+          <div className="bg-light rounded-3xl shadow-2xl border border-light-gray p-8 sm:p-10">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-3xl">📭</span>
+              </div>
+              <h2 className="text-2xl font-black text-primary mb-2">
+                No Services Available
+              </h2>
+              <p className="text-primary/70 mb-6">Please check back later.</p>
+              <button
+                onClick={() => navigate("/")}
+                className="px-6 py-3 bg-primary text-light rounded-xl font-bold hover:bg-primary/90 transition-all"
+              >
+                Go Home
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="py-10 px-4 sm:px-6 lg:px-8 bg-primary flex items-center">
@@ -199,7 +198,7 @@ function ImeiChecker() {
           <div className="space-y-4">
             {/* Service Selection */}
             <ServiceSelector
-              services={mockServices}
+              services={services}
               isOpen={isServiceDropdownOpen}
               onToggle={() => setIsServiceDropdownOpen(!isServiceDropdownOpen)}
               onClose={() => setIsServiceDropdownOpen(false)}
