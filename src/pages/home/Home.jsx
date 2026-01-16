@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import HeroSection from "../../features/home/Herosection";
 import FeaturePills from "../../features/home/Featurepills";
@@ -10,22 +10,28 @@ import { verifyAuthThunk } from "../../features/auth/authSlice";
 function Home() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  
+  // ✅ FIX 1: Prevent multiple executions using ref
+  const hasProcessedCallback = useRef(false);
 
   useEffect(() => {
     const paymentStatus = searchParams.get("paymentStatus");
     const merchantOrderId = searchParams.get("merchantOrderId");
 
-    if ((paymentStatus || merchantOrderId) ) {
+    // ✅ FIX 2: Only run once even if URL doesn't change immediately
+    if ((paymentStatus || merchantOrderId) && !hasProcessedCallback.current) {
+      hasProcessedCallback.current = true;
       handleKashierCallback(paymentStatus, merchantOrderId);
     }
-  }, []);
+  }, [searchParams]); // ✅ FIX 3: Proper dependency array
 
   async function handleKashierCallback(paymentStatus, merchantOrderId) {
+    // ✅ FIX 4: Clean URL FIRST to prevent re-triggers
+    setSearchParams({});
 
     if (paymentStatus === "FAILED") {
       toast.error("Payment failed. Please try again. ❌");
-      window.history.replaceState({}, "", "/");
       return;
     }
 
@@ -34,19 +40,20 @@ function Home() {
         const transaction = await getTransactionByMerchantId(merchantOrderId);
 
         if (transaction.serviceDetails) {
+          // Guest checkout - redirect to result
           toast.success("Payment successful! Redirecting to results... ✅");
           navigate(`/result/${transaction.id}`, {
             state: { resultData: transaction },
           });
         } else {
+          // Balance topup - refresh user data and redirect
           await dispatch(verifyAuthThunk()).unwrap();
           toast.success("Balance updated successfully! ✅");
+          navigate("/imei-checker");
         }
       } catch (error) {
         console.error("Kashier callback error:", error);
         toast.error(error.message || "Failed to process payment");
-      } finally {
-        window.history.replaceState({}, "", "/");
       }
     }
   }
