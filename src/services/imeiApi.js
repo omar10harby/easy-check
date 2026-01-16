@@ -10,31 +10,31 @@ export const getServices = async () => {
   }
 };
 
-export const getTransactionByMerchantId = async (merchantOrderId) => {
-  try {
-    const response = await axios.get(
-      `/store/transactions/show-order/?merchant_transaction_id=${merchantOrderId}`
-    );
+// export const getTransactionByMerchantId = async (merchantOrderId) => {
+//   try {
+//     const response = await axios.get(
+//       `/store/transactions/show-order/?merchant_transaction_id=${merchantOrderId}`
+//     );
     
-    const data = response.data;
-    const apiResult = data.service_details?.api_result;
+//     const data = response.data;
+//     const apiResult = data.service_details?.api_result;
 
-    return {
-      id: data.id,
-      merchantTransactionId: data.merchant_transaction_id,
-      status: data.status,
-      amount: data.amount,
-      serviceDetails: data.service_details,
-      isBalanceTopup: data.is_balance_topup,
-      createdAt: data.created_at,
+//     return {
+//       id: data.id,
+//       merchantTransactionId: data.merchant_transaction_id,
+//       status: data.status,
+//       amount: data.amount,
+//       serviceDetails: data.service_details,
+//       isBalanceTopup: data.is_balance_topup,
+//       createdAt: data.created_at,
       
-      result: apiResult?.result || apiResult?.status || null, 
-    };
-  } catch (error) {
-    console.error('Error fetching transaction by merchant ID:', error);
-    throw error.response?.data || { message: 'Failed to fetch transaction' };
-  }
-};
+//       result: apiResult?.result || apiResult?.status || null, 
+//     };
+//   } catch (error) {
+//     console.error('Error fetching transaction by merchant ID:', error);
+//     throw error.response?.data || { message: 'Failed to fetch transaction' };
+//   }
+// };
 
 export const getImeiResult = async (resultId) => {
   try {

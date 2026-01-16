@@ -13,6 +13,7 @@ import {
 } from "../../features/payment/PaymentSlice";
 import { updateBalance } from "../../features/auth/authSlice";
 import { getErrorMessage } from "../../utils/errorHelpers";
+import ServiceInfoBox from "../../features/ImeiSearch/Serviceinfobox";
 function ImeiChecker() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -88,13 +89,13 @@ function ImeiChecker() {
       } else {
         toast.error(
           `Insufficient balance. Required: ${selectedService.final_price} EGP | Current: ${user.balance} EGP`,
-          { duration: 4000 }
+          { duration: 4000 },
         );
       }
     } else {
       try {
         const result = await dispatch(
-          createGuestCheckoutThunk(checkData)
+          createGuestCheckoutThunk(checkData),
         ).unwrap();
 
         if (result?.paymentUrl) {
@@ -203,7 +204,9 @@ function ImeiChecker() {
               onToggle={() => setIsServiceDropdownOpen(!isServiceDropdownOpen)}
               onClose={() => setIsServiceDropdownOpen(false)}
             />
-
+            {/* Service Info Box (Shows when service is selected) */}
+            <ServiceInfoBox service={selectedService} />
+            
             {/* IMEI/Serial Input */}
             <ImeiInput
               value={imeiOrSerial}
