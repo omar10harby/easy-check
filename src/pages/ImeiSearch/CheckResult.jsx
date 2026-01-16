@@ -43,7 +43,7 @@ function CheckResult() {
     return () => {
       dispatch(resetImeiState());
     };
-  }, [id, cachedData]); // Added cachedData dependency for safety
+  }, [id]); 
 
   console.log(data);
 
@@ -154,13 +154,13 @@ function CheckResult() {
                   </div>
                 )}
               </div>
-                      {/* ✅ FIX: Show Refund Note if Rejected */}
-                {data.status === 'REFUNDED' && (
-                  <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm font-bold text-center">
-                    This order was rejected by the provider. Your balance has been fully refunded.
-                  </div>
-                )}
-              </div>
+              {/* Refund Notice */}
+              {data.status === "REFUNDED" && (
+                <div className="mx-8 mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm font-bold text-center">
+                  ⚠️ This order was rejected by the provider. Your balance has
+                  been fully refunded.
+                </div>
+              )}
               {/* Metadata Footer */}
               <div className="bg-light-gray/50 border-t border-light-gray p-6 flex flex-wrap gap-8 justify-center">
                 <div className="text-center">
