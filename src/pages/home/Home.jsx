@@ -3,31 +3,25 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import HeroSection from "../../features/home/Herosection";
 import FeaturePills from "../../features/home/Featurepills";
 import toast from "react-hot-toast";
-import { useDispatch } from "react-redux";
 import { getTransactionByMerchantId } from "../../services/imeiApi";
-import { verifyAuthThunk } from "../../features/auth/authSlice";
 
 function Home() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
   
-  // ✅ FIX 1: Prevent multiple executions using ref
   const hasProcessedCallback = useRef(false);
 
   useEffect(() => {
     const paymentStatus = searchParams.get("paymentStatus");
     const merchantOrderId = searchParams.get("merchantOrderId");
 
-    // ✅ FIX 2: Only run once even if URL doesn't change immediately
     if ((paymentStatus || merchantOrderId) && !hasProcessedCallback.current) {
       hasProcessedCallback.current = true;
       handleKashierCallback(paymentStatus, merchantOrderId);
     }
-  }, [searchParams]); // ✅ FIX 3: Proper dependency array
+  }, [searchParams]);
 
   async function handleKashierCallback(paymentStatus, merchantOrderId) {
-    // ✅ FIX 4: Clean URL FIRST to prevent re-triggers
     setSearchParams({});
 
     if (paymentStatus === "FAILED") {
@@ -45,7 +39,6 @@ function Home() {
             state: { resultData: transaction },
           });
         } else {
-          await dispatch(verifyAuthThunk()).unwrap();
           toast.success("Balance updated successfully! ✅");
         }
       } catch (error) {
