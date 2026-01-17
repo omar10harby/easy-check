@@ -6,7 +6,7 @@ import ServiceSelector from "../../features/ImeiSearch/Serviceselector";
 import ImeiInput from "../../features/ImeiSearch/Imeiinput";
 import SearchButton from "../../features/ImeiSearch/Searchbutton";
 
-import { fetchServicesThunk } from "../../features/ImeiSearch/ImeiSlice";
+import { fetchServicesThunk, setCurrentResult } from "../../features/ImeiSearch/ImeiSlice";
 import {
   buyWithWalletThunk,
   createGuestCheckoutThunk,
@@ -75,13 +75,10 @@ function ImeiChecker() {
           const result = await dispatch(buyWithWalletThunk(checkData)).unwrap();
 
           dispatch(updateBalance(result.newBalance));
+          dispatch(setCurrentResult(result));
           toast.success("Transaction successful! ✅");
 
-          navigate(`/result/${result.id}`, {
-            state: {
-              resultData: result,
-            },
-          });
+          navigate(`/result/${result.id}`);
         } catch (error) {
           const message = getErrorMessage(error);
           toast.error(message);

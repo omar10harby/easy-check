@@ -48,7 +48,6 @@ function Home() {
           toast.success("Payment successful! ✅");
           navigate(`/result/${transaction.merchantTransactionId}`, {
             replace: true,
-            state: { resultData: transaction },
           });
         } else {
           toast.success("Balance updated successfully! ✅");

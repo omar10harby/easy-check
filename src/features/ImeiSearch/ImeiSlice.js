@@ -4,27 +4,22 @@ import { getServices, getImeiResult } from "../../services/imeiApi";
 const initialState = {
   services: [],
   selectedService: null,
+  currentResult: null,
   loading: false,
   error: null,
 };
 
-/**
- * Fetch all available services
- */
 export const fetchServicesThunk = createAsyncThunk(
   "imei/fetchServices",
   async (_, { rejectWithValue }) => {
     try {
       const services = await getServices();
-      
-      // ✅ FIX: Return the response directly because it IS the array now
-      // Check if it's already an array, or if it's wrapped (just in case)
+
       return Array.isArray(services) ? services : services.results;
-      
     } catch (error) {
       return rejectWithValue(error.message || "Failed to fetch services");
     }
-  }
+  },
 );
 
 export const getImeiResultThunk = createAsyncThunk(
@@ -36,24 +31,27 @@ export const getImeiResultThunk = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(error.message || "Failed to fetch result");
     }
-  }
+  },
 );
 
 const imeiSlice = createSlice({
   name: "imei",
   initialState,
   reducers: {
- 
     setSelectedService: (state, action) => {
       state.selectedService = action.payload;
       state.error = null;
     },
-
+    setCurrentResult: (state, action) => {
+      state.currentResult = action.payload;
+      state.error = null;
+    },
     clearError: (state) => {
       state.error = null;
     },
     resetImeiState: (state) => {
       state.selectedService = null;
+      state.currentResult = null;
       state.error = null;
     },
   },
@@ -80,6 +78,7 @@ const imeiSlice = createSlice({
       })
       .addCase(getImeiResultThunk.fulfilled, (state, action) => {
         state.loading = false;
+        state.currentResult = action.payload;
         state.error = null;
       })
       .addCase(getImeiResultThunk.rejected, (state, action) => {
@@ -89,8 +88,7 @@ const imeiSlice = createSlice({
   },
 });
 
-
-export const { setSelectedService, clearError, resetImeiState } =
+export const { setSelectedService,  setCurrentResult, clearError, resetImeiState } =
   imeiSlice.actions;
 
 export default imeiSlice.reducer;
