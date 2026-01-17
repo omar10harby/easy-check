@@ -15,9 +15,9 @@ function CheckResult() {
   const dispatch = useDispatch();
 
   const { loading, error } = useSelector((state) => state.imei);
-  const [data, setData] = useState(null);
-
   const cachedData = location.state?.resultData;
+
+  const [data, setData] = useState(cachedData || null);
 
   async function fetchResultData() {
     if (!id) return;
@@ -30,16 +30,14 @@ function CheckResult() {
   }
 
   useEffect(() => {
-    if (cachedData) {
-      setData(cachedData);
-    } else {
+    if (!data) {
       fetchResultData();
     }
 
     return () => {
       dispatch(resetImeiState());
     };
-  }, [id]); 
+  }, [id]);
 
   return (
     <div className="min-h-screen bg-primary flex items-center justify-center p-4">
@@ -90,9 +88,7 @@ function CheckResult() {
             <p className="text-red-500 font-medium mb-6 wrap-break-word">
               {typeof error === "string" ? error : "Something went wrong"}
             </p>
-            <button
-              className="px-8 py-3 bg-red-600 text-white font-bold rounded-xl hover:bg-red-700 transition-all"
-            >
+            <button className="px-8 py-3 bg-red-600 text-white font-bold rounded-xl hover:bg-red-700 transition-all">
               Try Again
             </button>
           </div>
@@ -126,7 +122,7 @@ function CheckResult() {
               <div className="p-8">
                 {data.result ? (
                   /* ✅ DANGER: Renders HTML from Sickw API (<br> tags) */
-                   <div
+                  <div
                     className="
                       text-primary/90 leading-relaxed text-base
                       [&_strong]:font-black [&_strong]:text-primary [&_strong]:block [&_strong]:mt-3 [&_strong]:mb-1
@@ -147,7 +143,7 @@ function CheckResult() {
                   </div>
                 )}
               </div>
-              
+
               {/* Metadata Footer */}
               <div className="bg-light-gray/50 border-t border-light-gray p-6 flex flex-wrap gap-8 justify-center">
                 <div className="text-center">
