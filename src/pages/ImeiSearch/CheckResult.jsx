@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { ArrowLeft, RefreshCw, AlertCircle } from "lucide-react";
+import { ArrowLeft, AlertCircle } from "lucide-react";
 import toast from "react-hot-toast";
 import {
   getImeiResultThunk,
@@ -48,16 +48,6 @@ function CheckResult() {
             Check Result
           </h1>
           <div className="flex items-center gap-2">
-            <button
-              onClick={fetchResultData}
-              disabled={loading}
-              className="flex items-center gap-2 px-4 py-2 bg-primary hover:opacity-90 disabled:bg-medium-gray disabled:cursor-not-allowed text-light font-bold rounded-xl transition-all"
-            >
-              <RefreshCw
-                className={`w-4 h-4 ${loading ? "animate-spin" : ""}`}
-              />
-              <span className="hidden sm:inline">Refresh</span>
-            </button>
             <button
               onClick={() => navigate("/")}
               className="flex items-center gap-2 px-4 py-2 bg-light-gray hover:bg-medium-gray text-primary font-bold rounded-xl transition-all"

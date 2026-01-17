@@ -99,6 +99,7 @@ function ImeiChecker() {
         ).unwrap();
 
         if (result?.paymentUrl) {
+          toast.success("Redirecting to payment...");
           window.location.href = result.paymentUrl;
         } else {
           toast.error("Payment link unavailable. Please try again.");
@@ -206,7 +207,7 @@ function ImeiChecker() {
             />
             {/* Service Info Box (Shows when service is selected) */}
             <ServiceInfoBox service={selectedService} />
-            
+
             {/* IMEI/Serial Input */}
             <ImeiInput
               value={imeiOrSerial}
