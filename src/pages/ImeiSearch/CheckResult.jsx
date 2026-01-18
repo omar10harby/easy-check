@@ -12,11 +12,11 @@ function CheckResult() {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const isNavigating = useRef(false);
   const { loading, error, currentResult } = useSelector((state) => state.imei);
 
   const fetchResult = async () => {
-    if (!id) return;
+    if (!id && isNavigating.current) return;
 
     try {
       await dispatch(getImeiResultThunk(id)).unwrap();
@@ -37,6 +37,7 @@ function CheckResult() {
   }, [id, currentResult]);
 
   const handleNavigate = (path) => {
+    isNavigating.current = true;
     dispatch(resetImeiState());
     navigate(path);
   };
