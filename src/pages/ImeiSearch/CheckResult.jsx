@@ -27,18 +27,19 @@ function CheckResult() {
 
   useEffect(() => {
     if (!id) {
-      navigate("/");
+      handleNavigate("/");
       return;
     }
 
     if (!currentResult) {
       fetchResult();
     }
+  }, [id, currentResult]);
 
-    return () => {
-      dispatch(resetImeiState());
-    };
-  }, [id]);
+  const handleNavigate = (path) => {
+    dispatch(resetImeiState());
+    navigate(path);
+  };
 
   return (
     <div className="min-h-screen bg-primary flex items-center justify-center p-4">
@@ -49,7 +50,7 @@ function CheckResult() {
             Check Result
           </h1>
           <button
-            onClick={() => navigate("/")}
+            onClick={() => handleNavigate("/")}
             className="flex items-center gap-2 px-4 py-2 bg-light-gray hover:bg-medium-gray text-primary font-bold rounded-xl transition-all"
           >
             <ArrowLeft className="w-4 h-4" />
@@ -88,7 +89,7 @@ function CheckResult() {
 
         {/* Success */}
         {currentResult && (
-          <div className="space-y-6">
+          <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <div className="bg-white rounded-4xl shadow-xl border-2 border-light-gray overflow-hidden">
               <div
                 className={`${
@@ -116,15 +117,24 @@ function CheckResult() {
               <div className="p-8">
                 {currentResult.result ? (
                   <div
-                    className="text-primary/90 leading-relaxed text-base"
+                    className="
+                      text-primary/90 leading-relaxed text-base
+                      [&_strong]:font-black [&_strong]:text-primary [&_strong]:block [&_strong]:mt-3 [&_strong]:mb-1
+                      [&_b]:font-black [&_b]:text-primary
+                      [&_br]:mb-2
+                    "
                     dangerouslySetInnerHTML={{
                       __html: currentResult.result,
                     }}
                   />
                 ) : (
                   <div className="text-center py-10">
+                    <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <span className="text-3xl">⏳</span>
+                    </div>
                     <p className="text-primary/70 font-medium">
-                      Result is being processed. Please check back later.
+                      Result is being processed. Please check back in a few
+                      minutes.
                     </p>
                   </div>
                 )}
@@ -135,7 +145,14 @@ function CheckResult() {
                   <p className="text-[10px] font-black text-primary/40 uppercase mb-1">
                     Status
                   </p>
-                  <p className="text-sm font-bold text-primary">
+                  <p
+                    className={`text-sm font-bold ${
+                      currentResult.status === "REFUNDED" ||
+                      currentResult.status === "rejected"
+                        ? "text-red-600"
+                        : "text-primary"
+                    }`}
+                  >
                     {currentResult.status || "Completed"}
                   </p>
                 </div>
@@ -148,11 +165,22 @@ function CheckResult() {
                     {id}
                   </p>
                 </div>
+
+                {currentResult.created_at && (
+                  <div className="text-center">
+                    <p className="text-[10px] font-black text-primary/40 uppercase mb-1">
+                      Date
+                    </p>
+                    <p className="text-sm font-bold text-primary">
+                      {new Date(currentResult.created_at).toLocaleDateString()}
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
 
             <button
-              onClick={() => navigate("/imei-checker")}
+              onClick={() => handleNavigate("/imei-checker")}
               className="w-full py-4 bg-primary text-light font-bold rounded-xl hover:bg-primary/90 transition-all"
             >
               Check Another Device
