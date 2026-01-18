@@ -16,7 +16,7 @@ function CheckResult() {
   const { loading, error, currentResult } = useSelector((state) => state.imei);
 
   const fetchResult = async () => {
-    if (!id && isNavigating.current) return;
+    if (!id || isNavigating.current) return;
 
     try {
       await dispatch(getImeiResultThunk(id)).unwrap();
