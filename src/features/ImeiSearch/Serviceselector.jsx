@@ -7,7 +7,8 @@ function ServiceSelector({
   services, 
   isOpen, 
   onToggle, 
-  onClose 
+  onClose,
+  disabled = false
 }) {
   const dispatch = useDispatch();
   const {selectedService}=useSelector(state=>state.imei)
@@ -39,8 +40,9 @@ function ServiceSelector({
       <div className="relative">
         <button
           onClick={onToggle}
+          disabled={disabled}
           type="button"
-          className={`relative w-full flex items-center text-primary border-2 bg-light-gray rounded-2xl hover:text-primary/90 transition-all focus:outline-none min-h-16 py-3
+          className={`relative w-full flex items-center text-primary border-2 bg-light-gray disabled:cursor-not-allowed disabled:bg-medium-gray rounded-2xl hover:text-primary/90 transition-all focus:outline-none min-h-16 py-3
             ${isOpen 
               ? 'border-dark-bg ring-4 ring-primary/30' 
               : 'border-medium-gray focus:border-dark-bg focus:ring-4 focus:ring-primary/30'

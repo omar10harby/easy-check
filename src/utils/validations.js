@@ -44,3 +44,34 @@ export const confirmPasswordValidation = (password) => ({
   validate: (value) =>
     value === password || "Passwords do not match",
 });
+// Email validation
+export const validateEmail = (value) => {
+  // 1. Required Check
+  if (!value || !value.trim()) {
+    return "Email is required";
+  }
+
+  // 2. No Spaces Check
+  if (/\s/.test(value)) {
+    return "Email cannot contain spaces";
+  }
+
+  // 3. Lowercase Check
+  if (value !== value.toLowerCase()) {
+    return "Email must be lowercase";
+  }
+
+  // 4. Max Length Check
+  if (value.length > 100) {
+    return "Email must be less than 100 characters";
+  }
+
+  // 5. Pattern Check
+const emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
+  if (!emailRegex.test(value)) {
+    return "Please enter a valid email address";
+  }
+
+  // ✅ Valid
+  return "";
+};

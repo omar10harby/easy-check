@@ -7,3 +7,10 @@ export function formatAmount(val){
       maximumFractionDigits: 2,
     }).format(numberValue);
   };
+
+  export const formatImeiOrSerial = (value, inputType) => {
+  if (inputType === "imei") {
+    return value.replace(/\D/g, ""); // أرقام فقط
+  }
+  return value.replace(/[^a-zA-Z0-9]/g, "").toUpperCase(); // أرقام وحروف كبيرة
+};

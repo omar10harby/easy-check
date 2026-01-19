@@ -55,7 +55,7 @@ export async function createTopupPayment(amount) {
   }
 }
 
-export async function createGuestCheckout(imeiOrSerial, serviceId, amount, isSerial) {
+export async function createGuestCheckout(imeiOrSerial, serviceId, amount, isSerial, guestEmail) {
   const keyName = isSerial ? 'serial' : 'imei';
   
   try {
@@ -65,6 +65,7 @@ export async function createGuestCheckout(imeiOrSerial, serviceId, amount, isSer
         [keyName]: imeiOrSerial,
         service_id: serviceId,
       },
+      guest_email: guestEmail,
     });
 
     return {

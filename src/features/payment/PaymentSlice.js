@@ -20,7 +20,7 @@ export const buyWithWalletThunk = createAsyncThunk(
         amount,
         isSerial
       );
-      return data; // { transactionId, transactionStatus, newBalance }
+      return data; 
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -44,7 +44,7 @@ export const createTopupPaymentThunk = createAsyncThunk(
 export const createGuestCheckoutThunk = createAsyncThunk(
   "payment/createGuestCheckout",
   async (
-    { imeiOrSerial, serviceId, amount, isSerial },
+    { imeiOrSerial, serviceId, amount, isSerial, guestEmail },
     { rejectWithValue }
   ) => {
     try {
@@ -52,9 +52,10 @@ export const createGuestCheckoutThunk = createAsyncThunk(
         imeiOrSerial,
         serviceId,
         amount,
-        isSerial
+        isSerial,
+        guestEmail
       );
-      return data; // { transactionId, paymentUrl, merchantTransactionId }
+      return data;
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -82,7 +83,6 @@ const paymentSlice = createSlice({
       })
       .addCase(buyWithWalletThunk.fulfilled, (state) => {
         state.loading = false;
-        // ✅ No need to store anything - component uses returned value
       })
       .addCase(buyWithWalletThunk.rejected, (state, action) => {
         state.loading = false;

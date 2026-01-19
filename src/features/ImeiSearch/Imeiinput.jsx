@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Info } from 'lucide-react';
 
-function ImeiInput({ value, onChange, maxLength, onTypeChange }) {
+function ImeiInput({ value, onChange, maxLength, onTypeChange, disabled = false}) {
   const [inputType, setInputType] = useState('imei'); // 'imei' or 'serial'
 
   const handleTypeChange = (type) => {
@@ -49,8 +49,9 @@ function ImeiInput({ value, onChange, maxLength, onTypeChange }) {
           type="text"
           value={value}
           onChange={onChange}
+          disabled={disabled}
           placeholder={inputType === 'imei' ? '356938035664380' : 'C02ABC12XYZ'}
-          className="w-full px-5 py-4 bg-light-gray border-2 border-medium-gray rounded-2xl text-base
+          className="w-full px-5 py-4 bg-light-gray border-2 border-medium-gray rounded-2xl text-base disabled:bg-medium-gray disabled:cursor-not-allowed
            text-primary/50 placeholder:text-primary/30 focus:text-primary focus:outline-none focus:border-dark-bg focus:ring-4 focus:ring-primary/30 transition-all uppercase"
           maxLength={maxLength}
         />
