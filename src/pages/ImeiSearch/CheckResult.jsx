@@ -233,28 +233,17 @@ function CheckResult() {
             </div>
 
             {/* Actions */}
-            <div className="flex gap-4">
               <button
                 onClick={() => handleNavigate("/imei-checker")}
-                className="flex-1 py-4 bg-primary text-light font-bold rounded-xl hover:bg-primary/90 transition-all"
+                className="w-full py-4 bg-primary text-light font-bold rounded-xl hover:bg-primary/90 transition-all"
               >
                 Check Another Device
               </button>
-
-              {!isPending && !isError && (
-                <button
-                  onClick={() => window.print()}
-                  className="px-6 py-4 bg-light-gray hover:bg-medium-gray text-primary font-bold rounded-xl transition-all"
-                >
-                  Print
-                </button>
-              )}
-            </div>
           </div>
         )}
       </div>
     </div>
   );
 }
-
 export default CheckResult;
+              
