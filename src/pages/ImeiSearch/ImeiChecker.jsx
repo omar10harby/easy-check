@@ -76,7 +76,7 @@ function ImeiChecker() {
 
     const checkData = {
       imeiOrSerial,
-      serviceId: selectedService.id,
+      serviceId: selectedService.service_id,
       amount: selectedService.final_price,
       isSerial: inputType === "serial",
       guestEmail: !isAuthenticated ? guestEmail.trim() : undefined,
