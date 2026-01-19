@@ -157,17 +157,6 @@ function CheckResult() {
                         processing is complete.
                       </p>
                     </div>
-
-                    <button
-                      onClick={fetchResult}
-                      disabled={loading}
-                      className="px-6 py-3 bg-primary text-light font-bold rounded-xl hover:bg-primary/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 mx-auto"
-                    >
-                      <RefreshCw
-                        className={`w-4 h-4 ${loading ? "animate-spin" : ""}`}
-                      />
-                      Refresh Status
-                    </button>
                   </div>
                 )}
 
