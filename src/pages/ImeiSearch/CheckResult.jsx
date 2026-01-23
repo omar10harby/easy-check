@@ -105,13 +105,12 @@ function CheckResult() {
             <div className="bg-white rounded-4xl shadow-xl border-2 border-light-gray overflow-hidden">
               {/* Header */}
               <div
-                className={`${
-                  isError
+                className={`${isError
                     ? "bg-red-600"
                     : isPending
-                    ? "bg-yellow-500"
-                    : "bg-primary"
-                } p-6`}
+                      ? "bg-yellow-500"
+                      : "bg-primary"
+                  } p-6`}
               >
                 <h3 className="text-xl font-black text-light flex items-center gap-3 italic">
                   <span>
@@ -121,8 +120,8 @@ function CheckResult() {
                     {isError
                       ? "ERROR"
                       : isPending
-                      ? "PROCESSING"
-                      : "DEVICE INFORMATION"}
+                        ? "PROCESSING"
+                        : "DEVICE INFORMATION"}
                   </span>
                 </h3>
               </div>
@@ -222,12 +221,12 @@ function CheckResult() {
             </div>
 
             {/* Actions */}
-              <button
-                onClick={() => handleNavigate("/imei-checker")}
-                className="w-full py-4 bg-primary text-light font-bold rounded-xl hover:bg-primary/90 transition-all"
-              >
-                Check Another Device
-              </button>
+            <button
+              onClick={() => handleNavigate("/imei-checker")}
+              className="w-full py-4 bg-primary text-light font-bold rounded-xl hover:bg-primary/90 transition-all"
+            >
+              Check Another Device
+            </button>
           </div>
         )}
       </div>
@@ -235,4 +234,4 @@ function CheckResult() {
   );
 }
 export default CheckResult;
-              
+

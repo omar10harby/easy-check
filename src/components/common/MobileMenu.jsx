@@ -62,12 +62,12 @@ function MobileMenu({
                 </Link>
 
                 <Link
-                  to="/payment-history"
+                  to="/wallet-history"
                   className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-primary bg-light-gray rounded-lg transition-colors border border-light-gray"
                   onClick={onClose}
                 >
                   <CreditCard className="w-5 h-5 text-primary" />
-                  <span>Payment History</span>
+                  <span>wallet History</span>
                 </Link>
 
                 <Link

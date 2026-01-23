@@ -16,8 +16,7 @@ import CheckResult from "../pages/ImeiSearch/CheckResult";
 
 import AddBalance from "../pages/payment/AddBalance";
 import SearchHistory from "../pages/user/SearchHistory";
-import PaymentHistory from "../pages/user/PaymentHistory";
-
+import WalletHistory from "../pages/user/WalletHistory";
 export const router = createBrowserRouter([
   // 🌍 1. Public Routes with MainLayout
   {
@@ -32,7 +31,7 @@ export const router = createBrowserRouter([
         children: [
           { path: "/add-balance", element: <AddBalance /> },
           { path: "/search-history", element: <SearchHistory /> },
-          { path: "/payment-history", element: <PaymentHistory /> },
+          { path: "/wallet-history", element: <WalletHistory /> }
         ],
       },
     ],

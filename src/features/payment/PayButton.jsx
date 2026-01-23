@@ -1,6 +1,6 @@
 import React from "react";
 import { CreditCard } from "lucide-react";
-import { formatAmount } from "../../utils/format";
+import { formatAmount } from "../../utils/helpers";
 
 function PayButton({ amount, loading, onPay }) {
   const disabled = loading || !amount || parseFloat(amount) < 5;

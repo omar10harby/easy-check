@@ -16,7 +16,7 @@ function Home() {
       searchParams.get("merchantOrderId") || searchParams.get("paymentStatus")
     );
   });
-  
+
   const hasProcessed = useRef(false);
 
   useEffect(() => {
@@ -28,21 +28,21 @@ function Home() {
       !hasProcessed.current &&
       (paymentStatus || merchantOrderId)
     ) {
-      hasProcessed.current = true; 
+      hasProcessed.current = true;
       processPayment(paymentStatus, merchantOrderId);
     }
-  }, []); 
+  }, []);
 
   async function processPayment(paymentStatus, merchantOrderId) {
     try {
       if (paymentStatus === "FAILED") {
         toast.error("Payment failed. Please try again. ❌");
-        finishProcessing(); 
+        finishProcessing();
         return;
       }
 
       if (paymentStatus === "SUCCESS" && merchantOrderId) {
-        const transaction = await dispatch( getImeiResultThunk(merchantOrderId)).unwrap();
+        const transaction = await dispatch(getImeiResultThunk(merchantOrderId)).unwrap();
 
         if (transaction.serviceDetails) {
           toast.success("Payment successful! ✅");
@@ -61,8 +61,8 @@ function Home() {
   }
 
   const finishProcessing = () => {
-    setSearchParams({}); 
-    setIsProcessing(false); 
+    setSearchParams({});
+    setIsProcessing(false);
   };
 
   if (isProcessing) {

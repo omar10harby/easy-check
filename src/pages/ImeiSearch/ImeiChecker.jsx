@@ -12,7 +12,7 @@ import { updateBalance } from "../../features/auth/authSlice";
 import { getErrorMessage } from "../../utils/errorHelpers";
 import ServiceInfoBox from "../../features/ImeiSearch/Serviceinfobox";
 import { validateEmail } from "../../utils/validations";
-import { formatImeiOrSerial } from "../../utils/format";
+import { formatImeiOrSerial } from "../../utils/helpers";
 
 function ImeiChecker() {
   const dispatch = useDispatch();
@@ -31,7 +31,7 @@ function ImeiChecker() {
   const [isServiceDropdownOpen, setIsServiceDropdownOpen] = useState(false);
   const [inputType, setInputType] = useState("imei");
   const [maxLength, setMaxLength] = useState(15);
-  
+
   // 👇 Email State & Error (Same pattern as ImeiInput)
   const [guestEmail, setGuestEmail] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -44,7 +44,7 @@ function ImeiChecker() {
 
   const handleImeiChange = (e) => {
     let value = e.target.value;
-   const formattedValue = formatImeiOrSerial(value, inputType)
+    const formattedValue = formatImeiOrSerial(value, inputType)
     if (formattedValue.length <= maxLength) {
       setImeiOrSerial(formattedValue);
     }
@@ -60,19 +60,19 @@ function ImeiChecker() {
   const handleEmailChange = (e) => {
     const value = e.target.value
     setGuestEmail(value);
-    
+
     if (!value) {
-      setEmailError(""); 
+      setEmailError("");
     } else {
       const errorMsg = validateEmail(value);
-      setEmailError(errorMsg); 
+      setEmailError(errorMsg);
     }
   };
 
   const handleCheck = async () => {
     if (!selectedService || !imeiOrSerial) return;
 
-    
+
 
     const checkData = {
       imeiOrSerial,
@@ -135,7 +135,7 @@ function ImeiChecker() {
 
   if (servicesError && services.length === 0) {
     return (
-      <section className="px-4 sm:px-6 lg:px-8 bg-primary flex items-center">
+      <section className="px-4  ">
         <div className="max-w-2xl mx-auto w-full">
           <div className="bg-light rounded-3xl shadow-2xl border border-light-gray p-8 sm:p-10">
             <div className="text-center">
@@ -159,7 +159,7 @@ function ImeiChecker() {
 
   if (!servicesLoading && services.length === 0) {
     return (
-      <section className="px-4 sm:px-6 lg:px-8 bg-primary flex items-center">
+      <section className="px-4">
         <div className="max-w-2xl mx-auto w-full">
           <div className="bg-light rounded-3xl shadow-2xl border border-light-gray p-8 sm:p-10">
             <div className="text-center">
@@ -182,8 +182,8 @@ function ImeiChecker() {
   }
 
   return (
-    <section className="py-10 px-4 sm:px-6 lg:px-8 bg-primary flex items-center">
-      <div className="md:min-w-xl mx-auto w-full max-w-3xl">
+    <section className="py-8 px-4">
+      <div className="md:min-w-xl mx-auto max-w-3xl">
         <div className="bg-light rounded-3xl shadow-2xl border border-light-gray p-6 sm:p-10">
           <div className="text-center mb-8">
             <h1 className="text-3xl sm:text-4xl font-black text-primary mb-2 tracking-tight">
@@ -203,7 +203,7 @@ function ImeiChecker() {
               onClose={() => setIsServiceDropdownOpen(false)}
               disabled={paymentLoading}
             />
-            
+
             {/* Service Info Box */}
             <ServiceInfoBox service={selectedService} />
 

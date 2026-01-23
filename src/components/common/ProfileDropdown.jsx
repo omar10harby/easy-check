@@ -37,12 +37,12 @@ function ProfileDropdown({ isOpen, onToggle, onClose, onLogout, loading }) {
             </Link>
 
             <Link
-              to="/payment-history"
+              to="/wallet-history"
               className="flex items-center gap-3 px-4 py-2 text-sm text-primary hover:bg-light-gray transition-colors"
               onClick={onClose}
             >
               <CreditCard className="w-4 h-4 text-primary" />
-              <span>Payment History</span>
+              <span>Wallet History</span>
             </Link>
 
             <Link
