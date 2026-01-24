@@ -35,8 +35,8 @@ const initialState = {
   error: null
 };
 
-const userSlice = createSlice({
-  name: 'user',
+const historySlice = createSlice({
+  name: 'history',
   initialState,
   reducers: {
     clearUserData: (state) => {
