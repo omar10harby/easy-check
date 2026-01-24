@@ -39,8 +39,6 @@ function WalletHistory() {
     <section className="w-full max-w-2xl mx-auto py-6 sm:py-8 lg:py-12 px-4 sm:px-6">
       {/* Header */}
       <WalletHeader
-        onRefresh={loadHistory}
-        loading={loading}
         count={displayData?.count}
       />
 
