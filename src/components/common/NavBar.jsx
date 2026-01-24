@@ -40,7 +40,7 @@ function NavBar() {
 
   return (
     <>
-      <nav className="sticky top-0 z-40 px-4 sm:px-6 md:px-[8vw] py-3 bg-primary   shadow-sm">
+      <nav className="sticky top-0 z-40 px-4 sm:px-6 md:px-8 lg:px-12 py-3 bg-primary shadow-sm">
         <div className="flex justify-between items-center">
           {/* Logo */}
           <Logo />

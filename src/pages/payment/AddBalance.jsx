@@ -46,7 +46,7 @@ function AddBalance() {
   }
 
   return (
-    <section className="px-4 sm:px-6 lg:px-8 flex items-center">
+    <section className="py-8 px-4 sm:px-6 lg:px-8 flex items-center">
       <div className="w-full max-w-2xl mx-auto">
         <div className="bg-white rounded-3xl shadow-xl border border-light-gray p-8 sm:p-10">
           <div className="text-center mb-8">

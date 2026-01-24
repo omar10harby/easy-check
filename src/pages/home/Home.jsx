@@ -75,7 +75,7 @@ function Home() {
   }
 
   return (
-    <section className="md:py-10 px-4 sm:px-6 lg:px-8 flex items-center min-h-full">
+    <section className=" md:py-10 px-4 sm:px-6 lg:px-8 flex items-center">
       <div className="max-w-7xl mx-auto text-center w-full">
         <HeroSection onSearchClick={() => navigate("/imei-checker")} />
         <FeaturePills />

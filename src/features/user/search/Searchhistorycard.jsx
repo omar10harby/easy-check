@@ -34,49 +34,49 @@ function SearchHistoryCard({ item, onViewResult }) {
   };
 
   return (
-    <div className="group bg-light rounded-xl sm:rounded-2xl lg:rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 border border-light-gray overflow-hidden">
+    <div className="group bg-light rounded-2xl lg:rounded-3xl shadow-md hover:shadow-2xl transition-all duration-300 border border-gray-200 overflow-hidden">
       {/* Header */}
-      <div className={`${statusInfo.headerBg} px-4 sm:px-6 lg:px-8 py-3 sm:py-4 lg:py-5 flex items-center justify-between`}>
+      <div className={`${statusInfo.headerBg} p-5 sm:p-6 lg:p-7 flex items-center justify-between`}>
         <div className="flex items-center gap-2 sm:gap-3">
-          <div className="p-1.5 sm:p-2 lg:p-3 bg-light/20 rounded-md sm:rounded-lg">
+          <div className="p-2 sm:p-2.5 lg:p-3 bg-light/20 rounded-lg">
             {renderIcon()}
           </div>
           <div>
-            <h3 className="text-light font-bold text-xs sm:text-sm lg:text-base tracking-wide uppercase ">
+            <h3 className="text-light font-bold text-sm sm:text-base lg:text-lg tracking-wide uppercase">
               {statusInfo.label}
             </h3>
-            <p className="text-light/80 text-[10px] sm:text-xs lg:text-sm font-medium mt-0.5">
+            <p className="text-light/80 text-xs sm:text-sm font-medium mt-0.5">
               ID: #{item.id}
             </p>
           </div>
         </div>
         <div className="text-center sm:text-right">
-          <p className="text-light font-semibold text-xs sm:text-sm lg:text-base">
+          <p className="text-light font-semibold text-sm sm:text-base">
             {date}
           </p>
-          <p className="text-light/70 text-[10px] sm:text-xs lg:text-sm">
+          <p className="text-light/70 text-xs sm:text-sm">
             {time}
           </p>
         </div>
       </div>
 
       {/* Body */}
-      <div className="p-4 sm:p-6 lg:p-8">
+      <div className="p-5 sm:p-6 lg:p-8">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6 mb-4 sm:mb-6">
           <div className="flex-1 text-center sm:text-left">
-            <p className="text-[10px] sm:text-xs lg:text-sm font-bold text-dark-bg uppercase tracking-wider mb-1">
+            <p className="text-xs sm:text-sm font-bold text-dark-bg uppercase tracking-wider mb-1">
               Service
             </p>
-            <p className="text-primary/70 font-bold text-sm sm:text-base lg:text-lg">
+            <p className="text-primary/70 font-bold text-base sm:text-lg">
               {item.service_name}
             </p>
           </div>
 
           <div className="flex-1 sm:text-right">
-            <p className="text-[10px] sm:text-xs lg:text-sm font-bold text-primary uppercase tracking-wider mb-1">
+            <p className="text-xs sm:text-sm font-bold text-primary uppercase tracking-wider mb-1">
               Device Identifier
             </p>
-            <p className="font-mono font-medium text-sm sm:text-lg text-primary/70 bg-light-gray inline-block px-2 sm:px-3 py-1 rounded-md sm:rounded-lg border border-gray-100">
+            <p className="font-mono font-medium text-base sm:text-lg text-primary/70 bg-light-gray inline-block px-3 py-1.5 rounded-lg border border-gray-100">
               {maskIdentifier(item.item_identifier)}
             </p>
           </div>
