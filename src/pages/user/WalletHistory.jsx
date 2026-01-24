@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
 import WalletHeader from '../../features/user/wallet/Walletheader';
-import WalletTransactionCard from '../../features/user/wallet/Wallettransactioncard';
-import EmptyWalletState from '../../features/user/wallet/Emptywalletstate';
+import EmptyWalletState from '../../features/user/wallet/EmptyWalletState.jsx';
 import Pagination from '../../components/common/Pagination';
 import { fetchWalletHistoryThunk } from '../../features/user/Userslice';
 import { getErrorMessage } from '../../utils/errorHelpers';
+import WalletTransactionCard from '../../features/user/wallet/WalletTransactionCard.jsx';
 
 function WalletHistory() {
   const dispatch = useDispatch();

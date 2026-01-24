@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
-import EmptySearchState from "../../features/user/search/Emptysearchstate";
-import SearchHistoryCard from "../../features/user/search/Searchhistorycard";
-import SearchHeader from "../../features/user/search/Searchheader";
+import EmptySearchState from "../../features/user/search/EmptySearchState";
+
 import Pagination from "../../components/common/Pagination";
 import { getErrorMessage } from "../../utils/errorHelpers";
 import { fetchSearchHistoryThunk } from "../../features/user/Userslice";
+import SearchHistoryCard from "../../features/user/search/SearchHistoryCard";
+import SearchHeader from "../../features/user/search/SearchHeader";
 
 function SearchHistory() {
   const navigate = useNavigate();
