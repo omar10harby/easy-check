@@ -1,35 +1,24 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, RefreshCw } from 'lucide-react';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { ArrowLeft, RefreshCw } from "lucide-react";
 
 function WalletHeader({ onRefresh, loading, count, useMockData }) {
   const navigate = useNavigate();
 
   return (
-    <div className="flex items-center justify-between mb-6 sm:mb-8 lg:mb-10 px-1 sm:px-2 lg:px-4">
-      <div className="flex items-center gap-2 sm:gap-4 lg:gap-5">
-        <button
-          onClick={() => navigate('/')}
-          className="p-2 sm:p-2.5 lg:p-3 bg-white hover:bg-gray-100 text-primary rounded-lg sm:rounded-xl shadow-sm border border-gray-200 transition-all active:scale-95"
-        >
-          <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6" />
-        </button>
-        <div>
-          <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-light tracking-tight">
-            Wallet History
-          </h1>
-          <p className="text-xs sm:text-sm lg:text-base text-light-gray font-medium">
-            {count || 0} transactions found
-          </p>
-        </div>
-      </div>
-      <button
-        onClick={onRefresh}
-        disabled={loading || useMockData}
-        className="p-2 sm:p-2.5 lg:p-3 bg-light hover:bg-light-gray text-primary rounded-lg sm:rounded-xl shadow-sm border border-gray-200 transition-all active:scale-95"
-      >
-        <RefreshCw className={`w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 ${loading ? 'animate-spin' : ''}`} />
+    <div className="flex items-center justify-between bg-light/5 border border-light/10  mb-6 sm:mb-8 lg:mb-10 p-3 sm:p-4 lg:p-6 rounded-2xl backdrop-blur-md shadow-2xl">
+      <button className="text-light p-2 bg-light/5 rounded-lg border border-light/5 backdrop-blur-xl shadow-2xl flex items-center gap-1 " onClick={()=>navigate("/")}>
+        <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 " />
+        <span className="text-base font-semibold">Home</span>
       </button>
+      <div>
+        <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-light tracking-tight">
+          Wallet History
+        </h1>
+        <p className="text-xs sm:text-sm lg:text-base text-medium-gray font-medium">
+          {count || 0} transactions found
+        </p>
+      </div>
     </div>
   );
 }

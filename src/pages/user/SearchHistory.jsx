@@ -111,8 +111,8 @@ const loadHistory = async () => {
   const handleNext = () => setPage((p) => p + 1);
 
   return (
-    <section className=" py-8">
-      <div className="max-w-5xl">
+    <section className=" w-3/4 md:w-1/3 py-8">
+      <div className="  max-w-5xl">
         {/* Header */}
         <SearchHeader
           onRefresh={loadHistory}
