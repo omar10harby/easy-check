@@ -5,7 +5,7 @@ import HeaderSearch from "../../features/user/search/HeaderSearch";
 function SearchHistory() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { searchHistory, loading, error } = useSelector((state) => state.user);
+  const { searchHistory, loading, error } = useSelector((state) => state.history);
   const [page, setPage] = useState(1);
 
   const displayData = searchHistory ? searchHistory : null;
