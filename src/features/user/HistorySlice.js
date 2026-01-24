@@ -80,5 +80,5 @@ const historySlice = createSlice({
   }
 });
 
-export const { clearUserData, clearError } = userSlice.actions;
-export default userSlice.reducer;
+export const { clearUserData, clearError } = historySlice.actions;
+export default historySlice.reducer;
