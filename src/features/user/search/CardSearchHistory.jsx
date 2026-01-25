@@ -1,6 +1,6 @@
 import React from 'react'
 import { formatDate, getStatusInfo, maskIdentifier } from '../../../utils/helpers';
-import { AlertCircle, RefreshCw, Search } from 'lucide-react';
+import { AlertCircle, Eye, RefreshCw, Search } from 'lucide-react';
 
 function CardSearchHistory({item, onViewResult }) {
   const statusInfo = getStatusInfo(item.status);

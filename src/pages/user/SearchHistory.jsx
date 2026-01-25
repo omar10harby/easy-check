@@ -7,6 +7,7 @@ import Pagination from "../../components/common/Pagination";
 import { getErrorMessage } from "../../utils/errorHelpers";
 import toast from "react-hot-toast";
 import SearchEmptyState from "../../features/user/search/SearchEmptyState";
+import { fetchSearchHistoryThunk } from "../../features/user/HistorySlice";
 function SearchHistory() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
