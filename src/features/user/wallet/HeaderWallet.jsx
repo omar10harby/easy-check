@@ -1,7 +1,8 @@
-import { ArrowLeft } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { ArrowLeft } from 'lucide-react';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-function HeaderSearch({ count, isLoading = false }) {
+function HeaderWallet({ count, isLoading = false }) {
   const navigate = useNavigate();
 
   return (
@@ -23,10 +24,10 @@ function HeaderSearch({ count, isLoading = false }) {
         ) : (
           <>
             <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-light tracking-tight">
-              Search History
+              Wallet History
             </h1>
             <p className="text-xs sm:text-sm text-medium-gray font-medium">
-              {count || 0} checks performed
+              {count || 0} transaction{count !== 1 ? 's' : ''} found
             </p>
           </>
         )}
@@ -34,4 +35,5 @@ function HeaderSearch({ count, isLoading = false }) {
     </div>
   );
 }
-export default HeaderSearch;
+
+export default HeaderWallet;

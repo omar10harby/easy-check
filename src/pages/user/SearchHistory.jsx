@@ -8,6 +8,8 @@ import { getErrorMessage } from "../../utils/errorHelpers";
 import toast from "react-hot-toast";
 import SearchEmptyState from "../../features/user/search/SearchEmptyState";
 import { fetchSearchHistoryThunk } from "../../features/user/HistorySlice";
+import SearchLoading from "../../features/user/search/SearchLoading";
+
 function SearchHistory() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -16,10 +18,10 @@ function SearchHistory() {
   );
   const [page, setPage] = useState(1);
 
-
   useEffect(() => {
     loadSearchHistory();
   }, [page]);
+
   async function loadSearchHistory() {
     try {
       await dispatch(fetchSearchHistoryThunk({ page })).unwrap();
@@ -28,6 +30,7 @@ function SearchHistory() {
       toast.error(message);
     }
   }
+
   const handleViewResult = (merchantTransactionId) => {
     navigate(`/result/${merchantTransactionId}`);
   };
@@ -41,11 +44,16 @@ function SearchHistory() {
 
   return (
     <section className="w-full max-w-2xl mx-auto py-6 sm:py-8 lg:py-12 px-4 sm:px-6">
-      <HeaderSearch count={totalPages} />
+      <HeaderSearch count={searchHistory?.count || 0} isLoading={loading} />
+      
+      {/* ✅ Loading Skeleton */}
+      {loading && <SearchLoading count={searchHistory?.count || 1} />}
+      
       {/* Empty State */}
       {!loading && searchHistory?.results?.length === 0 && <SearchEmptyState />}
+      
       {/* Cards List */}
-      {searchHistory?.results?.length > 0 && (
+      {!loading && searchHistory?.results?.length > 0 && (
         <div className="space-y-5">
           {searchHistory.results.map((item) => (
             <CardSearchHistory
@@ -56,15 +64,17 @@ function SearchHistory() {
           ))}
         </div>
       )}
+      
       {/* Pagination*/}
-      {totalPages > 1 && (
+      {!loading && totalPages > 1 && (
         <Pagination
-          currentPage={page}
+          page={page}
           totalPages={totalPages}
           hasNext={hasNext}
           hasPrev={hasPrev}
           onPrevious={handlePrevious}
           onNext={handleNext}
+          loading={loading}
         />
       )}
     </section>

@@ -3,7 +3,7 @@ import { CreditCard } from "lucide-react";
 import { formatAmount } from "../../utils/helpers";
 
 function PayButton({ amount, loading, onPay }) {
-  const disabled = loading || !amount || parseFloat(amount) < 5;
+  const disabled = loading || !amount || parseFloat(amount) < 10;
 
   return (
     <div className="pt-4">

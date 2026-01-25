@@ -13,6 +13,7 @@ import { getErrorMessage } from "../../utils/errorHelpers";
 import ServiceInfoBox from "../../features/ImeiSearch/Serviceinfobox";
 import { validateEmail } from "../../utils/validations";
 import { formatImeiOrSerial } from "../../utils/helpers";
+import ImeiCheckerLoading from "../../features/ImeiSearch/ImeiCheckerLoading";
 
 function ImeiChecker() {
   const dispatch = useDispatch();
@@ -124,12 +125,7 @@ function ImeiChecker() {
 
   if (servicesLoading && services.length === 0) {
     return (
-      <div className="fixed inset-0 z-999 flex items-center justify-center bg-white">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-light border-t-dark-bg rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-dark font-bold text-lg">Loading Services...</p>
-        </div>
-      </div>
+      <ImeiCheckerLoading/>
     );
   }
 

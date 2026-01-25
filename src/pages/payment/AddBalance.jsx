@@ -13,27 +13,28 @@ function AddBalance() {
 
   const quickAmounts = [10, 50, 100];
 
+  // ✅ Handler بسيط جداً
   function handleAmountChange(e) {
-    const rawValue = e.target.value.replace(/\D/g, "");
-    if (!rawValue) {
-      setAmount("");
-      return;
-    }
-    const numericValue = (parseFloat(rawValue) / 100).toFixed(2);
-    setAmount(numericValue);
+    setAmount(e.target.value);
   }
 
   function handleQuickSelect(amt) {
-    setAmount(amt.toFixed(2));
+    setAmount(amt.toString());
   }
 
   async function handleAddBalance() {
-    const numericAmount = parseFloat(amount).toString();
+    const numericAmount = parseFloat(amount);
+
+    if (!numericAmount || numericAmount < 10) {
+      toast.error("Minimum deposit is 10 EGP");
+      return;
+    }
 
     try {
       const result = await dispatch(
-        createTopupPaymentThunk({ amount: numericAmount })
+        createTopupPaymentThunk({ amount: numericAmount.toString() })
       ).unwrap();
+      
       if (result.paymentUrl) {
         toast.success("Redirecting to payment...");
         window.location.href = result.paymentUrl;

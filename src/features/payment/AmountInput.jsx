@@ -1,5 +1,4 @@
 import React from "react";
-import { formatAmount } from "../../utils/helpers";
 
 function AmountInput({ amount, loading, onChange }) {
   return (
@@ -13,13 +12,15 @@ function AmountInput({ amount, loading, onChange }) {
           EGP
         </div>
         <input
-          type="text"
-          inputMode="decimal"
-          value={formatAmount(amount)}
+          type="number"
+          value={amount}
           onChange={onChange}
-          placeholder="0.00"
+          placeholder="0"
           disabled={loading}
-          className="w-full bg-light-gray text-primary border-2 border-medium-gray rounded-2xl py-5 pl-16 text-3xl font-black focus:outline-none focus:border-dark-bg focus:ring-4 focus:ring-primary/20 transition-all"
+          step="0.1"
+          min="0"
+          className="w-full bg-light-gray text-primary border-2 border-medium-gray rounded-2xl py-5 pl-16 pr-5 text-3xl font-black focus:outline-none focus:border-dark-bg focus:ring-4 focus:ring-primary/20 transition-all disabled:bg-medium-gray disabled:cursor-not-allowed
+          [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
         />
       </div>
 
