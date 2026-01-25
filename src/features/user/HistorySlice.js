@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getSearchHistory, getWalletHistory } from '../../services/userApi';
+import { getSearchHistory, getWalletHistory } from '../../services/historyApi';
 import { getErrorMessage } from '../../utils/errorHelpers';
 
 // Async Thunks
