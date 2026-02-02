@@ -7,7 +7,7 @@ import './App.css';
 
 function App() {
   const dispatch = useDispatch();
-  const {loading} = useSelector((state) => state.auth);
+  const loading = useSelector((state) => state.auth.loading);
 
   useEffect(() => {
     dispatch(verifyAuthThunk());

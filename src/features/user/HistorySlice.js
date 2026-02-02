@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { getSearchHistory, getWalletHistory } from '../../services/historyApi';
-import { getErrorMessage } from '../../utils/errorHelpers';
+import { getErrorMessage } from '../../utils/errorHelpers'; // ✅ مضاف
 
 // Async Thunks
 export const fetchSearchHistoryThunk = createAsyncThunk(
@@ -10,7 +10,7 @@ export const fetchSearchHistoryThunk = createAsyncThunk(
       const data = await getSearchHistory(page);
       return data;
     } catch (error) {
-      return rejectWithValue(getErrorMessage(error));
+      return rejectWithValue(getErrorMessage(error)); // ✅ محدّث
     }
   }
 );
@@ -22,8 +22,7 @@ export const fetchWalletHistoryThunk = createAsyncThunk(
       const data = await getWalletHistory(page);
       return data;
     } catch (error) {
-      // ✅ استخدم نفس الـ helper هنا أيضاً بدل error.message
-      return rejectWithValue(getErrorMessage(error));
+      return rejectWithValue(getErrorMessage(error)); // ✅ محدّث
     }
   }
 );

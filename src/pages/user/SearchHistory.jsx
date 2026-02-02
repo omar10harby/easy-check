@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import HeaderSearch from "../../features/user/search/HeaderSearch";
@@ -18,29 +18,36 @@ function SearchHistory() {
   );
   const [page, setPage] = useState(1);
 
-  useEffect(() => {
-    loadSearchHistory();
-  }, [page]);
-
-  async function loadSearchHistory() {
+  const loadSearchHistory = useCallback(async () => {
     try {
       await dispatch(fetchSearchHistoryThunk({ page })).unwrap();
     } catch (err) {
       const message = typeof err === "string" ? err : getErrorMessage(err);
       toast.error(message);
     }
-  }
+  }, [page, dispatch]);
 
-  const handleViewResult = (merchantTransactionId) => {
+  useEffect(() => {
+    loadSearchHistory();
+  }, [loadSearchHistory]);
+
+  const handleViewResult = useCallback((merchantTransactionId) => {
     navigate(`/result/${merchantTransactionId}`);
-  };
+  }, [navigate]);
 
-  const totalPages = Math.ceil((searchHistory?.count || 0) / 10);
-  const hasNext = !!searchHistory?.next;
-  const hasPrev = !!searchHistory?.previous;
+  const paginationMeta = useMemo(() => ({
+    totalPages: Math.ceil((searchHistory?.count || 0) / 10),
+    hasNext: !!searchHistory?.next,
+    hasPrev: !!searchHistory?.previous
+  }), [searchHistory]);
 
-  const handlePrevious = () => setPage((p) => Math.max(1, p - 1));
-  const handleNext = () => setPage((p) => p + 1);
+  const handlePrevious = useCallback(() => {
+    setPage((p) => Math.max(1, p - 1));
+  }, []);
+
+  const handleNext = useCallback(() => {
+    setPage((p) => p + 1);
+  }, []);
 
   return (
     <section className="w-full max-w-2xl mx-auto py-6 sm:py-8 lg:py-12 px-4 sm:px-6">
@@ -66,12 +73,12 @@ function SearchHistory() {
       )}
       
       {/* Pagination*/}
-      {!loading && totalPages > 1 && (
+      {!loading && paginationMeta.totalPages > 1 && (
         <Pagination
           page={page}
-          totalPages={totalPages}
-          hasNext={hasNext}
-          hasPrev={hasPrev}
+          totalPages={paginationMeta.totalPages}
+          hasNext={paginationMeta.hasNext}
+          hasPrev={paginationMeta.hasPrev}
           onPrevious={handlePrevious}
           onNext={handleNext}
           loading={loading}

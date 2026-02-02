@@ -5,13 +5,11 @@ export function saveAuthToken(token) {
   try {
     Cookies.set("auth_token", token, {
       expires: 7,
-      // CHANGE 1: Force false so it works on your HTTP server
-      secure: false, 
-      // CHANGE 2: Use 'Lax' so the cookie works when returning from payment page
-      sameSite: "Lax", 
+      secure: false,
+      sameSite: "Lax",
     });
     return true;
-  } catch (error) {
+  } catch {
     return false;
   }
 }
@@ -26,41 +24,33 @@ export function removeAuthToken() {
 }
 
 export async function register({ phone_number, password, confirm_password }) {
-  try {
-    const response = await axiosInstance.post("users/register/", {
-      phone_number,
-      password,
-      confirm_password,
-    });
-    return response.data;
-  } catch (error) {
-    const message = error.response?.data?.message || "Failed to register";
-    throw new Error(message);
-  }
+  // ✅ بس نرمي الخطأ - errorHelpers هيتعامل معاه
+  const response = await axiosInstance.post("users/register/", {
+    phone_number,
+    password,
+    confirm_password,
+  });
+  return response.data;
 }
 
 export async function login({ phone_number, password }) {
-  try {
-    const response = await axiosInstance.post("/login/", {
-      username:phone_number,
-      password,
-    });
+  // ✅ بس نرمي الخطأ - errorHelpers هيتعامل معاه
+  const response = await axiosInstance.post("/login/", {
+    username: phone_number,
+    password,
+  });
 
-    if (response.data.token) {
-      saveAuthToken(response.data.token);
-    }
-
-    return {
-      id: response.data.user_id,
-      username: response.data.username,
-      phone_number: response.data.phone_number,
-      balance: parseFloat(response.data.balance),
-      created_at: response.data.created_at,
-    };
-  } catch (error) {
-    const message = error.response?.data?.message || "Failed to login";
-    throw new Error(message);
+  if (response.data.token) {
+    saveAuthToken(response.data.token);
   }
+
+  return {
+    id: response.data.user_id,
+    username: response.data.username,
+    phone_number: response.data.phone_number,
+    balance: parseFloat(response.data.balance),
+    created_at: response.data.created_at,
+  };
 }
 
 export async function verifyAuth() {
@@ -76,7 +66,7 @@ export async function verifyAuth() {
       balance: parseFloat(response.data.balance),
       created_at: response.data.created_at,
     };
-  } catch (error) {
+  } catch {
     removeAuthToken();
     return null;
   }
@@ -88,10 +78,10 @@ export async function logout() {
     if (token) {
       await axiosInstance.post("/users/logout/");
     }
-  } catch (error) {
-    console.error("Logout error details:", error.response?.data);
+  } catch {
+    // Silent fail - user will be logged out locally anyway
   } finally {
     removeAuthToken();
-    return true;
   }
+  return true;
 }

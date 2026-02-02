@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getServices, getImeiResult } from "../../services/imeiApi";
+import { getErrorMessage } from "../../utils/errorHelpers"; // ✅ مضاف
 
 const initialState = {
   services: [],
@@ -17,7 +18,7 @@ export const fetchServicesThunk = createAsyncThunk(
 
       return Array.isArray(services) ? services : services.results;
     } catch (error) {
-      return rejectWithValue(error.message || "Failed to fetch services");
+      return rejectWithValue(getErrorMessage(error)); // ✅ محدّث
     }
   },
 );
@@ -29,7 +30,7 @@ export const getImeiResultThunk = createAsyncThunk(
       const result = await getImeiResult(resultId);
       return result;
     } catch (error) {
-      return rejectWithValue(error.message || "Failed to fetch result");
+      return rejectWithValue(getErrorMessage(error)); // ✅ محدّث
     }
   },
 );

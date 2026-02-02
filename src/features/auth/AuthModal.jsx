@@ -83,15 +83,20 @@ function AuthModal({ isOpen, onClose }) {
       <div
         className="relative w-full max-w-md bg-white rounded-4xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300"
         onClick={(e) => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="auth-modal-title"
       >
-        <div className="flex bg-dark-bg p-1 m-4 rounded-2xl">
+        <div className="flex bg-dark-bg p-1 m-4 rounded-2xl" role="tablist" aria-label="Authentication options">
           <button
             onClick={handleToggleMode}
             type="button"
             disabled={actionLoading}
-            className={`flex-1 py-3 rounded-xl font-bold text-sm transition-all ${
-              isLogin ? "bg-primary text-light" : "text-medium-gray"
-            }`}
+            role="tab"
+            aria-selected={isLogin}
+            aria-controls="auth-form-panel"
+            className={`flex-1 py-3 rounded-xl font-bold text-sm transition-all  ${isLogin ? "bg-primary text-light" : "text-medium-gray"
+              }`}
           >
             Sign In
           </button>
@@ -99,9 +104,11 @@ function AuthModal({ isOpen, onClose }) {
             onClick={handleToggleMode}
             type="button"
             disabled={actionLoading}
-            className={`flex-1 py-3 rounded-xl font-bold text-sm transition-all ${
-              !isLogin ? "bg-primary text-light" : "text-medium-gray"
-            }`}
+            role="tab"
+            aria-selected={!isLogin}
+            aria-controls="auth-form-panel"
+            className={`flex-1 py-3 rounded-xl font-bold text-sm transition-all  ${!isLogin ? "bg-primary text-light" : "text-medium-gray"
+              }`}
           >
             Register
           </button>
@@ -110,14 +117,15 @@ function AuthModal({ isOpen, onClose }) {
         <button
           onClick={onClose}
           type="button"
-          className="absolute top-6 right-6 text-dark-bg hover:text-dark transition-colors z-10"
+          aria-label="Close authentication modal"
+          className="absolute top-6 right-6 text-dark-bg hover:text-dark-bg/70 transition-colors z-10 "
         >
-          <X size={24} />
+          <X size={24} aria-hidden="true" />
         </button>
 
-        <div className="p-8 pt-4">
+        <div className="p-5 md:p-8 pt-4" id="auth-form-panel" role="tabpanel">
           <div className="text-center mb-8">
-            <h2 className="text-2xl sm:text-3xl font-black text-primary uppercase tracking-tighter">
+            <h2 id="auth-modal-title" className="text-2xl sm:text-3xl font-black text-primary uppercase tracking-tighter">
               {isLogin ? "Welcome Back" : "Create Account"}
             </h2>
             <p className="text-sm text-primary/70 mt-2">

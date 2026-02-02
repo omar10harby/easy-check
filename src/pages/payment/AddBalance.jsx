@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { createTopupPaymentThunk } from "../../features/payment/PaymentSlice";
@@ -34,7 +34,7 @@ function AddBalance() {
       const result = await dispatch(
         createTopupPaymentThunk({ amount: numericAmount.toString() })
       ).unwrap();
-      
+
       if (result.paymentUrl) {
         toast.success("Redirecting to payment...");
         window.location.href = result.paymentUrl;
@@ -47,9 +47,8 @@ function AddBalance() {
   }
 
   return (
-    <section className="py-8 px-4 sm:px-6 lg:px-8 flex items-center">
-      <div className="w-full max-w-2xl mx-auto">
-        <div className="bg-white rounded-3xl shadow-xl border border-light-gray p-8 sm:p-10">
+    <section className="w-full max-w-2xl mx-auto py-8 px-4 sm:px-6 lg:px-8 ">
+          <div className="bg-white rounded-3xl shadow-xl border border-light-gray p-6 sm:p-10">
           <div className="text-center mb-8">
             <h1 className="text-3xl sm:text-4xl font-black text-primary mb-2">
               Top Up Balance
@@ -79,7 +78,6 @@ function AddBalance() {
             />
           </div>
         </div>
-      </div>
     </section>
   );
 }

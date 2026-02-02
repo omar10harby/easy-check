@@ -1,8 +1,8 @@
-import React from 'react'
+import { memo } from 'react'
 import { formatDate, getStatusInfo, maskIdentifier } from '../../../utils/helpers';
 import { AlertCircle, Eye, RefreshCw, Search } from 'lucide-react';
 
-function CardSearchHistory({item, onViewResult }) {
+const CardSearchHistory = memo(({ item, onViewResult }) => {
   const statusInfo = getStatusInfo(item.status);
   const { date, time } = formatDate(item.created_at);
   
@@ -63,7 +63,7 @@ function CardSearchHistory({item, onViewResult }) {
       {/* Body */}
       <div className="p-5 sm:p-6 lg:p-8">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6 mb-4 sm:mb-6">
-          <div className="flex-1 text-center sm:text-left">
+          <div className=" text-center sm:text-left">
             <p className="text-xs sm:text-sm font-bold text-dark-bg uppercase tracking-wider mb-1">
               Service
             </p>
@@ -72,7 +72,7 @@ function CardSearchHistory({item, onViewResult }) {
             </p>
           </div>
 
-          <div className="flex-1 sm:text-right">
+          <div className=" text-center sm:text-right">
             <p className="text-xs sm:text-sm font-bold text-primary uppercase tracking-wider mb-1">
               Device Identifier
             </p>
@@ -85,7 +85,6 @@ function CardSearchHistory({item, onViewResult }) {
         {/* Actions Section */}
         <div className="pt-3 sm:pt-4 border-t border-gray-100">
           
-          {/* ✅ Success: View Result Button */}
           {hasSuccessfulResult && (
             <button
               onClick={() => onViewResult(item.merchant_transaction_id)}
@@ -145,6 +144,6 @@ function CardSearchHistory({item, onViewResult }) {
       </div>
     </div>
   );
-}
+});
 
-export default CardSearchHistory
+export default CardSearchHistory;

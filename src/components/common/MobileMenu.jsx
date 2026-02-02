@@ -1,9 +1,9 @@
-import React from "react";
+import { memo } from "react";
 import { Link } from "react-router-dom";
 import { Search, CreditCard, Wallet, LogOut, X } from "lucide-react";
 import Logo from "./Logo";
 
-function MobileMenu({
+const MobileMenu = memo(({
   isOpen,
   onClose,
   isAuthenticated,
@@ -11,11 +11,11 @@ function MobileMenu({
   onLogout,
   onLoginClick,
   loading,
-}) {
+}) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-40 backdrop-blur-md">
+    <div className="fixed inset-0 z-40 backdrop-blur-md" role="dialog" aria-modal="true" aria-label="Mobile navigation menu">
       <div className="md:hidden fixed w-full z-50 ">
         {/* Mobile Header */}
         <div className="flex justify-between items-center px-4 sm:px-6 md:px-[8vw] py-3 bg-primary">
@@ -23,14 +23,15 @@ function MobileMenu({
           <button
             onClick={onClose}
             disabled={loading}
-            className="p-2 text-light-gray"
+            aria-label="Close menu"
+            className=" text-light-gray"
           >
-            <X className="w-6 h-6" />
+            <X className="w-6 h-6" aria-hidden="true" />
           </button>
         </div>
 
         {/* Mobile Menu Content */}
-        <div className="px-4 py-8 space-y-6 overflow-y-auto bg-primary shadow-md">     
+        <div className="px-4 py-8 space-y-6 overflow-y-auto bg-primary shadow-md">
           {/* Mobile: User View */}
           {isAuthenticated && (
             <>
@@ -38,7 +39,7 @@ function MobileMenu({
               <div className="bg-light-gray rounded-lg p-4 border border-light-gray">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
-                    <Wallet className="w-6 h-6 text-light" />
+                    <Wallet className="w-6 h-6 text-light" aria-hidden="true" />
                   </div>
                   <div>
                     <p className="text-xs text-primary/60 font-medium">
@@ -57,7 +58,7 @@ function MobileMenu({
                   className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-primary bg-light-gray rounded-lg transition-colors border border-light-gray"
                   onClick={onClose}
                 >
-                  <Search className="w-5 h-5 text-primary" />
+                  <Search className="w-5 h-5 text-primary" aria-hidden="true" />
                   <span>Search History</span>
                 </Link>
 
@@ -66,8 +67,8 @@ function MobileMenu({
                   className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-primary bg-light-gray rounded-lg transition-colors border border-light-gray"
                   onClick={onClose}
                 >
-                  <CreditCard className="w-5 h-5 text-primary" />
-                  <span>wallet History</span>
+                  <CreditCard className="w-5 h-5 text-primary" aria-hidden="true" />
+                  <span>Wallet History</span>
                 </Link>
 
                 <Link
@@ -75,7 +76,7 @@ function MobileMenu({
                   className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-primary bg-light-gray rounded-lg transition-colors border border-light-gray"
                   onClick={onClose}
                 >
-                  <Wallet className="w-5 h-5 text-primary" />
+                  <Wallet className="w-5 h-5 text-primary" aria-hidden="true" />
                   <span>Add Balance</span>
                 </Link>
 
@@ -91,7 +92,7 @@ function MobileMenu({
                     </>
                   ) : (
                     <>
-                      <LogOut className="w-5 h-5" />
+                      <LogOut className="w-5 h-5" aria-hidden="true" />
                       <span>Logout</span>
                     </>
                   )}
@@ -103,6 +104,6 @@ function MobileMenu({
       </div>
     </div>
   );
-}
+});
 
 export default MobileMenu;

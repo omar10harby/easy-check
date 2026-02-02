@@ -1,6 +1,7 @@
+import { memo } from 'react';
 import { Wallet } from 'lucide-react';
 
-function BalanceDisplay({ balance }) {
+const BalanceDisplay = memo(({ balance }) => {
   const safeBalance = balance ? Number(balance) : 0;
 
   return (
@@ -11,6 +12,6 @@ function BalanceDisplay({ balance }) {
       </span>
     </div>
   );
-}
+});
 
 export default BalanceDisplay;

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import HeroSection from "../../features/home/Herosection";
 import FeaturePills from "../../features/home/Featurepills";
@@ -19,25 +19,12 @@ function Home() {
 
   const hasProcessed = useRef(false);
 
-  useEffect(() => {
-    const paymentStatus = searchParams.get("paymentStatus");
-    const merchantOrderId = searchParams.get("merchantOrderId");
-
-    if (
-      isProcessing &&
-      !hasProcessed.current &&
-      (paymentStatus || merchantOrderId)
-    ) {
-      hasProcessed.current = true;
-      processPayment(paymentStatus, merchantOrderId);
-    }
-  }, []);
-
-  async function processPayment(paymentStatus, merchantOrderId) {
+  const processPayment = useCallback(async (paymentStatus, merchantOrderId) => {
     try {
       if (paymentStatus === "FAILED") {
         toast.error("Payment failed. Please try again. ❌");
-        finishProcessing();
+        setSearchParams({});
+        setIsProcessing(false);
         return;
       }
 
@@ -51,19 +38,34 @@ function Home() {
           });
         } else {
           toast.success("Balance updated successfully! ✅");
-          finishProcessing();
+          setSearchParams({});
+          setIsProcessing(false);
         }
       }
     } catch (error) {
       toast.error("Failed to verify payment");
-      finishProcessing();
+      setSearchParams({});
+      setIsProcessing(false);
     }
-  }
+  }, [dispatch, navigate, setSearchParams]);
 
-  const finishProcessing = () => {
-    setSearchParams({});
-    setIsProcessing(false);
-  };
+  useEffect(() => {
+    const paymentStatus = searchParams.get("paymentStatus");
+    const merchantOrderId = searchParams.get("merchantOrderId");
+
+    if (
+      isProcessing &&
+      !hasProcessed.current &&
+      (paymentStatus || merchantOrderId)
+    ) {
+      hasProcessed.current = true;
+      processPayment(paymentStatus, merchantOrderId);
+    }
+  }, [isProcessing, processPayment, searchParams]);
+
+  const handleSearchClick = useCallback(() => {
+    navigate("/imei-checker");
+  }, [navigate]);
 
   if (isProcessing) {
     return (
@@ -75,9 +77,9 @@ function Home() {
   }
 
   return (
-    <section className=" md:py-10 px-4 sm:px-6 lg:px-8 flex items-center">
+    <section className="md:py-10 px-4 sm:px-6 lg:px-8 flex items-center">
       <div className="max-w-7xl mx-auto text-center w-full">
-        <HeroSection onSearchClick={() => navigate("/imei-checker")} />
+        <HeroSection onSearchClick={handleSearchClick} />
         <FeaturePills />
       </div>
     </section>

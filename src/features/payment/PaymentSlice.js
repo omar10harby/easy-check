@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import * as paymentAPI from "../../services/paymentApi";
+import { getErrorMessage } from "../../utils/errorHelpers"; // ✅ مضاف
 
 const initialState = {
   loading: false,
@@ -22,7 +23,7 @@ export const buyWithWalletThunk = createAsyncThunk(
       );
       return data; 
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(getErrorMessage(error)); // ✅ محدّث
     }
   }
 );
@@ -35,7 +36,7 @@ export const createTopupPaymentThunk = createAsyncThunk(
       const data = await paymentAPI.createTopupPayment(amount);
       return data; // { transactionId, paymentUrl, merchantTransactionId }
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(getErrorMessage(error)); // ✅ محدّث
     }
   }
 );
@@ -57,7 +58,7 @@ export const createGuestCheckoutThunk = createAsyncThunk(
       );
       return data;
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(getErrorMessage(error)); // ✅ محدّث
     }
   }
 );

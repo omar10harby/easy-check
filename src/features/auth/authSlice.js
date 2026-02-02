@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import * as authAPI from "../../services/authApi";
+import { getErrorMessage } from "../../utils/errorHelpers"; // ✅ مضاف
 
 const initialState = {
   user:null,
@@ -16,7 +17,7 @@ export const verifyAuthThunk = createAsyncThunk(
       const data = await authAPI.verifyAuth();
       return data;
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(getErrorMessage(error)); // ✅ محدّث
     }
   }
 );
@@ -28,7 +29,7 @@ export const loginThunk = createAsyncThunk(
       const data = await authAPI.login(credentials);
       return data;
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(getErrorMessage(error)); // ✅ محدّث
     }
   }
 );
@@ -40,7 +41,7 @@ export const registerThunk = createAsyncThunk(
       const data = await authAPI.register(userData);
       return data;
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(getErrorMessage(error)); // ✅ محدّث
     }
   }
 );
@@ -52,7 +53,7 @@ export const logoutThunk = createAsyncThunk(
       await authAPI.logout();
       return true;
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(getErrorMessage(error)); // ✅ محدّث
     }
   }
 );

@@ -1,20 +1,23 @@
-import React from 'react';
+import { memo } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, CreditCard, Wallet, LogOut, ChevronDown } from 'lucide-react';
 
-function ProfileDropdown({ isOpen, onToggle, onClose, onLogout, loading }) {
+const ProfileDropdown = memo(({ isOpen, onToggle, onClose, onLogout, loading }) => {
   return (
     <div className="relative">
       <button
         onClick={onToggle}
         disabled={loading}
-        className="flex items-center gap-2 px-4 py-1 bg-light hover:bg-medium-gray disabled:bg-light-gray disabled:cursor-not-allowed rounded-lg border border-light-gray transition-colors"
+        aria-haspopup="menu"
+        aria-expanded={isOpen}
+        aria-label="Account menu"
+        className="flex items-center gap-2 px-4 py-1 bg-light hover:bg-medium-gray disabled:bg-light-gray disabled:cursor-not-allowed rounded-lg border border-light-gray transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
       >
-        <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+        <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center" aria-hidden="true">
           <Wallet className="w-4 h-4 text-light" />
         </div>
         <span className="text-sm font-medium text-primary">Account</span>
-        <ChevronDown className={`w-4 h-4 text-primary/60 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+        <ChevronDown className={`w-4 h-4 text-primary/60 transition-transform ${isOpen ? 'rotate-180' : ''}`} aria-hidden="true" />
       </button>
 
       {isOpen && (
@@ -26,32 +29,35 @@ function ProfileDropdown({ isOpen, onToggle, onClose, onLogout, loading }) {
           ></div>
 
           {/* Dropdown Content */}
-          <div className="absolute right-0 mt-2 w-56 bg-light rounded-lg shadow-lg border border-light-gray py-2 z-20">
+          <div className="absolute right-0 mt-2 w-56 bg-light rounded-lg shadow-lg border border-light-gray py-2 z-20" role="menu" aria-label="Account options">
             <Link
               to="/search-history"
-              className="flex items-center gap-3 px-4 py-2 text-sm text-primary hover:bg-light-gray transition-colors"
+              className="flex items-center gap-3 px-4 py-2 text-sm text-primary hover:bg-light-gray transition-colors focus:outline-none focus:bg-light-gray"
               onClick={onClose}
+              role="menuitem"
             >
-              <Search className="w-4 h-4 text-primary" />
+              <Search className="w-4 h-4 text-primary" aria-hidden="true" />
               <span>Search History</span>
             </Link>
 
             <Link
               to="/wallet-history"
-              className="flex items-center gap-3 px-4 py-2 text-sm text-primary hover:bg-light-gray transition-colors"
+              className="flex items-center gap-3 px-4 py-2 text-sm text-primary hover:bg-light-gray transition-colors focus:outline-none focus:bg-light-gray"
               onClick={onClose}
+              role="menuitem"
             >
-              <CreditCard className="w-4 h-4 text-primary" />
+              <CreditCard className="w-4 h-4 text-primary" aria-hidden="true" />
               <span>Wallet History</span>
             </Link>
 
             <Link
               to="/add-balance"
-              className="flex items-center gap-3 px-4 py-2 text-sm text-primary hover:bg-light-gray transition-colors"
+              className="flex items-center gap-3 px-4 py-2 text-sm text-primary hover:bg-light-gray transition-colors focus:outline-none focus:bg-light-gray"
               onClick={onClose}
+              role="menuitem"
             >
-              <Wallet className="w-4 h-4 text-primary" />
-              <span>Add balance</span>
+              <Wallet className="w-4 h-4 text-primary" aria-hidden="true" />
+              <span>Add Balance</span>
             </Link>
 
             <div className="my-2 border-t border-light-gray"></div>
@@ -59,7 +65,8 @@ function ProfileDropdown({ isOpen, onToggle, onClose, onLogout, loading }) {
             <button
               onClick={onLogout}
               disabled={loading}
-              className="flex items-center gap-3 w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50 disabled:bg-light-gray disabled:text-gray-400 disabled:cursor-not-allowed transition-colors"
+              role="menuitem"
+              className="flex items-center gap-3 w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50 disabled:bg-light-gray disabled:text-gray-400 disabled:cursor-not-allowed transition-colors focus:outline-none focus:bg-red-50"
             >
               {loading ? (
                 <>
@@ -68,7 +75,7 @@ function ProfileDropdown({ isOpen, onToggle, onClose, onLogout, loading }) {
                 </>
               ) : (
                 <>
-                  <LogOut className="w-4 h-4" />
+                  <LogOut className="w-4 h-4" aria-hidden="true" />
                   <span>Logout</span>
                 </>
               )}
@@ -78,6 +85,6 @@ function ProfileDropdown({ isOpen, onToggle, onClose, onLogout, loading }) {
       )}
     </div>
   );
-}
+});
 
 export default ProfileDropdown;

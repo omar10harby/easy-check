@@ -97,9 +97,8 @@ function LoginForm({ onSubmit, loading, error }) {
                 message: "Password must be at least 8 characters",
               },
             })}
-            className={`w-full bg-light-gray border-2 ${
-              errors.password ? "border-red-500" : "border-medium-gray"
-            } rounded-2xl py-4 pl-12 pr-12 font-bold focus:bg-light focus:border-dark-bg focus:ring-4 focus:ring-primary/30 outline-none transition-all`}
+            className={`w-full bg-light-gray border-2 ${errors.password ? "border-red-500" : "border-medium-gray"
+              } rounded-2xl py-4 pl-12 pr-12 font-bold focus:bg-light focus:border-dark-bg focus:ring-4 focus:ring-primary/30 outline-none transition-all`}
             placeholder="••••••••"
             disabled={loading}
           />

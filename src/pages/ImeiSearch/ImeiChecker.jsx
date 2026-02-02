@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
@@ -6,8 +6,14 @@ import ServiceSelector from "../../features/ImeiSearch/Serviceselector";
 import ImeiInput from "../../features/ImeiSearch/Imeiinput";
 import EmailInput from "../../features/ImeiSearch/EmailInput";
 import SearchButton from "../../features/ImeiSearch/Searchbutton";
-import { fetchServicesThunk, setCurrentResult } from "../../features/ImeiSearch/ImeiSlice";
-import { buyWithWalletThunk, createGuestCheckoutThunk } from "../../features/payment/PaymentSlice";
+import {
+  fetchServicesThunk,
+  setCurrentResult,
+} from "../../features/ImeiSearch/ImeiSlice";
+import {
+  buyWithWalletThunk,
+  createGuestCheckoutThunk,
+} from "../../features/payment/PaymentSlice";
 import { updateBalance } from "../../features/auth/authSlice";
 import { getErrorMessage } from "../../utils/errorHelpers";
 import ServiceInfoBox from "../../features/ImeiSearch/Serviceinfobox";
@@ -30,12 +36,15 @@ function ImeiChecker() {
 
   const [imeiOrSerial, setImeiOrSerial] = useState("");
   const [isServiceDropdownOpen, setIsServiceDropdownOpen] = useState(false);
-  const [inputType, setInputType] = useState("imei");
+  const [inputType, setInputType] = useState("");
   const [maxLength, setMaxLength] = useState(15);
-
-  // 👇 Email State & Error (Same pattern as ImeiInput)
   const [guestEmail, setGuestEmail] = useState("");
   const [emailError, setEmailError] = useState("");
+  const [simulateError, setSimulateError] = useState(false);
+
+  if (simulateError) {
+    throw new Error("This is a test error for the Error Boundary!");
+  }
 
   useEffect(() => {
     if (services.length === 0) {
@@ -43,23 +52,26 @@ function ImeiChecker() {
     }
   }, [dispatch, services.length]);
 
-  const handleImeiChange = (e) => {
-    let value = e.target.value;
-    const formattedValue = formatImeiOrSerial(value, inputType)
-    if (formattedValue.length <= maxLength) {
-      setImeiOrSerial(formattedValue);
-    }
-  };
+  const handleImeiChange = useCallback(
+    (e) => {
+      let value = e.target.value;
+      const formattedValue = formatImeiOrSerial(value, inputType);
+      if (formattedValue.length <= maxLength) {
+        setImeiOrSerial(formattedValue);
+      }
+    },
+    [inputType, maxLength],
+  );
 
-  const handleTypeChange = (type) => {
+  const handleTypeChange = useCallback((type) => {
     setInputType(type);
     const newMaxLength = type === "imei" ? 15 : 12;
     setMaxLength(newMaxLength);
     setImeiOrSerial("");
-  };
+  }, []);
 
-  const handleEmailChange = (e) => {
-    const value = e.target.value
+  const handleEmailChange = useCallback((e) => {
+    const value = e.target.value;
     setGuestEmail(value);
 
     if (!value) {
@@ -68,12 +80,18 @@ function ImeiChecker() {
       const errorMsg = validateEmail(value);
       setEmailError(errorMsg);
     }
-  };
+  }, []);
 
-  const handleCheck = async () => {
+  const handleServiceToggle = useCallback(() => {
+    setIsServiceDropdownOpen((prev) => !prev);
+  }, []);
+
+  const handleServiceClose = useCallback(() => {
+    setIsServiceDropdownOpen(false);
+  }, []);
+
+  const handleCheck = useCallback(async () => {
     if (!selectedService || !imeiOrSerial) return;
-
-
 
     const checkData = {
       imeiOrSerial,
@@ -98,12 +116,14 @@ function ImeiChecker() {
       } else {
         toast.error(
           `Insufficient balance. Required: ${selectedService.final_price} EGP | Current: ${user.balance} EGP`,
-          { duration: 4000 }
+          { duration: 4000 },
         );
       }
     } else {
       try {
-        const result = await dispatch(createGuestCheckoutThunk(checkData)).unwrap();
+        const result = await dispatch(
+          createGuestCheckoutThunk(checkData),
+        ).unwrap();
         if (result?.paymentUrl) {
           toast.success("Redirecting to payment...");
           window.location.href = result.paymentUrl;
@@ -114,39 +134,57 @@ function ImeiChecker() {
         toast.error(error || "Failed to create checkout");
       }
     }
-  };
+  }, [
+    selectedService,
+    imeiOrSerial,
+    inputType,
+    isAuthenticated,
+    guestEmail,
+    user,
+    dispatch,
+    navigate,
+  ]);
 
-  const isSearchDisabled =
-    !selectedService ||
-    (inputType === "imei" && imeiOrSerial.length !== 15) ||
-    (inputType === "serial" && imeiOrSerial.length < 8) ||
-    (!isAuthenticated && (!guestEmail || !!emailError)) ||
-    paymentLoading;
+  const isSearchDisabled = useMemo(
+    () =>
+      !selectedService ||
+      (inputType === "imei" && imeiOrSerial.length !== 15) ||
+      (inputType === "serial" && imeiOrSerial.length < 8) ||
+      (!isAuthenticated && (!guestEmail || !!emailError)) ||
+      paymentLoading,
+    [
+      selectedService,
+      inputType,
+      imeiOrSerial,
+      isAuthenticated,
+      guestEmail,
+      emailError,
+      paymentLoading,
+    ],
+  );
 
   if (servicesLoading && services.length === 0) {
-    return (
-      <ImeiCheckerLoading/>
-    );
+    return <ImeiCheckerLoading />;
   }
 
   if (servicesError && services.length === 0) {
     return (
-      <section className="px-4  ">
-        <div className="max-w-2xl mx-auto w-full">
-          <div className="bg-light rounded-3xl shadow-2xl border border-light-gray p-8 sm:p-10">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-3xl">⚠️</span>
-              </div>
-              <h2 className="text-2xl font-black text-primary mb-2">Failed to Load Services</h2>
-              <p className="text-primary/70 mb-6">{servicesError}</p>
-              <button
-                onClick={() => dispatch(fetchServicesThunk())}
-                className="px-6 py-3 bg-primary text-light rounded-xl font-bold hover:bg-primary/90 transition-all"
-              >
-                Retry
-              </button>
+      <section className="w-full max-w-2xl  sm:py-8 px-4">
+        <div className="bg-light rounded-3xl shadow-2xl border border-light-gray p-6 sm:p-10">
+          <div className="text-center">
+            <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <span className="text-3xl">⚠️</span>
             </div>
+            <h2 className="text-2xl font-black text-primary mb-2">
+              Failed to Load Services
+            </h2>
+            <p className="text-primary/70 mb-6">{servicesError}</p>
+            <button
+              onClick={() => dispatch(fetchServicesThunk())}
+              className="px-6 py-3 bg-primary text-light rounded-xl font-bold hover:bg-primary/90 transition-all"
+            >
+              Retry
+            </button>
           </div>
         </div>
       </section>
@@ -155,22 +193,22 @@ function ImeiChecker() {
 
   if (!servicesLoading && services.length === 0) {
     return (
-      <section className="px-4">
-        <div className="max-w-2xl mx-auto w-full">
-          <div className="bg-light rounded-3xl shadow-2xl border border-light-gray p-8 sm:p-10">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-3xl">📭</span>
-              </div>
-              <h2 className="text-2xl font-black text-primary mb-2">No Services Available</h2>
-              <p className="text-primary/70 mb-6">Please check back later.</p>
-              <button
-                onClick={() => navigate("/")}
-                className="px-6 py-3 bg-primary text-light rounded-xl font-bold hover:bg-primary/90 transition-all"
-              >
-                Go Home
-              </button>
+      <section className="w-full max-w-2xl  sm:py-8 px-4">
+        <div className="bg-light rounded-3xl shadow-2xl border border-light-gray p-6 sm:p-10">
+          <div className="text-center">
+            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <span className="text-3xl">📭</span>
             </div>
+            <h2 className="text-2xl font-black text-primary mb-2">
+              No Services Available
+            </h2>
+            <p className="text-primary/70 mb-6">Please check back later.</p>
+            <button
+              onClick={() => navigate("/")}
+              className="px-6 py-3 bg-primary text-light rounded-xl font-bold hover:bg-primary/90 transition-all"
+            >
+              Go Home
+            </button>
           </div>
         </div>
       </section>
@@ -178,57 +216,46 @@ function ImeiChecker() {
   }
 
   return (
-    <section className="py-8 px-4">
-      <div className="md:min-w-xl mx-auto max-w-3xl">
-        <div className="bg-light rounded-3xl shadow-2xl border border-light-gray p-6 sm:p-10">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl sm:text-4xl font-black text-primary mb-2 tracking-tight">
-              Check IMEI / Serial
-            </h1>
-            <p className="text-primary/70 text-sm sm:text-base">
-              Select a service and enter your device details to search.
-            </p>
-          </div>
+    <section className="w-full max-w-2xl sm:py-8 px-4">
+      <div className="bg-light rounded-3xl shadow-2xl border border-light-gray p-6 sm:p-10">
+        <div className="text-center mb-4 sm:mb-8">
+          <h1 className="text-3xl sm:text-4xl font-black text-primary mb-2 tracking-tight">
+            Check IMEI / Serial
+          </h1>
+          <p className="text-primary/70 text-sm sm:text-base">
+            Select a service and enter your device details to search.
+          </p>
+        </div>
 
-          <div className="space-y-4">
-            {/* Service Selection */}
-            <ServiceSelector
-              services={services}
-              isOpen={isServiceDropdownOpen}
-              onToggle={() => setIsServiceDropdownOpen(!isServiceDropdownOpen)}
-              onClose={() => setIsServiceDropdownOpen(false)}
+        <div className="space-y-3 sm:space-y-4">
+          <ServiceSelector
+            services={services}
+            isOpen={isServiceDropdownOpen}
+            onToggle={handleServiceToggle}
+            onClose={handleServiceClose}
+            disabled={paymentLoading}
+          />
+          <ServiceInfoBox service={selectedService} />
+          <ImeiInput
+            value={imeiOrSerial}
+            onChange={handleImeiChange}
+            maxLength={maxLength}
+            onTypeChange={handleTypeChange}
+            disabled={paymentLoading}
+          />
+          {!isAuthenticated && (
+            <EmailInput
+              value={guestEmail}
+              onChange={handleEmailChange}
+              error={emailError}
               disabled={paymentLoading}
             />
-
-            {/* Service Info Box */}
-            <ServiceInfoBox service={selectedService} />
-
-            {/* IMEI/Serial Input */}
-            <ImeiInput
-              value={imeiOrSerial}
-              onChange={handleImeiChange}
-              maxLength={maxLength}
-              onTypeChange={handleTypeChange}
-              disabled={paymentLoading}
-            />
-
-            {/* 👇 Email Input (Only for Guests) */}
-            {!isAuthenticated && (
-              <EmailInput
-                value={guestEmail}
-                onChange={handleEmailChange}
-                error={emailError}
-                disabled={paymentLoading}
-              />
-            )}
-
-            {/* Search Button */}
-            <SearchButton
-              onClick={handleCheck}
-              disabled={isSearchDisabled}
-              selectedServicePrice={selectedService?.final_price}
-            />
-          </div>
+          )}
+          <SearchButton
+            onClick={handleCheck}
+            disabled={isSearchDisabled}
+            selectedServicePrice={selectedService?.final_price}
+          />
         </div>
       </div>
     </section>

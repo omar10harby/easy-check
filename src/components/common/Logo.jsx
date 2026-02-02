@@ -1,12 +1,26 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Shield } from 'lucide-react';
-import logoImage from '../../assets/grayscale_transparent_nobuffer.webp'
+import logoImage from '../../assets/grayscale_transparent_nobuffer.webp';
+
 function Logo() {
   return (
-    <Link to="/" className="flex items-center gap-2 group">
-      <div className=" p-2 rounded-lg text-main-green transition-colors">
-        <img src={logoImage} alt="" className='w-36'/>
+    <Link 
+      to="/" 
+      
+      aria-label="Go to homepage - Easy Check"
+    >
+      <div className="">
+        {/* ✅ استخدام الصورة الأصلية مع تحسينات الأداء */}
+        <img 
+          src={logoImage} 
+          alt="Easy Check - Device Verification Service Logo"
+          width="144"
+          height="40"
+          loading="eager"
+          decoding="async"
+          fetchpriority="high"
+          className="w-36 h-auto"
+        />
       </div>
     </Link>
   );

@@ -1,4 +1,3 @@
-import { Search, AlertCircle,ShoppingBag,RefreshCw,Wallet } from "lucide-react";
 
 export function formatAmount(val) {
   if (!val) return "";

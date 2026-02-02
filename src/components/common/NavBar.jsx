@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { Menu, X } from "lucide-react";
@@ -19,7 +19,7 @@ function NavBar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
-  const handleLogout = async () => {
+  const handleLogout = useCallback(async () => {
     try {
       await dispatch(logoutThunk()).unwrap();
       setIsDropdownOpen(false);
@@ -28,19 +28,35 @@ function NavBar() {
     } catch (error) {
       toast.error("Logout failed. Please try again.");
     }
-  };
+  }, [dispatch]);
 
-  const handleLoginClick = () => {
+  const handleLoginClick = useCallback(() => {
     setIsAuthModalOpen(true);
-  };
+  }, []);
 
-  const handleCloseAuthModal = () => {
+  const handleCloseAuthModal = useCallback(() => {
     setIsAuthModalOpen(false);
-  };
+  }, []);
+
+  const handleToggleDropdown = useCallback(() => {
+    setIsDropdownOpen(prev => !prev);
+  }, []);
+
+  const handleCloseDropdown = useCallback(() => {
+    setIsDropdownOpen(false);
+  }, []);
+
+  const handleToggleMobileMenu = useCallback(() => {
+    setIsMobileMenuOpen(prev => !prev);
+  }, []);
+
+  const handleCloseMobileMenu = useCallback(() => {
+    setIsMobileMenuOpen(false);
+  }, []);
 
   return (
     <>
-      <nav className="sticky top-0 z-40 px-4 sm:px-6 md:px-8 lg:px-12 py-3 bg-primary shadow-sm">
+      <nav className="sticky top-0 z-40 px-4 sm:px-6 md:px-8 lg:px-12 py-3 bg-primary shadow-sm" aria-label="Main navigation">
         <div className="flex justify-between items-center">
           {/* Logo */}
           <Logo />
@@ -50,7 +66,8 @@ function NavBar() {
               <button
                 onClick={handleLoginClick}
                 disabled={actionLoading}
-                className=" px-4 sm:px-6 py-2 text-sm font-bold bg-light text-primary rounded-lg hover:bg-light/90  transition-all shadow-md hover:shadow-lg"
+                aria-label="Open login dialog"
+                className="px-4 sm:px-6 py-2 text-sm font-bold bg-light text-primary rounded-lg hover:bg-light/90 transition-all shadow-md hover:shadow-lg "
               >
                 Login
               </button>
@@ -66,8 +83,8 @@ function NavBar() {
               {/* Profile Dropdown */}
               <ProfileDropdown
                 isOpen={isDropdownOpen}
-                onToggle={() => setIsDropdownOpen(!isDropdownOpen)}
-                onClose={() => setIsDropdownOpen(false)}
+                onToggle={handleToggleDropdown}
+                onClose={handleCloseDropdown}
                 onLogout={handleLogout}
                 loading={actionLoading}
               />
@@ -77,14 +94,17 @@ function NavBar() {
           {/* Mobile Menu Button */}
           {isAuthenticated && user && (
             <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              onClick={handleToggleMobileMenu}
               disabled={actionLoading}
-              className="md:hidden p-2 text-light hover:bg-light-gray disabled:bg-light-gray disabled:cursor-not-allowed rounded-lg transition-colors"
+              aria-label={isMobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+              aria-expanded={isMobileMenuOpen}
+              aria-controls="mobile-menu"
+              className="md:hidden p-2 text-light hover:bg-light-gray disabled:bg-light-gray disabled:cursor-not-allowed rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-light focus:ring-offset-2 focus:ring-offset-primary"
             >
               {isMobileMenuOpen ? (
-                <X className="w-5 h-5" />
+                <X className="w-5 h-5" aria-hidden="true" />
               ) : (
-                <Menu className="w-5 h-5" />
+                <Menu className="w-5 h-5" aria-hidden="true" />
               )}
             </button>
           )}
@@ -94,7 +114,7 @@ function NavBar() {
       {/* Mobile Menu */}
       <MobileMenu
         isOpen={isMobileMenuOpen}
-        onClose={() => setIsMobileMenuOpen(false)}
+        onClose={handleCloseMobileMenu}
         isAuthenticated={isAuthenticated}
         user={user}
         onLogout={handleLogout}

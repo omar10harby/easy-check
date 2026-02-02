@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import toast from "react-hot-toast";
 import HeaderWallet from "../../features/user/wallet/HeaderWallet";
 import { fetchWalletHistoryThunk } from "../../features/user/HistorySlice";
 import CardWalletTransaction from "../../features/user/wallet/CardWalletTransaction";
 import Pagination from "../../components/common/Pagination";
 import WalletLoading from "../../features/user/wallet/WalletLoading";
+import WalletEmptyState from "../../features/user/wallet/WalletEmptyState";
+import { getErrorMessage } from "../../utils/errorHelpers";
 
 function WalletHistory() {
   const dispatch = useDispatch();
@@ -19,8 +22,7 @@ function WalletHistory() {
     try {
       await dispatch(fetchWalletHistoryThunk({ page })).unwrap();
     } catch (err) {
-      const message = typeof err === "string" ? err : getErrorMessage(err);
-      toast.error(message);
+      toast.error(err);
     }
   }
 
@@ -36,8 +38,10 @@ function WalletHistory() {
       <HeaderWallet count={walletHistory?.count || 0} isLoading={loading} />
       {/* ✅ Loading Skeleton */}
       {loading && <WalletLoading count={walletHistory?.count || 1} />}
+      {/* Empty State */}
+      {!loading && walletHistory?.results?.length === 0 && <WalletEmptyState />}
       {/* Transaction Cards */}
-      {walletHistory?.results?.length > 0 && (
+      {!loading && walletHistory?.results?.length > 0 && (
         <div className="space-y-5">
           {walletHistory.results.map((item) => (
             <CardWalletTransaction key={item.id} item={item} />

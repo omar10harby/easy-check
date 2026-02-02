@@ -22,7 +22,7 @@ export const PhoneValidation = {
       return (
         (phoneNumber && phoneNumber.isValid()) || "Invalid  number"
       );
-    } catch (e) {
+    } catch {
       return "Invalid format";
     }
   },
@@ -67,7 +67,7 @@ export const validateEmail = (value) => {
   }
 
   // 5. Pattern Check
-const emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
+  const emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
   if (!emailRegex.test(value)) {
     return "Please enter a valid email address";
   }

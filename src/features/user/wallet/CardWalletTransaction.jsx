@@ -1,8 +1,8 @@
-import React from 'react'
+import { memo } from 'react'
 import { formatDate, getDefaultNote, getTransactionInfo } from '../../../utils/helpers';
 import { AlertCircle, RefreshCw, ShoppingBag, Wallet } from 'lucide-react';
 
-function CardWalletTransaction({ item }) {
+const CardWalletTransaction = memo(({ item }) => {
   const txnInfo = getTransactionInfo(item.kind);
   const { date, time } = formatDate(item.created_at);
 
@@ -51,8 +51,8 @@ function CardWalletTransaction({ item }) {
       </div>
 
       {/* Body */}
-      <div className="p-5 sm:p-6 lg:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-6">
-        <div className="flex-1">
+      <div className="p-5 sm:p-6 lg:p-8 flex flex-col sm:flex-row items-center  justify-between gap-4 sm:gap-6">
+        <div className='text-center sm:text-left'>
           <p className="text-xs sm:text-sm font-bold text-dark-bg uppercase tracking-wider mb-1">
             Description
           </p>
@@ -61,17 +61,17 @@ function CardWalletTransaction({ item }) {
           </p>
         </div>
 
-        <div className="text-left sm:text-right sm:pl-8 lg:pl-12 sm:border-l sm:border-gray-100">
+        <div className="text-center sm:text-right">
           <p className="text-xs sm:text-sm font-bold text-dark-bg uppercase tracking-wider mb-1">
             Amount
           </p>
-          <p className={`text-xl sm:text-2xl lg:text-3xl font-black ${txnInfo.amountColor} tracking-tight`}>
+          <p className={`text-3xl  font-black ${txnInfo.amountColor} tracking-tight`}>
             {item.formatted_amount}
           </p>
         </div>
       </div>
     </div>
   );
-}
+});
 
-export default CardWalletTransaction
+export default CardWalletTransaction;

@@ -1,43 +1,48 @@
-import {
-  createBrowserRouter,
-  Navigate,
-  RouterProvider,
-} from "react-router-dom";
+import { lazy, Suspense } from "react";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import MainLayout from "../layouts/MainLayOut";
-
 import ProtectedRoute from "../router/ProtectedRoute";
+import NotFound from "../pages/NotFound";
+import GlobalLoader from "../components/common/GlobalLoader";
 
-import Home from "../pages/home/Home";
-import ImeiChecker from "../pages/ImeiSearch/ImeiChecker";
-import CheckResult from "../pages/ImeiSearch/CheckResult";
+// 🔄 Lazy Loading للصفحات
+const Home = lazy(() => import("../pages/home/Home"));
+const ImeiChecker = lazy(() => import("../pages/ImeiSearch/ImeiChecker"));
+const CheckResult = lazy(() => import("../pages/ImeiSearch/CheckResult"));
+const AddBalance = lazy(() => import("../pages/payment/AddBalance"));
+const SearchHistory = lazy(() => import("../pages/user/SearchHistory"));
+const WalletHistory = lazy(() => import("../pages/user/WalletHistory"));
 
-
-
-import AddBalance from "../pages/payment/AddBalance";
-import SearchHistory from "../pages/user/SearchHistory";
-import WalletHistory from "../pages/user/WalletHistory";
+// Helper to wrap components in Suspense with GlobalLoader
+const withSuspense = (Component) => (
+  <Suspense fallback={<GlobalLoader />}>
+    <Component />
+  </Suspense>
+);
 
 export const router = createBrowserRouter([
-  // 🌍 1. Public Routes with MainLayout
+  // 🌍 Public Routes with MainLayout
   {
     element: <MainLayout />,
     children: [
-      { path: "/", element: <Home /> },
-      { path: "/imei-checker", element: <ImeiChecker /> },
+      { path: "/", element: withSuspense(Home) },
+      { path: "/imei-checker", element: withSuspense(ImeiChecker) },
 
-      // 🔐 Protected Routes (User must be logged in)
+      // 🔐 Protected Routes
       {
         element: <ProtectedRoute />,
         children: [
-          { path: "/add-balance", element: <AddBalance /> },
-          { path: "/search-history", element: <SearchHistory /> },
-          { path: "/wallet-history", element: <WalletHistory /> }
+          { path: "/add-balance", element: withSuspense(AddBalance) },
+          { path: "/search-history", element: withSuspense(SearchHistory) },
+          { path: "/wallet-history", element: withSuspense(WalletHistory) },
         ],
       },
     ],
   },
-  { path: "/result/:id", element: <CheckResult /> },
+  // 📄 CheckResult page (outside MainLayout)
+  { path: "/result/:id", element: withSuspense(CheckResult) },
+  { path: "*", element: <NotFound /> },
 ]);
 
 function AppRouter() {
