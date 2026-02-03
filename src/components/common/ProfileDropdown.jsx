@@ -1,6 +1,6 @@
 import { memo } from 'react';
-import { Link } from 'react-router-dom';
-import { Search, CreditCard, Wallet, LogOut, ChevronDown } from 'lucide-react';
+import { Wallet, LogOut, ChevronDown } from 'lucide-react';
+import NavigationLinks from './Navigationlinks';
 
 const ProfileDropdown = memo(({ isOpen, onToggle, onClose, onLogout, loading }) => {
   return (
@@ -30,35 +30,7 @@ const ProfileDropdown = memo(({ isOpen, onToggle, onClose, onLogout, loading }) 
 
           {/* Dropdown Content */}
           <div className="absolute right-0 mt-2 w-56 bg-light rounded-lg shadow-lg border border-light-gray py-2 z-20" role="menu" aria-label="Account options">
-            <Link
-              to="/search-history"
-              className="flex items-center gap-3 px-4 py-2 text-sm text-primary hover:bg-light-gray transition-colors focus:outline-none focus:bg-light-gray"
-              onClick={onClose}
-              role="menuitem"
-            >
-              <Search className="w-4 h-4 text-primary" aria-hidden="true" />
-              <span>Search History</span>
-            </Link>
-
-            <Link
-              to="/wallet-history"
-              className="flex items-center gap-3 px-4 py-2 text-sm text-primary hover:bg-light-gray transition-colors focus:outline-none focus:bg-light-gray"
-              onClick={onClose}
-              role="menuitem"
-            >
-              <CreditCard className="w-4 h-4 text-primary" aria-hidden="true" />
-              <span>Wallet History</span>
-            </Link>
-
-            <Link
-              to="/add-balance"
-              className="flex items-center gap-3 px-4 py-2 text-sm text-primary hover:bg-light-gray transition-colors focus:outline-none focus:bg-light-gray"
-              onClick={onClose}
-              role="menuitem"
-            >
-              <Wallet className="w-4 h-4 text-primary" aria-hidden="true" />
-              <span>Add Balance</span>
-            </Link>
+            <NavigationLinks onLinkClick={onClose} variant="dropdown" />
 
             <div className="my-2 border-t border-light-gray"></div>
 

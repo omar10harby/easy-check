@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import NavBar from "../components/common/NavBar";
 import Footer from "../components/common/Footer";
-import MobileMenu from "../components/common/MobileMenu";
 import AuthModal from "../features/auth/AuthModal";
 import { logoutThunk } from "../features/auth/authSlice";
+import MobileSideBar from "../components/common/MobileSideBar";
 
 function MainLayout() {
   const dispatch = useDispatch();
@@ -14,7 +14,7 @@ function MainLayout() {
     (state) => state.auth
   );
 
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
   // Auth Handlers
@@ -29,27 +29,27 @@ function MainLayout() {
   const handleLogout = useCallback(async () => {
     try {
       await dispatch(logoutThunk()).unwrap();
-      setIsMobileMenuOpen(false); // Close menu on logout
+      setIsMobileSidebarOpen(false);
       toast.success("Logged out successfully! See you soon! 👋");
     } catch (error) {
       toast.error("Logout failed. Please try again.");
     }
   }, [dispatch]);
 
-  // Mobile Menu Handlers
-  const handleToggleMobileMenu = useCallback(() => {
-    setIsMobileMenuOpen((prev) => !prev);
+  // Mobile Sidebar Handlers
+  const handleToggleMobileSidebar = useCallback(() => {
+    setIsMobileSidebarOpen((prev) => !prev);
   }, []);
 
-  const handleCloseMobileMenu = useCallback(() => {
-    setIsMobileMenuOpen(false);
+  const handleCloseMobileSidebar = useCallback(() => {
+    setIsMobileSidebarOpen(false);
   }, []);
 
   return (
     <div className="flex flex-col min-h-screen">
       <NavBar
-        onToggleMobileMenu={handleToggleMobileMenu}
-        isMobileMenuOpen={isMobileMenuOpen}
+        onToggleMobileSidebar={handleToggleMobileSidebar}
+        isMobileSidebarOpen={isMobileSidebarOpen}
         onLoginClick={handleLoginClick}
       />
 
@@ -60,13 +60,12 @@ function MainLayout() {
       <Footer />
 
       {/* Global UI Elements */}
-      <MobileMenu
-        isOpen={isMobileMenuOpen}
-        onClose={handleCloseMobileMenu}
+      <MobileSideBar
+        isOpen={isMobileSidebarOpen}
+        onClose={handleCloseMobileSidebar}
         isAuthenticated={isAuthenticated}
         user={user}
         onLogout={handleLogout}
-        onLoginClick={handleLoginClick}
         loading={actionLoading}
       />
 
