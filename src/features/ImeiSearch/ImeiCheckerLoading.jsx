@@ -2,9 +2,8 @@ import React from 'react'
 
 function ImeiCheckerLoading() {
   return (
-    <section className="py-8 px-4">
-      <div className="md:min-w-xl mx-auto max-w-3xl">
-        <div className="bg-light rounded-3xl shadow-2xl border border-light-gray p-6 sm:p-10">
+    <section className="w-full max-w-2xl py-8 px-4">
+         <div className="bg-light rounded-3xl shadow-2xl border border-light-gray p-6 sm:p-10">
           
           {/* Header Skeleton */}
           <div className="text-center mb-8 space-y-3">
@@ -43,7 +42,6 @@ function ImeiCheckerLoading() {
             
           </div>
         </div>
-      </div>
     </section>
   );
 }

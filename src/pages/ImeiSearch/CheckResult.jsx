@@ -1,7 +1,15 @@
 import React, { useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { ArrowLeft, AlertCircle, Clock, Mail, RefreshCw, CheckCircle, Smartphone } from "lucide-react";
+import {
+  ArrowLeft,
+  AlertCircle,
+  Clock,
+  Mail,
+  RefreshCw,
+  CheckCircle,
+  Smartphone,
+} from "lucide-react";
 import toast from "react-hot-toast";
 import {
   getImeiResultThunk,
@@ -45,59 +53,55 @@ function CheckResult() {
 
   // Determine State
   const isPending =
-    currentResult?.result &&
-    currentResult.result.toLowerCase().includes("pending");
+    currentResult?.serviceDetails.api_result.status === "pending";
 
   const isError =
-    currentResult?.result &&
-    !currentResult.result.startsWith("<") &&
-    !isPending;
+    currentResult?.serviceDetails.api_result.status === "error";
 
-  const isSuccess = !isPending && !isError && currentResult?.result;
+  const isSuccess = currentResult?.serviceDetails.api_result?.status==="success";
 
   // Configuration based on state
   let statusTheme = {
-    label: 'Device Information',
-    headerBg: 'bg-primary',
+    label: "Device Information",
+    headerBg: "bg-primary",
     icon: <Smartphone className="w-6 h-6 text-light" />,
-    borderColor: 'border-primary/20',
-    lightColor: 'text-primary'
+    borderColor: "border-primary/20",
+    lightColor: "text-primary",
   };
 
   if (isPending) {
     statusTheme = {
-      label: 'Processing Request',
-      headerBg: 'bg-amber-500',
-      icon: <RefreshCw className="w-6 h-6 text-light animate-spin" />,
-      borderColor: 'border-amber-200',
-      lightColor: 'text-amber-600'
+      label: "Processing Request",
+      headerBg: "bg-amber-500",
+      icon: <RefreshCw className="w-6 h-6 text-light " />,
+      borderColor: "border-amber-200",
+      lightColor: "text-amber-600",
     };
   } else if (isError) {
     statusTheme = {
-      label: 'Service Error',
-      headerBg: 'bg-rose-500',
+      label: "Service Error",
+      headerBg: "bg-rose-500",
       icon: <AlertCircle className="w-6 h-6 text-light" />,
-      borderColor: 'border-rose-200',
-      lightColor: 'text-rose-600'
+      borderColor: "border-rose-200",
+      lightColor: "text-rose-600",
     };
   } else if (isSuccess) {
     statusTheme = {
-      label: 'Check Successful',
-      headerBg: 'bg-emerald-500',
+      label: "Check Successful",
+      headerBg: "bg-emerald-500",
       icon: <CheckCircle className="w-6 h-6 text-light" />,
-      borderColor: 'border-emerald-200',
-      lightColor: 'text-emerald-600'
+      borderColor: "border-emerald-200",
+      lightColor: "text-emerald-600",
     };
   }
 
-  const { date, time } = currentResult?.created_at
-    ? formatDate(currentResult.created_at)
-    : { date: 'Unknown Date', time: '' };
+  const { date, time } = currentResult?.createdAt
+    ? formatDate(currentResult.createdAt)
+    : { date: "Unknown Date", time: "" };
 
   return (
     <div className="min-h-screen bg-primary flex items-center justify-center p-4">
       <div className="w-full max-w-3xl">
-
         {/* Top Actions */}
         <div className="flex items-center justify-between mb-4">
           <h1 className="text-xl font-black text-light uppercase tracking-wider hidden sm:block">
@@ -105,7 +109,7 @@ function CheckResult() {
           </h1>
           <button
             onClick={() => handleNavigate("/")}
-            className="flex items-center gap-2 px-3 py-1.5 bg-light/10 hover:bg-light/20 text-light font-bold rounded-lg transition-all backdrop-blur-sm text-sm"
+            className="flex items-center gap-2 px-3 py-2 bg-light/10 hover:bg-light/20 text-light font-bold rounded-lg transition-all backdrop-blur-sm text-sm"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Back to Home</span>
@@ -132,7 +136,9 @@ function CheckResult() {
               Unable to Load Result
             </h2>
             <p className="text-gray-500 font-medium mb-6 text-sm">
-              {typeof error === "string" ? error : "Something went wrong while connecting to the server."}
+              {typeof error === "string"
+                ? error
+                : "Something went wrong while connecting to the server."}
             </p>
             <button
               onClick={fetchResult}
@@ -146,9 +152,10 @@ function CheckResult() {
         {/* Result Card */}
         {currentResult && (
           <div className="bg-light rounded-3xl shadow-xl border border-gray-100 overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-500">
-
             {/* Solid Colored Header */}
-            <div className={`${statusTheme.headerBg} p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3`}>
+            <div
+              className={`${statusTheme.headerBg} p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3`}
+            >
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-white/20 rounded-lg backdrop-blur-sm shadow-inner">
                   {statusTheme.icon}
@@ -163,18 +170,13 @@ function CheckResult() {
                 </div>
               </div>
               <div className="text-left sm:text-right bg-white/10 sm:bg-transparent p-2 sm:p-0 rounded-lg">
-                <p className="text-light font-bold text-sm">
-                  {date}
-                </p>
-                <p className="text-light/70 text-xs font-medium">
-                  {time}
-                </p>
+                <p className="text-light font-bold text-sm">{date}</p>
+                <p className="text-light/70 text-xs font-medium">{time}</p>
               </div>
             </div>
 
             {/* Body Content */}
             <div className="p-5 sm:p-6">
-
               {/* Service Info Row */}
               <div className="flex flex-col sm:flex-row gap-4 pb-4 border-b border-gray-100 mb-4">
                 <div className="flex-1">
@@ -182,14 +184,17 @@ function CheckResult() {
                     Service Name
                   </p>
                   <p className="text-dark-bg font-bold text-base leading-snug">
-                    {currentResult.service_name || "IMEI Check Service"}
+                    {currentResult.serviceDetails.service_name ||
+                      "IMEI Check Service"}
                   </p>
                 </div>
                 <div className="sm:text-right">
                   <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
                     Status
                   </p>
-                  <div className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md font-bold text-xs bg-gray-50 border ${statusTheme.borderColor} ${statusTheme.lightColor}`}>
+                  <div
+                    className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md font-bold text-xs bg-gray-50 border ${statusTheme.borderColor} ${statusTheme.lightColor}`}
+                  >
                     {isPending ? "Pending" : isError ? "Failed" : "Completed"}
                   </div>
                 </div>
@@ -206,9 +211,12 @@ function CheckResult() {
                   <div className="bg-amber-50 border border-amber-100 rounded-xl p-6 text-center space-y-3">
                     <Clock className="w-10 h-10 text-amber-500 mx-auto animate-pulse" />
                     <div>
-                      <h3 className="text-base font-bold text-amber-900 mb-0.5">Processing in Background</h3>
+                      <h3 className="text-base font-bold text-amber-900 mb-0.5">
+                        Processing in Background
+                      </h3>
                       <p className="text-amber-700 font-medium text-xs">
-                        This service takes longer than usual. We will email you the results once completed.
+                        This service takes longer than usual. We will email you
+                        the results once completed.
                       </p>
                     </div>
                     <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white rounded-lg border border-amber-200 text-amber-800 text-xs font-bold shadow-sm">
@@ -223,13 +231,16 @@ function CheckResult() {
                   <div className="bg-rose-50 border border-rose-100 rounded-xl p-6 text-center space-y-3">
                     <AlertCircle className="w-10 h-10 text-rose-500 mx-auto" />
                     <div>
-                      <h3 className="text-base font-bold text-rose-900 mb-0.5">Order Rejected</h3>
+                      <h3 className="text-base font-bold text-rose-900 mb-0.5">
+                        Order Rejected
+                      </h3>
                       <p className="text-rose-700 font-medium font-mono text-xs bg-white/50 inline-block px-2 py-0.5 rounded">
                         {currentResult.result}
                       </p>
                     </div>
                     <p className="text-rose-600/80 text-[10px]">
-                      If you think this is a mistake, please contact support with Order ID #{id}
+                      If you think this is a mistake, please contact support
+                      with Order ID #{id}
                     </p>
                   </div>
                 )}
@@ -252,7 +263,6 @@ function CheckResult() {
                   />
                 )}
               </div>
-
             </div>
 
             {/* Footer Actions */}
@@ -264,9 +274,8 @@ function CheckResult() {
                 Check Another Device
               </button>
             </div>
-
           </div>
-        )}
+        )} 
       </div>
     </div>
   );

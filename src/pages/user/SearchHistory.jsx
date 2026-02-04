@@ -13,7 +13,7 @@ import SearchLoading from "../../features/user/search/SearchLoading";
 function SearchHistory() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { searchHistory, loading, error } = useSelector(
+  const { searchHistory, loading } = useSelector(
     (state) => state.history,
   );
   const [page, setPage] = useState(1);
@@ -52,13 +52,13 @@ function SearchHistory() {
   return (
     <section className="w-full max-w-2xl mx-auto py-6 sm:py-8 lg:py-12 px-4 sm:px-6">
       <HeaderSearch count={searchHistory?.count || 0} isLoading={loading} />
-      
+
       {/* ✅ Loading Skeleton */}
       {loading && <SearchLoading count={searchHistory?.count || 1} />}
-      
+
       {/* Empty State */}
       {!loading && searchHistory?.results?.length === 0 && <SearchEmptyState />}
-      
+
       {/* Cards List */}
       {!loading && searchHistory?.results?.length > 0 && (
         <div className="space-y-5">
@@ -71,7 +71,7 @@ function SearchHistory() {
           ))}
         </div>
       )}
-      
+
       {/* Pagination*/}
       {!loading && paginationMeta.totalPages > 1 && (
         <Pagination

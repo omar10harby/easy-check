@@ -8,7 +8,7 @@ function Footer() {
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center gap-3 sm:gap-8 text-xs sm:text-sm text-light">
           {/* Copyright */}
-          <span className="font-medium ">© {new Date().getFullYear()} Shaikly Inc.</span>
+          <span className="font-medium ">All rights reserved © Shaikly {new Date().getFullYear()}  </span>
 
           {/* Brands */}
         

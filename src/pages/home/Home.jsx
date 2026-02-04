@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback, useMemo } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import HeroSection from "../../features/home/Herosection";
 import FeaturePills from "../../features/home/Featurepills";
@@ -42,7 +42,7 @@ function Home() {
           setIsProcessing(false);
         }
       }
-    } catch (error) {
+    } catch (_error) {
       toast.error("Failed to verify payment");
       setSearchParams({});
       setIsProcessing(false);

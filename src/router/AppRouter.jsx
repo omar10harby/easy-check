@@ -14,34 +14,35 @@ const AddBalance = lazy(() => import("../pages/payment/AddBalance"));
 const SearchHistory = lazy(() => import("../pages/user/SearchHistory"));
 const WalletHistory = lazy(() => import("../pages/user/WalletHistory"));
 
-// Helper to wrap components in Suspense with GlobalLoader
-const withSuspense = (Component) => (
-  <Suspense fallback={<GlobalLoader />}>
-    <Component />
-  </Suspense>
-);
+// Lazy-loaded page components wrapped in Suspense
+const SuspenseHome = () => <Suspense fallback={<GlobalLoader />}><Home /></Suspense>;
+const SuspenseImeiChecker = () => <Suspense fallback={<GlobalLoader />}><ImeiChecker /></Suspense>;
+const SuspenseCheckResult = () => <Suspense fallback={<GlobalLoader />}><CheckResult /></Suspense>;
+const SuspenseAddBalance = () => <Suspense fallback={<GlobalLoader />}><AddBalance /></Suspense>;
+const SuspenseSearchHistory = () => <Suspense fallback={<GlobalLoader />}><SearchHistory /></Suspense>;
+const SuspenseWalletHistory = () => <Suspense fallback={<GlobalLoader />}><WalletHistory /></Suspense>;
 
-export const router = createBrowserRouter([
+const router = createBrowserRouter([
   // 🌍 Public Routes with MainLayout
   {
     element: <MainLayout />,
     children: [
-      { path: "/", element: withSuspense(Home) },
-      { path: "/imei-checker", element: withSuspense(ImeiChecker) },
+      { path: "/", element: <SuspenseHome /> },
+      { path: "/imei-checker", element: <SuspenseImeiChecker /> },
 
       // 🔐 Protected Routes
       {
         element: <ProtectedRoute />,
         children: [
-          { path: "/add-balance", element: withSuspense(AddBalance) },
-          { path: "/search-history", element: withSuspense(SearchHistory) },
-          { path: "/wallet-history", element: withSuspense(WalletHistory) },
+          { path: "/add-balance", element: <SuspenseAddBalance /> },
+          { path: "/search-history", element: <SuspenseSearchHistory /> },
+          { path: "/wallet-history", element: <SuspenseWalletHistory /> },
         ],
       },
     ],
   },
   // 📄 CheckResult page (outside MainLayout)
-  { path: "/result/:id", element: withSuspense(CheckResult) },
+  { path: "/result/:id", element: <SuspenseCheckResult /> },
   { path: "*", element: <NotFound /> },
 ]);
 

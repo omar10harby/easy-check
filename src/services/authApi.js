@@ -5,7 +5,7 @@ export function saveAuthToken(token) {
   try {
     Cookies.set("auth_token", token, {
       expires: 7,
-      secure: false,
+      secure: import.meta.env.PROD,
       sameSite: "Lax",
     });
     return true;
