@@ -55,10 +55,14 @@ function CheckResult() {
   const isPending =
     currentResult?.serviceDetails.api_result.status === "pending";
 
+  const isRefunded =
+    currentResult?.serviceDetails.api_result.status === "refunded" ||
+    currentResult?.serviceDetails.api_result.status === "rejected"; // Assuming rejected might be treated similarly or we can separate them
+
   const isError =
     currentResult?.serviceDetails.api_result.status === "error";
 
-  const isSuccess = currentResult?.serviceDetails.api_result?.status==="success";
+  const isSuccess = currentResult?.serviceDetails.api_result?.status === "success";
 
   // Configuration based on state
   let statusTheme = {
@@ -85,6 +89,14 @@ function CheckResult() {
       borderColor: "border-rose-200",
       lightColor: "text-rose-600",
     };
+  } else if (isRefunded) {
+    statusTheme = {
+      label: "Order Refunded",
+      headerBg: "bg-blue-500",
+      icon: <RefreshCw className="w-6 h-6 text-light" />,
+      borderColor: "border-blue-200",
+      lightColor: "text-blue-600",
+    };
   } else if (isSuccess) {
     statusTheme = {
       label: "Check Successful",
@@ -95,9 +107,24 @@ function CheckResult() {
     };
   }
 
-  const { date, time } = currentResult?.createdAt
-    ? formatDate(currentResult.createdAt)
-    : { date: "Unknown Date", time: "" };
+  // Handle Date - check multiple sources or fallback to current if successful/refunded/error
+  const getDate = () => {
+    if (!currentResult) return { date: "Processing...", time: "" };
+
+    // Try createdAt, then updatedAt
+    const dateStr = currentResult.createdAt || currentResult.updatedAt;
+
+    if (dateStr) return formatDate(dateStr);
+
+    // Fallback if status is final and no date (shouldn't happen but safe/fallback)
+    if (!isPending) {
+      return formatDate(new Date().toISOString());
+    }
+
+    return { date: "Unknown Date", time: "" };
+  };
+
+  const { date, time } = getDate();
 
   return (
     <div className="min-h-screen bg-primary flex items-center justify-center p-4">
@@ -116,17 +143,17 @@ function CheckResult() {
           </button>
         </div>
 
-        {/* Loading State */}
-        {loading && !currentResult && (
+        {/* Loading State - Show if loading from redux OR if result is still pending */}
+        {(loading || (currentResult && isPending)) && (
           <div className="bg-light rounded-3xl p-8 text-center shadow-2xl">
             <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
             <p className="text-primary font-black text-lg uppercase tracking-widest animate-pulse">
-              Fetching Data...
+              {isPending ? "Finalizing Result..." : "Fetching Data..."}
             </p>
           </div>
         )}
 
-        {/* Error State (Network/System) */}
+        {/* Error State (Network/System) - Only show if NO result and NOT loading */}
         {error && !loading && !currentResult && (
           <div className="bg-light rounded-3xl p-8 text-center shadow-2xl border-2 border-red-100">
             <div className="bg-red-50 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -149,8 +176,8 @@ function CheckResult() {
           </div>
         )}
 
-        {/* Result Card */}
-        {currentResult && (
+        {/* Result Card - Show only if we have a result AND it's NOT pending (because pending is handled by loading view above) */}
+        {currentResult && !isPending && (
           <div className="bg-light rounded-3xl shadow-xl border border-gray-100 overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-500">
             {/* Solid Colored Header */}
             <div
@@ -195,7 +222,13 @@ function CheckResult() {
                   <div
                     className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md font-bold text-xs bg-gray-50 border ${statusTheme.borderColor} ${statusTheme.lightColor}`}
                   >
-                    {isPending ? "Pending" : isError ? "Failed" : "Completed"}
+                    {isPending
+                      ? "Pending"
+                      : isRefunded
+                        ? "Refunded"
+                        : isError
+                          ? "Failed"
+                          : "Completed"}
                   </div>
                 </div>
               </div>
@@ -206,22 +239,25 @@ function CheckResult() {
                   Result Details
                 </p>
 
-                {/* Case: Pending */}
+                {/* Case: Pending - Hidden because we show full screen loader now, but kept conditionally just in case logic changes */}
                 {isPending && (
                   <div className="bg-amber-50 border border-amber-100 rounded-xl p-6 text-center space-y-3">
-                    <Clock className="w-10 h-10 text-amber-500 mx-auto animate-pulse" />
+                    <p>Processing...</p>
+                  </div>
+                )}
+
+
+                {/* Case: Refunded */}
+                {isRefunded && (
+                  <div className="bg-blue-50 border border-blue-100 rounded-xl p-6 text-center space-y-3">
+                    <RefreshCw className="w-10 h-10 text-blue-500 mx-auto" />
                     <div>
-                      <h3 className="text-base font-bold text-amber-900 mb-0.5">
-                        Processing in Background
+                      <h3 className="text-base font-bold text-blue-900 mb-0.5">
+                        Order was Refunded
                       </h3>
-                      <p className="text-amber-700 font-medium text-xs">
-                        This service takes longer than usual. We will email you
-                        the results once completed.
+                      <p className="text-blue-700 font-medium text-xs">
+                        The amount has been returned to your wallet.
                       </p>
-                    </div>
-                    <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white rounded-lg border border-amber-200 text-amber-800 text-xs font-bold shadow-sm">
-                      <Mail className="w-3.5 h-3.5" />
-                      Results sent to email
                     </div>
                   </div>
                 )}
@@ -275,7 +311,7 @@ function CheckResult() {
               </button>
             </div>
           </div>
-        )} 
+        )}
       </div>
     </div>
   );

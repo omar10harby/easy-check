@@ -150,7 +150,6 @@ const isSearchDisabled = useMemo(() => {
     const cleanValue = imeiOrSerial ? imeiOrSerial.trim() : "";
     
     if (inputType === "imei") {
-      // لو IMEI لازم 15 رقم بالظبط
       if (cleanValue.length !== 15) return true;
     } else if (inputType === "serial") {
       if (cleanValue.length < 8) return true;
@@ -255,7 +254,7 @@ const isSearchDisabled = useMemo(() => {
               value={guestEmail}
               onChange={handleEmailChange}
               error={emailError}
-              disabled={paymentLoading}
+              disabled={isSearchDisabled}
             />
           )}
           <SearchButton
