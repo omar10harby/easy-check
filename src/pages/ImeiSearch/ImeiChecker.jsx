@@ -36,12 +36,10 @@ function ImeiChecker() {
 
   const [imeiOrSerial, setImeiOrSerial] = useState("");
   const [isServiceDropdownOpen, setIsServiceDropdownOpen] = useState(false);
-  const [inputType, setInputType] = useState("");
+  const [inputType, setInputType] = useState(""); // ⭐ 'imei' or 'serial' or ''
   const [maxLength, setMaxLength] = useState(15);
   const [guestEmail, setGuestEmail] = useState("");
   const [emailError, setEmailError] = useState("");
-
-
 
   useEffect(() => {
     if (services?.length === 0) {
@@ -142,23 +140,40 @@ function ImeiChecker() {
     navigate,
   ]);
 
-  const isSearchDisabled = useMemo(
-    () =>
-      !selectedService ||
-      (inputType === "imei" && imeiOrSerial.length !== 15) ||
-      (inputType === "serial" && imeiOrSerial.length < 8) ||
-      (!isAuthenticated && (!guestEmail || !!emailError)) ||
-      paymentLoading,
-    [
-      selectedService,
-      inputType,
-      imeiOrSerial,
-      isAuthenticated,
-      guestEmail,
-      emailError,
-      paymentLoading,
-    ],
-  );
+  // ✅ الشروط المحسّنة لتفعيل الزر
+  const isSearchDisabled = useMemo(() => {
+    // 1️⃣ لازم يكون في service مختار
+    if (!selectedService) return true;
+
+    // 2️⃣ لازم المستخدم يختار نوع الإدخال (IMEI أو Serial)
+    if (!inputType) return true; // ⭐ شرط جديد
+
+    // 3️⃣ التحقق من صحة الـ IMEI/Serial
+    if (inputType === "imei") {
+      if (imeiOrSerial.length !== 15) return true;
+    } else if (inputType === "serial") {
+      if (imeiOrSerial.length < 8) return true;
+    }
+
+    // 4️⃣ لو Guest، لازم يكون في إيميل صحيح
+    if (!isAuthenticated) {
+      if (!guestEmail || !!emailError) return true;
+    }
+
+    // 5️⃣ لو في عملية دفع جارية
+    if (paymentLoading) return true;
+
+    // ✅ كل الشروط تمام
+    return false;
+  }, [
+    selectedService,
+    inputType, // ⭐ مضاف
+    imeiOrSerial,
+    isAuthenticated,
+    guestEmail,
+    emailError,
+    paymentLoading,
+  ]);
 
   if (servicesLoading && services?.length === 0) {
     return <ImeiCheckerLoading />;
