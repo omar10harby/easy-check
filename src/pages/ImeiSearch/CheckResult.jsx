@@ -115,12 +115,8 @@ function CheckResult() {
 
     if (dateStr) return formatDate(dateStr);
 
-    // Fallback if status is final and no date (shouldn't happen but safe/fallback)
-    if (!isPending) {
-      return formatDate(new Date().toISOString());
-    }
-
-    return { date: "Unknown Date", time: "" };
+    // Fallback: Always return current date if missing, to avoid "Unknown Date"
+    return formatDate(new Date().toISOString());
   };
 
   const { date, time } = getDate();
