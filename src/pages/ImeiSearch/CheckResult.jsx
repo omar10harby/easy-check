@@ -56,8 +56,7 @@ function CheckResult() {
     currentResult?.serviceDetails.api_result.status === "pending";
 
   const isRefunded =
-    currentResult?.serviceDetails.api_result.status === "refunded" ||
-    currentResult?.serviceDetails.api_result.status === "rejected"; // Assuming rejected might be treated similarly or we can separate them
+    currentResult?.serviceDetails.api_result.status === "rejected"; 
 
   const isError =
     currentResult?.serviceDetails.api_result.status === "error";
@@ -192,7 +191,7 @@ function CheckResult() {
                     {statusTheme.label}
                   </h2>
                   <p className="text-light/80 font-medium text-xs mt-0.5">
-                    ID: #{id}
+                    ID: #{currentResult.merchantTransactionId}
                   </p>
                 </div>
               </div>
