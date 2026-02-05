@@ -40,10 +40,12 @@ function CheckResult() {
       return;
     }
 
-    if (!currentResult) {
+    // If we have no result, OR if the current result's ID doesn't match the URL param ID
+    // we must fetch the fresh data from the server.
+    if (!currentResult || String(currentResult.id) !== String(id)) {
       fetchResult();
     }
-  }, [id, currentResult]);
+  }, [id, currentResult, dispatch]);
 
   const handleNavigate = (path) => {
     isNavigating.current = true;

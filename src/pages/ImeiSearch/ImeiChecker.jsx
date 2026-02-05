@@ -101,7 +101,7 @@ function ImeiChecker() {
         try {
           const result = await dispatch(buyWithWalletThunk(checkData)).unwrap();
           dispatch(updateBalance(result.newBalance));
-          dispatch(setCurrentResult(result));
+          // dispatch(setCurrentResult(result)); // Removed to force CheckResult to fetch fresh data
           toast.success("Transaction successful! ✅");
           navigate(`/result/${result.id}`);
         } catch (error) {
@@ -140,7 +140,7 @@ function ImeiChecker() {
     navigate,
   ]);
 
-const isSearchDisabled = useMemo(() => {
+  const isSearchDisabled = useMemo(() => {
     if (paymentLoading) return true;
 
     if (!selectedService) return true;
@@ -148,7 +148,7 @@ const isSearchDisabled = useMemo(() => {
     if (!inputType || inputType === "") return true;
 
     const cleanValue = imeiOrSerial ? imeiOrSerial.trim() : "";
-    
+
     if (inputType === "imei") {
       if (cleanValue.length !== 15) return true;
     } else if (inputType === "serial") {

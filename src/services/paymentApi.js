@@ -15,23 +15,13 @@ export async function buyWithWallet(imeiOrSerial, serviceId, amount, isSerial = 
   const data = response.data;
   const apiResult = data.api_result;
 
-  // Standardization: Match the structure of 'getImeiResult' to prevent UI crashes
-  // CheckResult.jsx expects: serviceDetails.api_result, merchantTransactionId, createdAt, etc.
   return {
     id: data.transaction_id,
-    merchantTransactionId: data.merchant_transaction_id || data.transaction_id,
-    status: apiResult?.status || data.transaction_status || "pending",
+    status: apiResult?.status || data.transaction_status,
+    result: apiResult?.result || apiResult || "Processing",
+    created_at: new Date().toISOString(),
     amount: amount,
     newBalance: data.new_balance,
-
-    // Critical: Provide serviceDetails wrapper
-    serviceDetails: {
-      api_result: apiResult || { status: data.transaction_status || "pending" },
-      service_name: "Processing Request...", // Placeholder since name isn't in this response
-    },
-
-    createdAt: new Date().toISOString(), // camelCase to match CheckResult expectation
-    result: apiResult?.result || apiResult || "Processing...",
   };
 }
 
