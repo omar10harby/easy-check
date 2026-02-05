@@ -36,7 +36,7 @@ function SearchHistory() {
   }, [navigate]);
 
   const paginationMeta = useMemo(() => ({
-    totalPages: Math.ceil((searchHistory?.count || 0) / 10),
+    totalPages: Math.ceil((searchHistory?.count || 0) / 5),
     hasNext: !!searchHistory?.next,
     hasPrev: !!searchHistory?.previous
   }), [searchHistory]);
