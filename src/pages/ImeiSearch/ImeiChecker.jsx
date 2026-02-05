@@ -60,7 +60,7 @@ function ImeiChecker() {
 
   const handleTypeChange = useCallback((type) => {
     setInputType(type);
-    const newMaxLength = type === "imei" ? 15 : 12;
+    const newMaxLength = type === "imei" ? 15 : 30;
     setMaxLength(newMaxLength);
     setImeiOrSerial("");
   }, []);
@@ -140,30 +140,25 @@ function ImeiChecker() {
     navigate,
   ]);
 
-  // ✅ الشروط الصحيحة للـ User
- const isSearchDisabled = useMemo(() => {
-    if (!selectedService) return true;
-
-    if (!inputType) return true;
-
-    if (inputType === "imei" && imeiOrSerial.length !== 15) {
-      return true;
-    }
-    
-    if (inputType === "serial" && imeiOrSerial.length < 8) {
-      return true;
-    }
-
-    if (!isAuthenticated) {
-      if (!guestEmail) return true;
-      
-      if (guestEmail.trim() === "") return true;
-      
-      if (emailError) return true;
-    }
-
+const isSearchDisabled = useMemo(() => {
     if (paymentLoading) return true;
 
+    if (!selectedService) return true;
+
+    if (!inputType || inputType === "") return true;
+
+    const cleanValue = imeiOrSerial ? imeiOrSerial.trim() : "";
+    
+    if (inputType === "imei") {
+      // لو IMEI لازم 15 رقم بالظبط
+      if (cleanValue.length !== 15) return true;
+    } else if (inputType === "serial") {
+      if (cleanValue.length < 8) return true;
+    }
+    if (!isAuthenticated) {
+      if (!guestEmail || guestEmail.trim() === "") return true;
+      if (emailError) return true;
+    }
     return false;
   }, [
     selectedService,

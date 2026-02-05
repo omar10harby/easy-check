@@ -12,7 +12,7 @@ function PayButton({ amount, loading, onPay }) {
         disabled={disabled}
         aria-label={loading ? "Processing payment" : `Pay ${formattedAmount}`}
         aria-busy={loading}
-        className="w-full flex items-center justify-center gap-3 px-6 py-5 bg-primary text-white disabled:bg-gray-300 disabled:cursor-not-allowed font-black text-lg rounded-2xl transition-all shadow-lg active:scale-95 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+        className="w-full flex items-center justify-center gap-3 px-6 py-5 bg-primary text-white disabled:bg-gray-300 disabled:cursor-not-allowed font-black text-lg rounded-2xl transition-all shadow-lg active:scale-95 "
       >
         {loading ? (
           <div
