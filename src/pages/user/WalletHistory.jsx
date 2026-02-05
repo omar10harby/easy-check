@@ -26,7 +26,7 @@ function WalletHistory() {
     }
   }
 
-  const totalPages = Math.ceil((walletHistory?.count || 0) / 10);
+  const totalPages = Math.ceil((walletHistory?.count || 0) / 5);
   const hasNext = !!walletHistory?.next;
   const hasPrev = !!walletHistory?.previous;
 
