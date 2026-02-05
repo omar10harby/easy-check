@@ -20,14 +20,19 @@ export const getImeiResult = async (resultId) => {
   }
 
   const data = response.data;
-  const apiResult = data.service_details?.api_result;
+
+  // Handle case where api_result is at root (e.g. REFUNDED/REJECTED often) or nested
+  const apiResult = data.service_details?.api_result || data.api_result;
+
+  // Normalize serviceDetails to ensure UI doesn't crash
+  const serviceDetails = data.service_details || { api_result: apiResult };
 
   return {
     id: data.id,
     merchantTransactionId: data.merchant_transaction_id,
     status: data.status,
     amount: data.amount,
-    serviceDetails: data.service_details,
+    serviceDetails: serviceDetails,
     isBalanceTopup: data.is_balance_topup,
     createdAt: data.created_at,
     result: apiResult?.result || apiResult?.status || null,
