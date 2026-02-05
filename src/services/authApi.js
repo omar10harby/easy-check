@@ -5,24 +5,20 @@ export function saveAuthToken(token) {
   try {
     const cookieOptions = {
       expires: 7,
-      secure: window.location.protocol === 'https:', // ✅ أضمن
+      secure: window.location.protocol === 'https:', 
       sameSite: 'Lax',
       domain: window.location.hostname.includes('shaikly.com') 
-        ? '.shaikly.com'  // ✅ اشتغل على كل الـ subdomains
+        ? '.shaikly.com'  
         : undefined
     };
-    
     Cookies.set("auth_token", token, cookieOptions);
-    
-    // ✅ تأكد إن الـ Cookie اتحفظت
     const saved = Cookies.get("auth_token");
     console.log('🍪 Token saved:', !!saved);
-    
+
     return !!saved;
   } catch (error) {
     console.error('❌ Failed to save token:', error);
-    return false;
-  }
+    return false;}
 }
 
 export function getAuthToken() {
