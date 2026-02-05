@@ -53,15 +53,15 @@ function CheckResult() {
 
   // Determine State
   const isPending =
-    currentResult?.serviceDetails.api_result.status === "pending";
+    currentResult?.serviceDetails?.api_result?.status === "pending";
 
   const isRefunded =
-    currentResult?.serviceDetails.api_result.status === "rejected"; 
+    currentResult?.serviceDetails?.api_result?.status === "rejected";
 
   const isError =
-    currentResult?.serviceDetails.api_result.status === "error";
+    currentResult?.serviceDetails?.api_result?.status === "error";
 
-  const isSuccess = currentResult?.serviceDetails.api_result?.status === "success";
+  const isSuccess = currentResult?.serviceDetails?.api_result?.status === "success";
 
   // Configuration based on state
   let statusTheme = {
@@ -210,7 +210,7 @@ function CheckResult() {
                     Service Name
                   </p>
                   <p className="text-dark-bg font-bold text-base leading-snug">
-                    {currentResult.serviceDetails.service_name ||
+                    {currentResult?.serviceDetails?.service_name ||
                       "IMEI Check Service"}
                   </p>
                 </div>
