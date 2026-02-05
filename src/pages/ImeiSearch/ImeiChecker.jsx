@@ -40,17 +40,14 @@ function ImeiChecker() {
   const [maxLength, setMaxLength] = useState(15);
   const [guestEmail, setGuestEmail] = useState("");
   const [emailError, setEmailError] = useState("");
-  const [simulateError, setSimulateError] = useState(false);
 
-  if (simulateError) {
-    throw new Error("This is a test error for the Error Boundary!");
-  }
+
 
   useEffect(() => {
-    if (services.length === 0) {
+    if (services?.length === 0) {
       dispatch(fetchServicesThunk());
     }
-  }, [dispatch, services.length]);
+  }, [dispatch, services?.length]);
 
   const handleImeiChange = useCallback(
     (e) => {
@@ -163,11 +160,11 @@ function ImeiChecker() {
     ],
   );
 
-  if (servicesLoading && services.length === 0) {
+  if (servicesLoading && services?.length === 0) {
     return <ImeiCheckerLoading />;
   }
 
-  if (servicesError && services.length === 0) {
+  if (servicesError && services?.length === 0) {
     return (
       <section className="w-full max-w-2xl  sm:py-8 px-4">
         <div className="bg-light rounded-3xl shadow-2xl border border-light-gray p-6 sm:p-10">
@@ -191,7 +188,7 @@ function ImeiChecker() {
     );
   }
 
-  if (!servicesLoading && services.length === 0) {
+  if (!servicesLoading && services?.length === 0) {
     return (
       <section className="w-full max-w-2xl  sm:py-8 px-4">
         <div className="bg-light rounded-3xl shadow-2xl border border-light-gray p-6 sm:p-10">

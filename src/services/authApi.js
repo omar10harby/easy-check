@@ -3,13 +3,24 @@ import Cookies from "js-cookie";
 
 export function saveAuthToken(token) {
   try {
-    Cookies.set("auth_token", token, {
+    const cookieOptions = {
       expires: 7,
-      secure: import.meta.env.PROD,
-      sameSite: "Lax",
-    });
-    return true;
-  } catch {
+      secure: window.location.protocol === 'https:', // ✅ أضمن
+      sameSite: 'Lax',
+      domain: window.location.hostname.includes('shaikly.com') 
+        ? '.shaikly.com'  // ✅ اشتغل على كل الـ subdomains
+        : undefined
+    };
+    
+    Cookies.set("auth_token", token, cookieOptions);
+    
+    // ✅ تأكد إن الـ Cookie اتحفظت
+    const saved = Cookies.get("auth_token");
+    console.log('🍪 Token saved:', !!saved);
+    
+    return !!saved;
+  } catch (error) {
+    console.error('❌ Failed to save token:', error);
     return false;
   }
 }
@@ -56,9 +67,20 @@ export async function login({ phone_number, password }) {
 export async function verifyAuth() {
   try {
     const token = getAuthToken();
-    if (!token) return null;
+    
+    // ✅ Debug logs
+    console.log('🔐 Verifying auth...');
+    console.log('🔑 Token exists:', !!token);
+    
+    if (!token) {
+      console.warn('⚠️ No token found');
+      return null;
+    }
 
     const response = await axiosInstance.get("/users/user_info/");
+    
+    console.log('✅ User verified:', response.data);
+    
     return {
       id: response.data.user_id,
       username: response.data.username,
@@ -66,8 +88,19 @@ export async function verifyAuth() {
       balance: parseFloat(response.data.balance),
       created_at: response.data.created_at,
     };
-  } catch {
-    removeAuthToken();
+  } catch (error) {
+    console.error('❌ Verify auth failed:', {
+      status: error.response?.status,
+      message: error.message,
+      data: error.response?.data
+    });
+    
+    // ✅ مسح الـ token بس لو 401
+    if (error.response?.status === 401) {
+      console.warn('🔓 Token expired or invalid - logging out');
+      removeAuthToken();
+    }
+    
     return null;
   }
 }

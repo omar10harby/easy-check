@@ -1,7 +1,9 @@
 import axios from 'axios';
 import { getAuthToken, removeAuthToken } from './authApi';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://158.220.126.228:8000';
+const API_URL = import.meta.env.VITE_API_URL;
+
+console.log(`Api Url : ${API_URL}`);
 
 const axiosInstance = axios.create({
   baseURL: API_URL,
