@@ -280,11 +280,12 @@ function CheckResult() {
                   </div>
                 )}
 
-                {/* Case: Success (HTML) */}
-                {isSuccess && (
+                {/* Case: Success OR Rejected/Refunded with text result - Show Result Content */}
+                {(isSuccess || isRefunded) && currentResult?.result && (
                   <div
-                    className="
-                      bg-gray-50 rounded-xl p-4 border border-gray-100
+                    className={`
+                      ${isRefunded ? 'bg-red-50 border-red-100' : 'bg-gray-50 border-gray-100'}
+                      rounded-xl p-4 border 
                       text-dark-bg text-sm leading-relaxed
                       [&_strong]:font-black [&_strong]:text-dark-bg [&_strong]:block [&_strong]:mt-3 [&_strong]:mb-1
                       [&_b]:font-black [&_b]:text-dark-bg
@@ -293,7 +294,7 @@ function CheckResult() {
                       [&_th]:bg-gray-100 [&_th]:text-gray-600 [&_th]:font-bold [&_th]:px-3 [&_th]:py-2 [&_th]:text-left [&_th]:text-[10px] [&_th]:uppercase [&_th]:tracking-wider
                       [&_td]:px-3 [&_td]:py-2 [&_td]:border-b [&_td]:border-gray-100 [&_td]:text-gray-700 [&_td]:text-xs
                       [&_tr:last-child_td]:border-0
-                    "
+                    `}
                     dangerouslySetInnerHTML={{ __html: currentResult.result }}
                   />
                 )}
