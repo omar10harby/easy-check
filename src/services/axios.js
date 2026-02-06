@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { getAuthToken, removeAuthToken } from './authApi';
-const API_URL = "http://shaikly.com/api";
+const API_URL = import.meta.env.VITE_API_URL ;
 const axiosInstance = axios.create({
   baseURL: API_URL,
   headers: {
