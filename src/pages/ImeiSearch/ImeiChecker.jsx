@@ -254,7 +254,7 @@ function ImeiChecker() {
               value={guestEmail}
               onChange={handleEmailChange}
               error={emailError}
-              disabled={isSearchDisabled}
+              disabled={paymentLoading || imeiOrSerial===""}
             />
           )}
           <SearchButton
