@@ -27,7 +27,7 @@ function App() {
   return (
     <>
       {/* Toast Notifications */}
-        <Toaster
+      <Toaster
         position="top-right"
         reverseOrder={false}
         toastOptions={{
@@ -55,7 +55,7 @@ function App() {
           },
         }}
       />
-      
+
       <AppRouter />
     </>
   );
