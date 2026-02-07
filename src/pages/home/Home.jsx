@@ -1,14 +1,16 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import HeroSection from "../../features/home/Herosection";
 import FeaturePills from "../../features/home/Featurepills";
 import toast from "react-hot-toast";
-import { useDispatch } from "react-redux";
 import { getImeiResultThunk } from "../../features/ImeiSearch/ImeiSlice";
+import { verifyAuthThunk } from "../../features/auth/authSlice";
 
 function Home() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { isAuthenticated } = useSelector((state) => state.auth);
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [isProcessing, setIsProcessing] = useState(() => {
@@ -30,14 +32,14 @@ function Home() {
 
       if (paymentStatus === "SUCCESS" && merchantOrderId) {
         const transaction = await dispatch(getImeiResultThunk(merchantOrderId)).unwrap();
-
-        if (transaction.serviceDetails) {
+        if (transaction.serviceDetails && !transaction.isBalanceTopup) {
           toast.success("Payment successful! ✅");
           navigate(`/result/${transaction.merchantTransactionId}`, {
             replace: true,
           });
         } else {
           toast.success("Balance updated successfully! ✅");
+          await dispatch(verifyAuthThunk()).unwrap(); 
           setSearchParams({});
           setIsProcessing(false);
         }
@@ -47,7 +49,7 @@ function Home() {
       setSearchParams({});
       setIsProcessing(false);
     }
-  }, [dispatch, navigate, setSearchParams]);
+  }, [dispatch, navigate, setSearchParams, isAuthenticated]);
 
   useEffect(() => {
     const paymentStatus = searchParams.get("paymentStatus");

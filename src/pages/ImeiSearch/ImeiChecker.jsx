@@ -37,7 +37,7 @@ function ImeiChecker() {
   const [imeiOrSerial, setImeiOrSerial] = useState("");
   const [isServiceDropdownOpen, setIsServiceDropdownOpen] = useState(false);
   const [inputType, setInputType] = useState("");
-  const [maxLength, setMaxLength] = useState(15);
+  const maxLength = inputType === "serial" ? 30 : 15;
   const [guestEmail, setGuestEmail] = useState("");
   const [emailError, setEmailError] = useState("");
 
@@ -60,8 +60,6 @@ function ImeiChecker() {
 
   const handleTypeChange = useCallback((type) => {
     setInputType(type);
-    const newMaxLength = type === "imei" ? 15 : 30;
-    setMaxLength(newMaxLength);
     setImeiOrSerial("");
   }, []);
 
