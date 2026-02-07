@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import HeroSection from "../../features/home/Herosection";
 import FeaturePills from "../../features/home/Featurepills";
 import toast from "react-hot-toast";
@@ -10,7 +10,6 @@ import { verifyAuthThunk } from "../../features/auth/authSlice";
 function Home() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { isAuthenticated } = useSelector((state) => state.auth);
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [isProcessing, setIsProcessing] = useState(() => {
@@ -21,49 +20,47 @@ function Home() {
 
   const hasProcessed = useRef(false);
 
-  const processPayment = useCallback(async (paymentStatus, merchantOrderId) => {
-    try {
-      if (paymentStatus === "FAILED") {
-        toast.error("Payment failed. Please try again. ❌");
-        setSearchParams({});
-        setIsProcessing(false);
-        return;
-      }
-
-      if (paymentStatus === "SUCCESS" && merchantOrderId) {
-        const transaction = await dispatch(getImeiResultThunk(merchantOrderId)).unwrap();
-        if (transaction.serviceDetails && !transaction.isBalanceTopup) {
-          toast.success("Payment successful! ✅");
-          navigate(`/result/${transaction.merchantTransactionId}`, {
-            replace: true,
-          });
-        } else {
-          toast.success("Balance updated successfully! ✅");
-          await dispatch(verifyAuthThunk()).unwrap(); 
-          setSearchParams({});
-          setIsProcessing(false);
-        }
-      }
-    } catch (_error) {
-      toast.error("Failed to verify payment");
-      setSearchParams({});
-      setIsProcessing(false);
-    }
-  }, [dispatch, navigate, setSearchParams, isAuthenticated]);
-
   useEffect(() => {
     const paymentStatus = searchParams.get("paymentStatus");
     const merchantOrderId = searchParams.get("merchantOrderId");
 
-    if (
-      isProcessing &&
-      !hasProcessed.current &&
-      (paymentStatus || merchantOrderId)
-    ) {
-      hasProcessed.current = true;
-      processPayment(paymentStatus, merchantOrderId);
-    }
-  }, [isProcessing, processPayment, searchParams]);
+    if (!isProcessing || hasProcessed.current) return;
+    if (!paymentStatus && !merchantOrderId) return;
+
+    hasProcessed.current = true;
+
+    const processPayment = async () => {
+      try {
+        if (paymentStatus === "FAILED") {
+          toast.error("Payment failed. Please try again. ❌");
+          setSearchParams({});
+          setIsProcessing(false);
+          return;
+        }
+
+        if (paymentStatus === "SUCCESS" && merchantOrderId) {
+          const transaction = await dispatch(getImeiResultThunk(merchantOrderId)).unwrap();
+          if (transaction.serviceDetails && !transaction.isBalanceTopup) {
+            toast.success("Payment successful! ✅");
+            navigate(`/result/${transaction.merchantTransactionId}`, {
+              replace: true,
+            });
+          } else {
+            toast.success("Balance updated successfully! ✅");
+            await dispatch(verifyAuthThunk()).unwrap();
+            setSearchParams({});
+            setIsProcessing(false);
+          }
+        }
+      } catch (_error) {
+        toast.error("Failed to verify payment");
+        setSearchParams({});
+        setIsProcessing(false);
+      }
+    };
+
+    processPayment();
+  }, [isProcessing, searchParams, dispatch, navigate, setSearchParams]);
 
   const handleSearchClick = useCallback(() => {
     navigate("/imei-checker");
