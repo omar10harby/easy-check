@@ -254,13 +254,14 @@ function ImeiChecker() {
               value={guestEmail}
               onChange={handleEmailChange}
               error={emailError}
-              disabled={paymentLoading || imeiOrSerial===""}
+              disabled={paymentLoading || imeiOrSerial === ""}
             />
           )}
           <SearchButton
             onClick={handleCheck}
             disabled={isSearchDisabled}
             selectedServicePrice={selectedService?.final_price}
+            loading={paymentLoading}
           />
         </div>
       </div>
