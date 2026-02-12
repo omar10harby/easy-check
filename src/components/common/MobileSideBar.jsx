@@ -1,36 +1,32 @@
-import { memo } from "react";
+import React from "react";
 import { LogOut, X } from "lucide-react";
 import NavigationLinks from "./Navigationlinks";
 
-const MobileSideBar = memo(({
+function MobileSideBar({
   isOpen,
   onClose,
   isAuthenticated,
   user,
   onLogout,
   loading,
-}) => {
+}) {
   if (!isOpen) return null;
 
   return (
     <>
-      {/* Backdrop with blur */}
       <div
         className="fixed inset-0 bg-primary/40 backdrop-blur-sm z-40 md:hidden transition-opacity duration-300"
         onClick={onClose}
         aria-hidden="true"
       />
 
-      {/* Sidebar */}
       <div
-        className={`fixed top-0 right-0 h-full rounded-l-3xl w-80 max-w-[85vw] bg-light z-50 shadow-2xl transform transition-transform duration-300 ease-out ${
-          isOpen ? "translate-x-0" : "translate-x-full"
-        } md:hidden`}
+        className={`fixed top-0 right-0 h-full rounded-l-3xl w-80 max-w-[85vw] bg-light z-50 shadow-2xl transform transition-transform duration-300 ease-out ${isOpen ? "translate-x-0" : "translate-x-full"
+          } md:hidden`}
         role="dialog"
         aria-modal="true"
         aria-label="Mobile navigation sidebar"
       >
-        {/* Header */}
         <div className="flex items-center justify-end p-5 border-b border-light-gray">
           <button
             onClick={onClose}
@@ -42,12 +38,9 @@ const MobileSideBar = memo(({
           </button>
         </div>
 
-        {/* Content */}
         <div className="flex flex-col h-[calc(100%-80px)] overflow-y-auto">
-          {/* User Section */}
           {isAuthenticated && user && (
             <div className="p-5 border-b border-light-gray">
-              {/* Balance Card */}
               <div className="bg-linear-to-br from-primary to-dark-bg rounded-2xl p-4 shadow-lg">
                 <p className="text-xs text-light/70 font-medium mb-1">
                   Available Balance
@@ -62,14 +55,12 @@ const MobileSideBar = memo(({
             </div>
           )}
 
-          {/* Navigation Links */}
           {isAuthenticated && (
             <nav className="flex-1 p-5 space-y-2" aria-label="Main navigation">
               <NavigationLinks onLinkClick={onClose} variant="sidebar" />
             </nav>
           )}
 
-          {/* Logout Button */}
           {isAuthenticated && (
             <div className="p-5 border-t border-light-gray">
               <button
@@ -95,6 +86,6 @@ const MobileSideBar = memo(({
       </div>
     </>
   );
-});
+};
 
 export default MobileSideBar;

@@ -6,7 +6,6 @@ const CardWalletTransaction = memo(({ item }) => {
   const txnInfo = getTransactionInfo(item.kind);
   const { date, time } = formatDate(item.created_at);
 
-  // Render icon based on iconName
   const renderIcon = () => {
     const iconProps = { className: "w-5 h-5 text-light" };
     switch (txnInfo.iconName) {

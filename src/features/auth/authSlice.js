@@ -3,7 +3,7 @@ import * as authAPI from "../../services/authApi";
 import { getErrorMessage } from "../../utils/errorHelpers"; // ✅ مضاف
 
 const initialState = {
-  user:null,
+  user: null,
   isAuthenticated: false,
   loading: true,
   actionLoading: false,
@@ -123,7 +123,7 @@ const authSlice = createSlice({
         state.error = action.payload;
       })
 
-      // ---- LOUGOUT ----
+      // ---- LOGOUT ----
       .addCase(logoutThunk.pending, (state) => {
         state.actionLoading = true;
       })

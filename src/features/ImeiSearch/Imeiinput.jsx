@@ -1,17 +1,15 @@
-import { useState } from "react";
 import { Info } from "lucide-react";
+import React from "react";
 
 function ImeiInput({
   value,
   onChange,
   maxLength,
+  inputType,
   onTypeChange,
   disabled = false,
 }) {
-  const [inputType, setInputType] = useState(""); // 'imei' or 'serial'
-
   const handleTypeChange = (type) => {
-    setInputType(type);
     onTypeChange(type);
   };
 
@@ -34,11 +32,10 @@ function ImeiInput({
             type="button"
             onClick={() => handleTypeChange("imei")}
             aria-pressed={inputType === "imei"}
-            className={`px-4 py-1.5 rounded-lg font-bold text-xs transition-all  ${
-              inputType === "imei"
-                ? "bg-primary text-light shadow-md"
-                : "text-primary/60 hover:text-primary"
-            }`}
+            className={`px-4 py-1.5 rounded-lg font-bold text-xs transition-all  ${inputType === "imei"
+              ? "bg-primary text-light shadow-md"
+              : "text-primary/60 hover:text-primary"
+              }`}
           >
             IMEI
           </button>
@@ -46,11 +43,10 @@ function ImeiInput({
             type="button"
             onClick={() => handleTypeChange("serial")}
             aria-pressed={inputType === "serial"}
-            className={`px-4 py-1.5 rounded-lg font-bold text-xs transition-all  ${
-              inputType === "serial"
-                ? "bg-primary text-light shadow-md"
-                : "text-primary/60 hover:text-primary"
-            }`}
+            className={`px-4 py-1.5 rounded-lg font-bold text-xs transition-all  ${inputType === "serial"
+              ? "bg-primary text-light shadow-md"
+              : "text-primary/60 hover:text-primary"
+              }`}
           >
             Serial
           </button>
@@ -76,7 +72,7 @@ function ImeiInput({
             inputType === "imei" ? "Enter IMEI number" : "Enter Serial number"
           }
           className="w-full px-5 py-2.5 sm:py-4 bg-light-gray border-2 border-medium-gray rounded-2xl text-base disabled:bg-medium-gray disabled:cursor-not-allowed
-           text-primary/50 placeholder:text-primary/30 disabled:placeholder:text-light disabled:placeholder:font-black focus:text-primary focus:outline-none focus:border-dark-bg focus:ring-4 focus:ring-primary/30 transition-all uppercase"
+           text-primary/50 placeholder:text-primary/30 disabled:placeholder:text-light  focus:text-primary focus:outline-none focus:border-dark-bg focus:ring-4 focus:ring-primary/30 transition-all uppercase"
           maxLength={maxLength}
         />
 
@@ -109,4 +105,4 @@ function ImeiInput({
   );
 }
 
-export default ImeiInput;
+export default React.memo(ImeiInput);

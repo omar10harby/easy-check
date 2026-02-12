@@ -1,4 +1,3 @@
-import React from "react";
 import { Search, ChevronRight } from "lucide-react";
 
 function HeroSection({ onSearchClick }) {
@@ -8,7 +7,7 @@ function HeroSection({ onSearchClick }) {
       <h1 className="text-4xl md:text-5xl lg:text-7xl font-black text-light mb-4 sm:mb-6 leading-tight px-6">
         Verify Device
         <br />
-        <p className="text-light mt-2 space-x-2">
+        <span className="text-light mt-2 space-x-2 block">
           <span>Authenticity</span>
           <span className="relative inline-block text-light">
             Instantly
@@ -26,7 +25,7 @@ function HeroSection({ onSearchClick }) {
               />
             </svg>
           </span>
-        </p>
+        </span>
       </h1>
 
       {/* Description */}

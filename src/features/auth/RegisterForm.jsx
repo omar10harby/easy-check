@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Lock, AlertCircle, Eye, EyeOff } from "lucide-react";
 import PhoneInput from "./PhoneInput";
@@ -9,7 +9,7 @@ import {
 } from "../../utils/validations";
 import { SanitizePhoneNumber } from "../../utils/sanitizer";
 
-function RegisterForm({ onSubmit, loading, error }) {
+function RegisterForm({ onSubmit, loading }) {
   const {
     register,
     handleSubmit,
@@ -60,9 +60,8 @@ function RegisterForm({ onSubmit, loading, error }) {
           <input
             type={showPassword ? "text" : "password"}
             {...register("password", PasswordValidation)}
-            className={`w-full bg-light-gray border-2 ${
-              errors.password ? "border-red-500" : "border-medium-gray"
-            } rounded-2xl py-4 pl-12 pr-12 font-bold focus:bg-light focus:border-dark-bg focus:ring-4 focus:ring-primary/30 outline-none transition-all`}
+            className={`w-full bg-light-gray border-2 ${errors.password ? "border-red-500" : "border-medium-gray"
+              } rounded-2xl py-4 pl-12 pr-12 font-bold focus:bg-light focus:border-dark-bg focus:ring-4 focus:ring-primary/30 outline-none transition-all`}
             placeholder="••••••••"
             disabled={loading}
           />
@@ -98,9 +97,8 @@ function RegisterForm({ onSubmit, loading, error }) {
               "confirm_password",
               confirmPasswordValidation(password)
             )}
-            className={`w-full bg-light-gray border-2 ${
-              errors.password ? "border-red-500" : "border-medium-gray"
-            } rounded-2xl py-4 pl-12 pr-12 font-bold focus:bg-light focus:border-dark-bg focus:ring-4 focus:ring-primary/30 outline-none transition-all`}
+            className={`w-full bg-light-gray border-2 ${errors.confirm_password ? "border-red-500" : "border-medium-gray"
+              } rounded-2xl py-4 pl-12 pr-12 font-bold focus:bg-light focus:border-dark-bg focus:ring-4 focus:ring-primary/30 outline-none transition-all`}
             placeholder="••••••••"
             disabled={loading}
           />
@@ -120,7 +118,7 @@ function RegisterForm({ onSubmit, loading, error }) {
         )}
       </div>
 
-    
+
 
       <button
         type="submit"
@@ -129,7 +127,7 @@ function RegisterForm({ onSubmit, loading, error }) {
       >
         {loading ? (
           <>
-            <div className="w-5 h-5 border-2 border-ligth border-t-light-gray rounded-full animate-spin"></div>
+            <div className="w-5 h-5 border-2 border-light border-t-light-gray rounded-full animate-spin"></div>
             <span>Registering...</span>
           </>
         ) : (

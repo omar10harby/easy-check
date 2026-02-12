@@ -1,11 +1,11 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef, useCallback } from "react";
+import DOMPurify from "dompurify";
 import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   ArrowLeft,
   AlertCircle,
   Clock,
-  Mail,
   RefreshCw,
   CheckCircle,
   Smartphone,
@@ -26,7 +26,14 @@ function CheckResult() {
   const { loading, error, currentResult } = useSelector((state) => state.imei);
   const { isAuthenticated } = useSelector((state) => state.auth);
 
-  const fetchResult = async () => {
+  // Define handleNavigate BEFORE useEffect to avoid variable-before-declaration
+  const handleNavigate = useCallback((path) => {
+    isNavigating.current = true;
+    dispatch(resetImeiState());
+    navigate(path);
+  }, [dispatch, navigate]);
+
+  const fetchResult = useCallback(async () => {
     if (!id || isNavigating.current) return;
 
     try {
@@ -34,36 +41,26 @@ function CheckResult() {
     } catch (err) {
       toast.error(err || "Failed to fetch result");
     }
-  };
+  }, [id, dispatch]);
 
   useEffect(() => {
     if (!id) {
       handleNavigate("/");
       return;
     }
-
-    // Only fetch if we haven't fetched this ID yet
-    // This prevents infinite loops when currentResult updates
     if (fetchedIdRef.current !== id) {
       fetchedIdRef.current = id;
       fetchResult();
     }
-  }, [id]);
-
-  const handleNavigate = (path) => {
-    isNavigating.current = true;
-    dispatch(resetImeiState());
-    navigate(path);
-  };
+  }, [id, handleNavigate, fetchResult]);
 
   const apiResult = currentResult?.serviceDetails?.api_result;
   const apiStatus = apiResult?.status?.toLowerCase();
-  const transactionStatus = currentResult?.status?.toUpperCase();
 
-  const isPending = apiStatus === "pending" || transactionStatus === "PENDING";
-  const isRefunded = apiStatus === "rejected" || transactionStatus === "REFUNDED";
-  const isError = apiStatus === "error" || transactionStatus === "FAILED";
-  const isSuccess = apiStatus === "success" || transactionStatus === "COMPLETED";
+  const isPending = apiStatus === "pending";
+  const isRefunded = apiStatus === "rejected";
+  const isError = apiStatus === "error";
+  const isSuccess = apiStatus === "success";
 
   // Configuration based on state
   let statusTheme = {
@@ -113,9 +110,8 @@ function CheckResult() {
     if (!currentResult) return { date: "Processing...", time: "" };
 
     // Try createdAt, then updatedAt
-    const dateStr = currentResult.createdAt || currentResult.updatedAt;
 
-    if (dateStr) return formatDate(dateStr);
+    if (currentResult.createdAt) return formatDate(currentResult.createdAt);
 
     // Fallback: Always return current date if missing, to avoid "Unknown Date"
     return formatDate(new Date().toISOString());
@@ -273,7 +269,12 @@ function CheckResult() {
                       <h3 className="text-base font-bold text-blue-900 mb-0.5">
                         Order was Refunded
                       </h3>
-                      <p className="text-blue-700 font-medium text-xs">
+                      {currentResult?.result && (
+                        <p className="text-blue-700 font-medium font-mono text-xs bg-white/50 inline-block px-2 py-0.5 rounded">
+                          {currentResult.result}
+                        </p>
+                      )}
+                      <p className="text-blue-700 font-medium text-xs mt-2">
                         The amount has been returned to your wallet.
                       </p>
                     </div>
@@ -312,7 +313,7 @@ function CheckResult() {
                       [&_td]:px-3 [&_td]:py-2 [&_td]:border-b [&_td]:border-gray-100 [&_td]:text-gray-700 [&_td]:text-xs
                       [&_tr:last-child_td]:border-0
                     `}
-                    dangerouslySetInnerHTML={{ __html: currentResult.result }}
+                    dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(currentResult.result) }}
                   />
                 )}
               </div>

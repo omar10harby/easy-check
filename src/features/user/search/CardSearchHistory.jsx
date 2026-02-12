@@ -7,15 +7,11 @@ const CardSearchHistory = memo(({ item, onViewResult }) => {
   const { date, time } = formatDate(item.created_at);
   
   // تحديد الحالة بدقة
-  const hasSuccessfulResult = 
-    item.status === 'COMPLETED' && 
-    item.result_text && 
-    !item.result_text.toLowerCase().includes('pending');
+  const isSuccess = 
+    item.status === 'COMPLETED'
   
   const isPending = 
-    item.status === 'COMPLETED' && 
-    item.result_text?.toLowerCase().includes('pending');
-  
+    item.status === 'PENDING'
   const isFailed = item.status === 'FAILED';
   const isRefunded = item.status === 'REFUNDED';
 
@@ -85,7 +81,7 @@ const CardSearchHistory = memo(({ item, onViewResult }) => {
         {/* Actions Section */}
         <div className="pt-3 sm:pt-4 border-t border-gray-100">
           
-          {hasSuccessfulResult && (
+          {isSuccess && (
             <button
               onClick={() => onViewResult(item.merchant_transaction_id)}
               className="w-full px-4 py-3 bg-primary hover:bg-primary/90 text-light text-sm sm:text-base font-bold rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg hover:shadow-xl active:scale-[0.98]"

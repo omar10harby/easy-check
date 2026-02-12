@@ -1,4 +1,5 @@
 import { ChevronRight } from "lucide-react";
+import React from "react";
 
 function SearchButton({ onClick, disabled, selectedServicePrice, loading }) {
   return (
@@ -32,4 +33,4 @@ function SearchButton({ onClick, disabled, selectedServicePrice, loading }) {
   );
 }
 
-export default SearchButton;
+export default React.memo(SearchButton);

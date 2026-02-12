@@ -1,9 +1,8 @@
 import { AlertCircle, Home, Search } from 'lucide-react';
-import React from 'react'
 import { useNavigate } from 'react-router-dom';
 
 function NotFound() {
- const navigate = useNavigate();
+  const navigate = useNavigate();
 
   return (
     <div className=" bg-primary flex items-center justify-center min-h-screen p-3 sm:py-8">

@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import HeroSection from "../../features/home/Herosection";
@@ -12,7 +12,6 @@ function Home() {
   const dispatch = useDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // Read params only once on mount
   const initialParams = useRef({
     paymentStatus: searchParams.get("paymentStatus"),
     merchantOrderId: searchParams.get("merchantOrderId"),
@@ -68,9 +67,9 @@ function Home() {
     processPayment();
   }, [isProcessing, dispatch, navigate, setSearchParams]);
 
-  const handleSearchClick = useCallback(() => {
+  const handleSearchClick = () => {
     navigate("/imei-checker");
-  }, [navigate]);
+  };
 
   if (isProcessing) {
     return (

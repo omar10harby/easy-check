@@ -73,5 +73,5 @@ export const validateEmail = (value) => {
   }
 
   // ✅ Valid
-  return "";
+  return null;
 };

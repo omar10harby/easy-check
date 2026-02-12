@@ -1,14 +1,13 @@
 import { Mail, AlertCircle } from 'lucide-react';
+import React from 'react';
 
 function EmailInput({ value, onChange, error, disabled = false }) {
   return (
     <div>
-      {/* Label */}
       <label htmlFor="guest-email-input" className="block text-sm font-bold text-dark-bg mb-2">
         Email Address
       </label>
 
-      {/* Input Field */}
       <div className="relative">
         <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-primary/40 w-5 h-5" aria-hidden="true" />
         <input
@@ -30,7 +29,6 @@ function EmailInput({ value, onChange, error, disabled = false }) {
         />
       </div>
 
-      {/* Error Message */}
       {error && (
         <div id="email-error" role="alert" className="flex items-center gap-2 text-red-500 text-xs mt-2 font-bold">
           <AlertCircle className="w-4 h-4" aria-hidden="true" />
@@ -38,7 +36,6 @@ function EmailInput({ value, onChange, error, disabled = false }) {
         </div>
       )}
 
-      {/* Info Text */}
       <div id="email-hint" className="flex items-center gap-2 mt-2 text-xs text-primary/60">
         <span aria-hidden="true">📧</span>
         <span>Results are usually ready instantly. If there's a delay, we'll email them to you once they're finalized.</span>
@@ -47,4 +44,4 @@ function EmailInput({ value, onChange, error, disabled = false }) {
   );
 }
 
-export default EmailInput;
+export default React.memo(EmailInput);

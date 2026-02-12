@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Toaster } from 'react-hot-toast';
 import { verifyAuthThunk } from './features/auth/authSlice';
 import AppRouter from './router/AppRouter';
-import './App.css';
 
 function App() {
   const dispatch = useDispatch();
@@ -31,7 +30,7 @@ function App() {
         position="top-right"
         reverseOrder={false}
         toastOptions={{
-          duration: 1000,
+          duration: 3000,
           style: {
             background: '#fff',
             color: '#454545',

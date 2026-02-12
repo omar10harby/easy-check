@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
@@ -17,16 +17,23 @@ function MainLayout() {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
-  // Auth Handlers
-  const handleLoginClick = useCallback(() => {
+  const handleLoginClick = () => {
     setIsAuthModalOpen(true);
-  }, []);
+  };
 
-  const handleCloseAuthModal = useCallback(() => {
+  const handleCloseAuthModal = () => {
     setIsAuthModalOpen(false);
-  }, []);
+  };
 
-  const handleLogout = useCallback(async () => {
+  const handleToggleMobileSidebar = () => {
+    setIsMobileSidebarOpen((prev) => !prev);
+  };
+
+  const handleCloseMobileSidebar = () => {
+    setIsMobileSidebarOpen(false);
+  };
+
+  const handleLogout = async () => {
     try {
       await dispatch(logoutThunk()).unwrap();
       setIsMobileSidebarOpen(false);
@@ -34,16 +41,7 @@ function MainLayout() {
     } catch (error) {
       toast.error("Logout failed. Please try again.");
     }
-  }, [dispatch]);
-
-  // Mobile Sidebar Handlers
-  const handleToggleMobileSidebar = useCallback(() => {
-    setIsMobileSidebarOpen((prev) => !prev);
-  }, []);
-
-  const handleCloseMobileSidebar = useCallback(() => {
-    setIsMobileSidebarOpen(false);
-  }, []);
+  };
 
   return (
     <div className="flex flex-col min-h-screen">

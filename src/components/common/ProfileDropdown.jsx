@@ -1,8 +1,8 @@
-import { memo } from 'react';
+import React from 'react';
 import { Wallet, LogOut, ChevronDown } from 'lucide-react';
 import NavigationLinks from './Navigationlinks';
 
-const ProfileDropdown = memo(({ isOpen, onToggle, onClose, onLogout, loading }) => {
+const ProfileDropdown = (({ isOpen, onToggle, onClose, onLogout, loading }) => {
   return (
     <div className="relative">
       <button
@@ -22,13 +22,11 @@ const ProfileDropdown = memo(({ isOpen, onToggle, onClose, onLogout, loading }) 
 
       {isOpen && (
         <>
-          {/* Backdrop */}
           <div
             className="fixed inset-0 z-10"
             onClick={onClose}
           ></div>
 
-          {/* Dropdown Content */}
           <div className="absolute right-0 mt-2 w-56 bg-light rounded-lg shadow-lg border border-light-gray py-2 z-20" role="menu" aria-label="Account options">
             <NavigationLinks onLinkClick={onClose} variant="dropdown" />
 

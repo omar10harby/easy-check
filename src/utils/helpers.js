@@ -118,13 +118,13 @@ export const getTransactionInfo = (kind) => {
 
 export const getDefaultNote = (kind) => {
   switch (kind) {
-    case 'TOPUP': 
+    case 'TOPUP':
       return 'Funds added to wallet';
-    case 'PURCHASE': 
+    case 'PURCHASE':
       return 'Payment for service';
-    case 'REFUND': 
+    case 'REFUND':
       return 'Amount returned to wallet';
-    default: 
+    default:
       return 'Transaction processed';
   }
 };

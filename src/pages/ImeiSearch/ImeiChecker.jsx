@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
@@ -6,10 +6,7 @@ import ServiceSelector from "../../features/ImeiSearch/Serviceselector";
 import ImeiInput from "../../features/ImeiSearch/Imeiinput";
 import EmailInput from "../../features/ImeiSearch/EmailInput";
 import SearchButton from "../../features/ImeiSearch/Searchbutton";
-import {
-  fetchServicesThunk,
-  setCurrentResult,
-} from "../../features/ImeiSearch/ImeiSlice";
+import { fetchServicesThunk } from "../../features/ImeiSearch/ImeiSlice";
 import {
   buyWithWalletThunk,
   createGuestCheckoutThunk,
@@ -20,6 +17,7 @@ import ServiceInfoBox from "../../features/ImeiSearch/Serviceinfobox";
 import { validateEmail } from "../../utils/validations";
 import { formatImeiOrSerial } from "../../utils/helpers";
 import ImeiCheckerLoading from "../../features/ImeiSearch/ImeiCheckerLoading";
+import { ArchiveX, TriangleAlert } from "lucide-react";
 
 function ImeiChecker() {
   const dispatch = useDispatch();
@@ -99,7 +97,6 @@ function ImeiChecker() {
         try {
           const result = await dispatch(buyWithWalletThunk(checkData)).unwrap();
           dispatch(updateBalance(result.newBalance));
-          // dispatch(setCurrentResult(result)); // Removed to force CheckResult to fetch fresh data
           toast.success("Transaction successful! ✅");
           navigate(`/result/${result.id}`);
         } catch (error) {
@@ -138,34 +135,15 @@ function ImeiChecker() {
     navigate,
   ]);
 
-  const isSearchDisabled = useMemo(() => {
-    if (paymentLoading) return true;
-
-    if (!selectedService) return true;
-
-    if (!inputType || inputType === "") return true;
-
-    const cleanValue = imeiOrSerial ? imeiOrSerial.trim() : "";
-
-    if (inputType === "imei") {
-      if (cleanValue.length !== 15) return true;
-    } else if (inputType === "serial") {
-      if (cleanValue.length < 8) return true;
-    }
-    if (!isAuthenticated) {
-      if (!guestEmail || guestEmail.trim() === "") return true;
-      if (emailError) return true;
-    }
-    return false;
-  }, [
-    selectedService,
-    inputType,
-    imeiOrSerial,
-    isAuthenticated,
-    guestEmail,
-    emailError,
-    paymentLoading,
-  ]);
+  const cleanValue = imeiOrSerial ? imeiOrSerial.trim() : "";
+  const isSearchDisabled =
+    paymentLoading ||
+    !selectedService ||
+    !inputType ||
+    inputType === "" ||
+    (inputType === "imei" && cleanValue.length !== 15) ||
+    (inputType === "serial" && cleanValue.length < 8) ||
+    (!isAuthenticated && (!guestEmail || guestEmail.trim() === "" || emailError));
 
   if (servicesLoading && services?.length === 0) {
     return <ImeiCheckerLoading />;
@@ -173,11 +151,11 @@ function ImeiChecker() {
 
   if (servicesError && services?.length === 0) {
     return (
-      <section className="w-full max-w-2xl sm:py-8 px-4">
+      <section className="w-full max-w-2xl py-6 sm:py-8 px-4">
         <div className="bg-light rounded-3xl shadow-2xl border border-light-gray p-6 sm:p-10">
           <div className="text-center">
             <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="text-3xl">⚠️</span>
+              <TriangleAlert className="w-10 h-10 text-rose-500 mx-auto" />
             </div>
             <h2 className="text-2xl font-black text-primary mb-2">
               Failed to Load Services
@@ -197,12 +175,10 @@ function ImeiChecker() {
 
   if (!servicesLoading && services?.length === 0) {
     return (
-      <section className="w-full max-w-2xl sm:py-8 px-4">
+      <section className="w-full max-w-2xl py-6 sm:py-8 px-4">
         <div className="bg-light rounded-3xl shadow-2xl border border-light-gray p-6 sm:p-10">
           <div className="text-center">
-            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="text-3xl">📭</span>
-            </div>
+            <ArchiveX className="w-10 h-10 text-rose-500 mx-auto" />
             <h2 className="text-2xl font-black text-primary mb-2">
               No Services Available
             </h2>
@@ -220,7 +196,7 @@ function ImeiChecker() {
   }
 
   return (
-    <section className="w-full max-w-2xl sm:py-8 px-4">
+    <section className="w-full max-w-2xl py-6 sm:py-8 px-4">
       <div className="bg-light rounded-3xl shadow-2xl border border-light-gray p-6 sm:p-10">
         <div className="text-center mb-4 sm:mb-8">
           <h1 className="text-3xl sm:text-4xl font-black text-primary mb-2 tracking-tight">
@@ -244,6 +220,7 @@ function ImeiChecker() {
             value={imeiOrSerial}
             onChange={handleImeiChange}
             maxLength={maxLength}
+            inputType={inputType}
             onTypeChange={handleTypeChange}
             disabled={paymentLoading}
           />

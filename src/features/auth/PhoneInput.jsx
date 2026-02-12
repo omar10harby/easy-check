@@ -1,4 +1,3 @@
-import React from 'react';
 import PhoneInput2 from 'react-phone-input-2';
 import './PhoneInput.css';
 import 'react-phone-input-2/lib/style.css';
@@ -10,7 +9,7 @@ function PhoneInput({ value, onChange, error, disabled }) {
       <label className="text-[10px] font-black uppercase text-dark-bg ml-1">
         Phone Number
       </label>
-      
+
       <div className="phone-wrapper">
         <PhoneInput2
           country={'eg'}
@@ -18,7 +17,7 @@ function PhoneInput({ value, onChange, error, disabled }) {
           onChange={onChange}
           disabled={disabled}
           enableSearch={true}
-          prefix="+" 
+          prefix="+"
           containerClass="phone-input-container"
           inputClass={`phone-field-style ${error ? 'phone-field-error' : ''}`}
           buttonClass="phone-button-style"

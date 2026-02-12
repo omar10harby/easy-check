@@ -5,10 +5,10 @@ export function saveAuthToken(token) {
   try {
     const cookieOptions = {
       expires: 7,
-      secure: window.location.protocol === 'https:', 
+      secure: window.location.protocol === 'https:',
       sameSite: 'Lax',
-      domain: window.location.hostname.includes('shaikly.com') 
-        ? '.shaikly.com'  
+      domain: window.location.hostname.includes('shaikly.com')
+        ? '.shaikly.com'
         : undefined
     };
     Cookies.set("auth_token", token, cookieOptions);
@@ -18,7 +18,8 @@ export function saveAuthToken(token) {
     return !!saved;
   } catch (error) {
     console.error('❌ Failed to save token:', error);
-    return false;}
+    return false;
+  }
 }
 
 export function getAuthToken() {
@@ -26,7 +27,10 @@ export function getAuthToken() {
 }
 
 export function removeAuthToken() {
-  Cookies.remove("auth_token");
+  Cookies.remove("auth_token", {
+    domain: window.location.hostname.includes('shaikly.com')
+      ? '.shaikly.com' : undefined
+  });
   return true;
 }
 
@@ -63,20 +67,14 @@ export async function login({ phone_number, password }) {
 export async function verifyAuth() {
   try {
     const token = getAuthToken();
-    
-    // ✅ Debug logs
-    console.log('🔐 Verifying auth...');
-    console.log('🔑 Token exists:', !!token);
-    
+
     if (!token) {
-      console.warn('⚠️ No token found');
       return null;
     }
 
     const response = await axiosInstance.get("/users/user_info/");
-    
-    console.log('✅ User verified:', response.data);
-    
+
+
     return {
       id: response.data.user_id,
       username: response.data.username,
@@ -85,18 +83,13 @@ export async function verifyAuth() {
       created_at: response.data.created_at,
     };
   } catch (error) {
-    console.error('❌ Verify auth failed:', {
-      status: error.response?.status,
-      message: error.message,
-      data: error.response?.data
-    });
-    
+
+
     // ✅ مسح الـ token بس لو 401
     if (error.response?.status === 401) {
-      console.warn('🔓 Token expired or invalid - logging out');
       removeAuthToken();
     }
-    
+
     return null;
   }
 }
@@ -108,7 +101,6 @@ export async function logout() {
       await axiosInstance.post("/users/logout/");
     }
   } catch {
-    // Silent fail - user will be logged out locally anyway
   } finally {
     removeAuthToken();
   }
