@@ -5,7 +5,6 @@ import HeroSection from "../../features/home/Herosection";
 import FeaturePills from "../../features/home/Featurepills";
 import toast from "react-hot-toast";
 import { getImeiResultThunk } from "../../features/ImeiSearch/ImeiSlice";
-import { verifyAuthThunk } from "../../features/auth/authSlice";
 
 function Home() {
   const navigate = useNavigate();
@@ -52,7 +51,6 @@ function Home() {
             });
           } else {
             toast.success("Balance updated successfully! ✅");
-            await dispatch(verifyAuthThunk()).unwrap();
             setSearchParams({});
             setIsProcessing(false);
           }
