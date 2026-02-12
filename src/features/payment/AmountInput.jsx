@@ -1,3 +1,5 @@
+import { Info } from "lucide-react";
+
 function AmountInput({ amount, loading, onChange }) {
   const hasError = amount && parseFloat(amount) < 10;
 
@@ -29,8 +31,8 @@ function AmountInput({ amount, loading, onChange }) {
       </div>
 
       {hasError && (
-        <p id="amount-error" role="alert" className="text-red-500 text-xs mt-2 ml-1 font-medium italic">
-          <span aria-hidden="true">⚠️</span> Minimum deposit is 10.00 EGP
+        <p id="amount-error" role="alert" className="flex items-center gap-2 text-red-500 text-xs mt-2 ml-1 font-medium italic">
+          <span><Info className="w-4 h-4 " aria-hidden="true" /></span> Minimum deposit is 10.00 EGP
         </p>
       )}
     </div>

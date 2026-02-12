@@ -31,7 +31,6 @@ function LoginForm({ onSubmit, loading }) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      {/* Phone Number Field */}
       <input
         type="hidden"
         {...register("phone_number", PhoneValidation)}
@@ -44,7 +43,6 @@ function LoginForm({ onSubmit, loading }) {
         disabled={loading}
       />
 
-      {/* Password Field */}
       <div className="space-y-1">
         <label className="text-[10px] font-black uppercase text-dark-bg ml-1">
           Password
@@ -77,14 +75,13 @@ function LoginForm({ onSubmit, loading }) {
           </button>
         </div>
         {errors.password && (
-          <div className="flex items-center gap-2 text-red-500 text-xs mt-1 ml-1">
+          <div className="flex items-center gap-2 text-red-500 font-bold text-xs mt-1 ml-1">
             <AlertCircle size={12} />
             <span>{errors.password.message}</span>
           </div>
         )}
       </div>
 
-      {/* Submit Button */}
       <button
         type="submit"
         disabled={loading}

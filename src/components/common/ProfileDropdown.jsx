@@ -36,11 +36,11 @@ const ProfileDropdown = (({ isOpen, onToggle, onClose, onLogout, loading }) => {
               onClick={onLogout}
               disabled={loading}
               role="menuitem"
-              className="flex items-center gap-3 w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50 disabled:bg-light-gray disabled:text-gray-400 disabled:cursor-not-allowed transition-colors focus:outline-none focus:bg-red-50"
+              className="flex items-center gap-3 w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50 disabled:cursor-not-allowed transition-colors focus:outline-none focus:bg-red-50"
             >
               {loading ? (
                 <>
-                  <div className="w-4 h-4 border-2 border-gray-400 border-t-red-600 rounded-full animate-spin"></div>
+                  <div className="w-4 h-4 border-2 border-light-400 border-t-red-600 rounded-full animate-spin"></div>
                   <span>Logging out...</span>
                 </>
               ) : (

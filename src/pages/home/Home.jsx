@@ -21,7 +21,11 @@ function Home() {
     return !!(merchantOrderId || paymentStatus);
   });
 
-  const hasProcessed = useRef(false);
+  const merchantOrderId = initialParams.current.merchantOrderId;
+  const storageKey = merchantOrderId ? `payment_processed_${merchantOrderId}` : null;
+  const hasProcessed = useRef(
+    storageKey ? sessionStorage.getItem(storageKey) === "true" : false
+  );
 
   useEffect(() => {
     const { paymentStatus, merchantOrderId } = initialParams.current;
@@ -31,6 +35,7 @@ function Home() {
     if (hasProcessed.current) return;
 
     hasProcessed.current = true;
+    if (storageKey) sessionStorage.setItem(storageKey, "true");
 
     const processPayment = async () => {
       try {
@@ -59,6 +64,8 @@ function Home() {
         toast.error("Failed to verify payment");
         setSearchParams({});
         setIsProcessing(false);
+      } finally {
+        if (storageKey) sessionStorage.removeItem(storageKey);
       }
     };
 
