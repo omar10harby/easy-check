@@ -101,6 +101,8 @@ export async function logout() {
       await axiosInstance.post("/users/logout/");
     }
   } catch {
+    // Logout API call is best-effort. Even if it fails,
+    // we still remove the local token to end the session.
   } finally {
     removeAuthToken();
   }

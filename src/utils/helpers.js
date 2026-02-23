@@ -128,5 +128,3 @@ export const getDefaultNote = (kind) => {
       return 'Transaction processed';
   }
 };
-
-

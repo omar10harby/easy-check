@@ -1,10 +1,7 @@
 import { AlertCircle, Home, RefreshCw } from 'lucide-react';
 
 function ErrorFallback({ error, resetErrorBoundary }) {
-    const handleGoHome = () => {
-        resetErrorBoundary();
-        window.location.href = '/';
-    };
+
 
     return (
         <div
@@ -54,7 +51,7 @@ function ErrorFallback({ error, resetErrorBoundary }) {
                         <span>Try Again</span>
                     </button>
                     <button
-                        onClick={handleGoHome}
+                        onClick={resetErrorBoundary}
                         className="flex items-center justify-center gap-2 px-6 py-3 bg-light-gray text-primary font-bold rounded-xl hover:bg-medium-gray transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
                         aria-label="Return to home page"
                     >

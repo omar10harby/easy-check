@@ -10,7 +10,7 @@ import store from './redux/store.js';
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Provider store={store}>
-      <ErrorBoundary FallbackComponent={ErrorFallback}>
+      <ErrorBoundary FallbackComponent={ErrorFallback} onReset={()=>  window.location.href = '/' }>
         <App />
       </ErrorBoundary>
     </Provider>

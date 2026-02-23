@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Toaster } from 'react-hot-toast';
 import { verifyAuthThunk } from './features/auth/authSlice';
 import AppRouter from './router/AppRouter';
+import GlobalLoader from './components/common/GlobalLoader';
 
 function App() {
   const dispatch = useDispatch();
@@ -14,23 +15,17 @@ function App() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-white">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-primary border-t-light-gray rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-dark font-bold text-lg">Loading...</p>
-        </div>
-      </div>
+      <GlobalLoader message="Loading..." />
     );
   }
 
   return (
     <>
-      {/* Toast Notifications */}
       <Toaster
         position="top-right"
         reverseOrder={false}
         toastOptions={{
-          duration: 3000,
+          duration: 1500,
           style: {
             background: '#fff',
             color: '#454545',

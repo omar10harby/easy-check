@@ -48,36 +48,36 @@ function AddBalance() {
 
   return (
     <section className="w-full max-w-2xl mx-auto py-8 px-4 sm:px-6 lg:px-8 ">
-          <div className="bg-white rounded-3xl shadow-xl border border-light-gray p-6 sm:p-10">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl sm:text-4xl font-black text-primary mb-2">
-              Top Up Balance
-            </h1>
-            <p className="text-primary/70 text-sm sm:text-base">
-              Enter the amount or select a quick option to recharge.
-            </p>
-          </div>
-
-          <div className="space-y-4">
-            <AmountInput
-              amount={amount}
-              loading={loading}
-              onChange={handleAmountChange}
-            />
-
-            <QuickAmounts
-              amount={amount}
-              quickAmounts={quickAmounts}
-              onSelect={handleQuickSelect}
-            />
-
-            <PayButton
-              amount={amount}
-              loading={loading}
-              onPay={handleAddBalance}
-            />
-          </div>
+      <div className="bg-white rounded-3xl shadow-xl border border-light-gray p-6 sm:p-10">
+        <div className="text-center mb-8">
+          <h1 className="text-3xl sm:text-4xl font-black text-primary mb-2">
+            Top Up Balance
+          </h1>
+          <p className="text-primary/70 text-sm sm:text-base">
+            Enter the amount or select a quick option to recharge.
+          </p>
         </div>
+
+        <div className="space-y-4">
+          <AmountInput
+            amount={amount}
+            loading={loading}
+            onChange={handleAmountChange}
+          />
+
+          <QuickAmounts
+            amount={amount}
+            quickAmounts={quickAmounts}
+            onSelect={handleQuickSelect}
+          />
+
+          <PayButton
+            amount={amount}
+            loading={loading}
+            onPay={handleAddBalance}
+          />
+        </div>
+      </div>
     </section>
   );
 }

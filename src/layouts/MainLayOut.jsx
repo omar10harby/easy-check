@@ -49,6 +49,7 @@ function MainLayout() {
         onToggleMobileSidebar={handleToggleMobileSidebar}
         isMobileSidebarOpen={isMobileSidebarOpen}
         onLoginClick={handleLoginClick}
+        onLogout={handleLogout}
       />
 
       <main className="flex-1 bg-primary flex flex-col items-center justify-center ">

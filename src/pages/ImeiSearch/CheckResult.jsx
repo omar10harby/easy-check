@@ -22,11 +22,10 @@ function CheckResult() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isNavigating = useRef(false);
-  const fetchedIdRef = useRef(null); // Track which ID we've already fetched
+  const fetchedIdRef = useRef(null);
   const { loading, error, currentResult } = useSelector((state) => state.imei);
   const { isAuthenticated } = useSelector((state) => state.auth);
 
-  // Define handleNavigate BEFORE useEffect to avoid variable-before-declaration
   const handleNavigate = useCallback((path) => {
     isNavigating.current = true;
     dispatch(resetImeiState());
@@ -62,7 +61,6 @@ function CheckResult() {
   const isError = apiStatus === "error";
   const isSuccess = apiStatus === "success";
 
-  // Configuration based on state
   let statusTheme = {
     label: "Device Information",
     headerBg: "bg-primary",
@@ -105,27 +103,23 @@ function CheckResult() {
     };
   }
 
-  // Handle Date - check multiple sources or fallback to current if successful/refunded/error
   const getDate = () => {
     if (!currentResult) return { date: "Processing...", time: "" };
 
-    // Try createdAt, then updatedAt
 
     if (currentResult.createdAt) return formatDate(currentResult.createdAt);
 
-    // Fallback: Always return current date if missing, to avoid "Unknown Date"
     return formatDate(new Date().toISOString());
   };
 
   const { date, time } = getDate();
 
-  // Full-screen loading state - no header, just the spinner
   if (loading) {
     return (
-      <div className="min-h-screen bg-primary flex items-center justify-center p-4">
+      <div className="min-h-screen bg-light flex items-center justify-center p-4">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-light border-t-transparent rounded-full animate-spin mx-auto mb-6"></div>
-          <p className="text-light font-black text-xl uppercase tracking-widest animate-pulse">
+          <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-6"></div>
+          <p className="text-primary font-black text-xl uppercase tracking-widest animate-pulse">
             Fetching Data...
           </p>
         </div>

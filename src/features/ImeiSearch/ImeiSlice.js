@@ -89,7 +89,7 @@ const imeiSlice = createSlice({
   },
 });
 
-export const { setSelectedService,  setCurrentResult, clearError, resetImeiState } =
+export const { setSelectedService, setCurrentResult, clearError, resetImeiState } =
   imeiSlice.actions;
 
 export default imeiSlice.reducer;

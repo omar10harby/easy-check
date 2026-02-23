@@ -1,8 +1,8 @@
-import React from 'react';
+
 import { Wallet, LogOut, ChevronDown } from 'lucide-react';
 import NavigationLinks from './Navigationlinks';
 
-const ProfileDropdown = (({ isOpen, onToggle, onClose, onLogout, loading }) => {
+function ProfileDropdown({ isOpen, onToggle, onClose, onLogout, loading }) {
   return (
     <div className="relative">
       <button
@@ -55,6 +55,6 @@ const ProfileDropdown = (({ isOpen, onToggle, onClose, onLogout, loading }) => {
       )}
     </div>
   );
-});
+}
 
 export default ProfileDropdown;

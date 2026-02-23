@@ -1,29 +1,16 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
 import { Menu } from "lucide-react";
 import Logo from "./Logo";
 import BalanceDisplay from "./BalanceDisplay";
 import ProfileDropdown from "./ProfileDropdown";
-import { logoutThunk } from "../../features/auth/authSlice";
 
-function NavBar({ onToggleMobileSidebar, onLoginClick }) {
-  const dispatch = useDispatch();
+function NavBar({ onToggleMobileSidebar, onLoginClick, onLogout }) {
   const { user, isAuthenticated, actionLoading } = useSelector(
     (state) => state.auth
   );
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-  const handleLogout = async () => {
-    try {
-      await dispatch(logoutThunk()).unwrap();
-      setIsDropdownOpen(false);
-      toast.success("Logged out successfully! See you soon! 👋");
-    } catch {
-      toast.error("Logout failed. Please try again.");
-    }
-  };
 
   const handleToggleDropdown = () => {
     setIsDropdownOpen(prev => !prev);
@@ -59,7 +46,7 @@ function NavBar({ onToggleMobileSidebar, onLoginClick }) {
               isOpen={isDropdownOpen}
               onToggle={handleToggleDropdown}
               onClose={handleCloseDropdown}
-              onLogout={handleLogout}
+              onLogout={() => { onLogout(); setIsDropdownOpen(false); }}
               loading={actionLoading}
             />
           </div>

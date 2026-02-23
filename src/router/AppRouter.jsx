@@ -5,6 +5,7 @@ import MainLayout from "../layouts/MainLayOut";
 import ProtectedRoute from "../router/ProtectedRoute";
 import NotFound from "../pages/NotFound";
 import GlobalLoader from "../components/common/GlobalLoader";
+import RouteErrorFallback from "../components/common/RouteErrorFallback";
 
 // 🔄 Lazy Loading للصفحات
 const Home = lazy(() => import("../pages/home/Home"));
@@ -26,6 +27,7 @@ const router = createBrowserRouter([
   // 🌍 Public Routes with MainLayout
   {
     element: <MainLayout />,
+    errorElement: <RouteErrorFallback />,
     children: [
       { path: "/", element: <SuspenseHome /> },
       { path: "/imei-checker", element: <SuspenseImeiChecker /> },
@@ -42,7 +44,7 @@ const router = createBrowserRouter([
     ],
   },
   // 📄 CheckResult page (outside MainLayout)
-  { path: "/result/:id", element: <SuspenseCheckResult /> },
+  { path: "/result/:id", element: <SuspenseCheckResult />, errorElement: <RouteErrorFallback /> },
   { path: "*", element: <NotFound /> },
 ]);
 

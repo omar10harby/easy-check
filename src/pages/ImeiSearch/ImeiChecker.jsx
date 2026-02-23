@@ -20,6 +20,8 @@ import ImeiCheckerLoading from "../../features/ImeiSearch/ImeiCheckerLoading";
 import { ArchiveX, TriangleAlert } from "lucide-react";
 
 function ImeiChecker() {
+  throw new Error("Testing ErrorBoundary! 💥"); // ⚠️ DELETE AFTER TESTING
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -40,10 +42,10 @@ function ImeiChecker() {
   const [emailError, setEmailError] = useState("");
 
   useEffect(() => {
-    if (services?.length === 0) {
+    if (!services || services.length === 0) {
       dispatch(fetchServicesThunk());
     }
-  }, [dispatch, services?.length]);
+  }, [dispatch]);
 
   const handleImeiChange = useCallback(
     (e) => {
