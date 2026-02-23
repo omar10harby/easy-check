@@ -5,13 +5,13 @@ import { AlertCircle, Eye, RefreshCw, Search } from 'lucide-react';
 const CardSearchHistory = memo(({ item, onViewResult }) => {
   const statusInfo = getStatusInfo(item.status);
   const { date, time } = formatDate(item.created_at);
-  
-  // تحديد الحالة بدقة
-  const isSuccess = 
+
+  const isSuccess =
     item.status === 'COMPLETED'
-  
-  const isPending = 
+
+  const isPending =
     item.status === 'PENDING'
+
   const isFailed = item.status === 'FAILED';
   const isRefunded = item.status === 'REFUNDED';
 
@@ -31,7 +31,6 @@ const CardSearchHistory = memo(({ item, onViewResult }) => {
 
   return (
     <div className="group bg-light rounded-2xl lg:rounded-3xl shadow-md hover:shadow-2xl transition-all duration-300 border border-gray-200 overflow-hidden">
-      {/* Header */}
       <div className={`${statusInfo.headerBg} p-5 sm:p-6 lg:p-7 flex items-center justify-between`}>
         <div className="flex items-center gap-2 sm:gap-3">
           <div className="p-2 sm:p-2.5 lg:p-3 bg-light/20 rounded-lg">
@@ -56,7 +55,6 @@ const CardSearchHistory = memo(({ item, onViewResult }) => {
         </div>
       </div>
 
-      {/* Body */}
       <div className="p-5 sm:p-6 lg:p-8">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6 mb-4 sm:mb-6">
           <div className=" text-center sm:text-left">
@@ -78,9 +76,8 @@ const CardSearchHistory = memo(({ item, onViewResult }) => {
           </div>
         </div>
 
-        {/* Actions Section */}
         <div className="pt-3 sm:pt-4 border-t border-gray-100">
-          
+
           {isSuccess && (
             <button
               onClick={() => onViewResult(item.merchant_transaction_id)}
@@ -91,13 +88,12 @@ const CardSearchHistory = memo(({ item, onViewResult }) => {
             </button>
           )}
 
-          {/* ⏳ Pending: Processing Message */}
           {isPending && (
             <div className="bg-amber-50 border-2 border-amber-200 rounded-xl p-4 flex items-start gap-3">
               <RefreshCw className="w-5 h-5 text-amber-600 shrink-0 mt-0.5 animate-spin" />
               <div>
                 <p className="text-amber-900 font-bold text-sm mb-1">
-                  ⏱️ Processing Your Request
+                  Processing Your Request
                 </p>
                 <p className="text-amber-700 text-xs leading-relaxed">
                   Results usually take a few minutes. We'll email you once they're ready.
@@ -106,13 +102,12 @@ const CardSearchHistory = memo(({ item, onViewResult }) => {
             </div>
           )}
 
-          {/* ❌ Failed: Error Message */}
           {isFailed && (
             <div className="bg-red-50 border-2 border-red-200 rounded-xl p-4 flex items-start gap-3">
               <AlertCircle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
               <div>
                 <p className="text-red-900 font-bold text-sm mb-1">
-                  ❌ Transaction Failed
+                  Transaction Failed
                 </p>
                 <p className="text-red-700 text-xs leading-relaxed">
                   The service encountered an error. Your payment has been refunded to your wallet.
@@ -121,13 +116,12 @@ const CardSearchHistory = memo(({ item, onViewResult }) => {
             </div>
           )}
 
-          {/* 🔄 Refunded: Refund Message */}
           {isRefunded && (
             <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-4 flex items-start gap-3">
               <RefreshCw className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
               <div>
                 <p className="text-blue-900 font-bold text-sm mb-1">
-                  💰 Payment Refunded
+                  Payment Refunded
                 </p>
                 <p className="text-blue-700 text-xs leading-relaxed">
                   This transaction was refunded. The amount has been returned to your wallet.

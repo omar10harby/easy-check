@@ -3,7 +3,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom';
 
 function SearchEmptyState() {
-   const navigate = useNavigate();
+  const navigate = useNavigate();
 
   return (
     <div className="bg-white rounded-3xl shadow-sm  p-16 text-center">
