@@ -20,7 +20,6 @@ import ImeiCheckerLoading from "../../features/ImeiSearch/ImeiCheckerLoading";
 import { ArchiveX, TriangleAlert } from "lucide-react";
 
 function ImeiChecker() {
-  throw new Error("Testing ErrorBoundary! 💥"); // ⚠️ DELETE AFTER TESTING
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
