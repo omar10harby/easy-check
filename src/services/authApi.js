@@ -13,8 +13,6 @@ export function saveAuthToken(token) {
     };
     Cookies.set("auth_token", token, cookieOptions);
     const saved = Cookies.get("auth_token");
-    console.log('🍪 Token saved:', !!saved);
-
     return !!saved;
   } catch (error) {
     console.error('❌ Failed to save token:', error);
@@ -35,7 +33,6 @@ export function removeAuthToken() {
 }
 
 export async function register({ phone_number, password, confirm_password }) {
-  // ✅ بس نرمي الخطأ - errorHelpers هيتعامل معاه
   const response = await axiosInstance.post("users/register/", {
     phone_number,
     password,
@@ -45,7 +42,6 @@ export async function register({ phone_number, password, confirm_password }) {
 }
 
 export async function login({ phone_number, password }) {
-  // ✅ بس نرمي الخطأ - errorHelpers هيتعامل معاه
   const response = await axiosInstance.post("/login/", {
     username: phone_number,
     password,
@@ -74,7 +70,6 @@ export async function verifyAuth() {
 
     const response = await axiosInstance.get("/users/user_info/");
 
-
     return {
       id: response.data.user_id,
       username: response.data.username,
@@ -83,9 +78,7 @@ export async function verifyAuth() {
       created_at: response.data.created_at,
     };
   } catch (error) {
-
-
-    // ✅ مسح الـ token بس لو 401
+    // Remove the token only on 401 (unauthorized)
     if (error.response?.status === 401) {
       removeAuthToken();
     }

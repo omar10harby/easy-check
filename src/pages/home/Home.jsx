@@ -60,7 +60,7 @@ function Home() {
             setIsProcessing(false);
           }
         }
-      } catch (_error) {
+      } catch {
         toast.error("Failed to verify payment");
         setSearchParams({});
         setIsProcessing(false);
@@ -70,7 +70,7 @@ function Home() {
     };
 
     processPayment();
-  }, [isProcessing, dispatch, navigate, setSearchParams]);
+  }, [isProcessing, storageKey, dispatch, navigate, setSearchParams]);
 
   const handleSearchClick = () => {
     navigate("/imei-checker");

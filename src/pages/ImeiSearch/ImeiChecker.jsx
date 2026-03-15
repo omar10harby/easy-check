@@ -44,7 +44,7 @@ function ImeiChecker() {
     if (!services || services.length === 0) {
       dispatch(fetchServicesThunk());
     }
-  }, [dispatch]);
+  }, [dispatch, services]);
 
   const handleImeiChange = useCallback(
     (e) => {
