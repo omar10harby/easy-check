@@ -38,7 +38,7 @@ function MainLayout() {
       await dispatch(logoutThunk()).unwrap();
       setIsMobileSidebarOpen(false);
       toast.success("Logged out successfully! See you soon! 👋");
-    } catch (error) {
+    } catch {
       toast.error("Logout failed. Please try again.");
     }
   };
