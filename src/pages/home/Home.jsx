@@ -28,7 +28,7 @@ const highlightStats = [
     id: "coverage",
     label: "Global coverage",
     value: "140+",
-    description: "Carriers and partners monitored in real time.",
+    description: "Carriers and partners monitored in real-time.",
     icon: Globe2,
     accent: "bg-sky-500/20 text-sky-50",
   },

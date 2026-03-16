@@ -36,7 +36,7 @@ function HeroSection({ onSearchClick }) {
 
       {/* Description */}
       <p className="max-w-2xl text-sm sm:text-base lg:text-lg text-light/80 leading-relaxed">
-        Check blacklist, warranty, and carrier lock status in seconds. Get real-time results with a guided flow on any device.
+        Check blacklist, warranty, and carrier lock status in seconds, and get real-time results with a guided flow on any device.
       </p>
 
       {/* CTA Button */}
