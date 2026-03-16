@@ -1,48 +1,55 @@
-import { Lock, Cloud, ShieldCheck } from 'lucide-react';
+import { Lock, Cloud, ShieldCheck, Clock3 } from 'lucide-react';
 
 const features = [
   {
     id: 1,
-    icon: 'check',
+    icon: ShieldCheck,
     label: 'Global Blacklist',
+    description: 'Instantly spot stolen or blocked devices with live database checks.',
+    accent: 'bg-emerald-300/15 text-emerald-200',
   },
   {
     id: 2,
-    icon: 'lock',
-    label: 'Carrier Lock',
+    icon: Lock,
+    label: 'Carrier & Activation Lock',
+    description: 'See SIM, network, and activation status before you buy or sell.',
+    accent: 'bg-amber-300/15 text-amber-100',
   },
   {
     id: 3,
-    icon: 'icloud',
-    label: 'iCloud Status',
+    icon: Cloud,
+    label: 'iCloud & Warranty',
+    description: 'Confirm iCloud pairing and warranty timelines in one scan.',
+    accent: 'bg-sky-300/15 text-sky-100',
+  },
+  {
+    id: 4,
+    icon: Clock3,
+    label: 'Results in Seconds',
+    description: 'Optimized flows keep lookups fast, even on mobile data.',
+    accent: 'bg-light/10 text-light',
   },
 ];
 
 function FeaturePills() {
-  const renderIcon = (iconType) => {
-    switch (iconType) {
-      case 'check':
-        return <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-light" />;
-      case 'lock':
-        return <Lock className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-light" />;
-      case 'icloud':
-        return <Cloud className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-light" />;
-      default:
-        return <div className="w-2 h-2 bg-light rounded-full" />;
-    }
-  };
-
   return (
-    <div className="flex flex-wrap justify-center gap-3 sm:gap-4 mt-10 px-4">
+    <div className="grid gap-3 sm:gap-4 mt-10 grid-cols-1 sm:grid-cols-2">
       {features.map((feature) => (
         <div
           key={feature.id}
-          className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-light/10 backdrop-blur-sm border border-light/20 rounded-full hover:bg-light/20 transition-all cursor-default"
+          className="flex items-start gap-3 px-4 sm:px-5 py-3 bg-light/10 backdrop-blur-sm border border-light/15 rounded-2xl shadow-lg hover:bg-light/15 transition-all cursor-default"
         >
-          {renderIcon(feature.icon)}
-          <span className="text-xs sm:text-sm font-semibold text-light/90">
-            {feature.label}
-          </span>
+          <div className={`h-10 w-10 rounded-xl flex items-center justify-center ${feature.accent}`}>
+            <feature.icon className="w-5 h-5" />
+          </div>
+          <div className="text-left space-y-1">
+            <p className="text-sm sm:text-base font-semibold text-light">
+              {feature.label}
+            </p>
+            <p className="text-xs sm:text-sm text-light/70 leading-relaxed">
+              {feature.description}
+            </p>
+          </div>
         </div>
       ))}
     </div>
