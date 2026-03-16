@@ -25,8 +25,8 @@ const features = [
   {
     id: 4,
     icon: Clock3,
-    label: 'Live Status Updates',
-    description: 'Watch verification progress in real time across every source.',
+    label: 'Instant Status Updates',
+    description: 'See verification progress update live across every source.',
     accent: 'bg-primary/20 text-light',
   },
 ];
