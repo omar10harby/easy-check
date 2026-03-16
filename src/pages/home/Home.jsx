@@ -120,7 +120,7 @@ function Home() {
     {
       id: "result",
       title: "Get secure results",
-      description: "Save history, top up your wallet, or share in one tap.",
+      description: "Receive verified summaries you can export or revisit later.",
       icon: ShieldCheck,
     },
   ];
