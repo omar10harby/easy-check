@@ -25,8 +25,8 @@ const features = [
   {
     id: 4,
     icon: Clock3,
-    label: 'Real-time Processing',
-    description: 'Watch live status as we verify across carriers and sources.',
+    label: 'Live Status Updates',
+    description: 'Watch verification progress in real time across every source.',
     accent: 'bg-light/10 text-light',
   },
 ];

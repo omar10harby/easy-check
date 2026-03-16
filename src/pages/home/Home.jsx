@@ -88,7 +88,7 @@ function Home() {
     },
     {
       id: "speed",
-      label: "Average response",
+      label: "Average response time",
       value: "15s",
       description: "Optimized to stay quick even on mobile data.",
       icon: Clock3,
