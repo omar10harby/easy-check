@@ -7,6 +7,54 @@ import FeaturePills from "../../features/home/Featurepills";
 import toast from "react-hot-toast";
 import { getImeiResultThunk } from "../../features/ImeiSearch/ImeiSlice";
 
+const highlightStats = [
+  {
+    id: "accuracy",
+    label: "Verified accuracy",
+    value: "99.9%",
+    description: "Match rate across blacklist & carrier sources.",
+    icon: ShieldCheck,
+    accent: "bg-emerald-500/20 text-emerald-50",
+  },
+  {
+    id: "speed",
+    label: "Average response time",
+    value: "15s",
+    description: "Optimized to stay quick even on mobile data.",
+    icon: Clock3,
+    accent: "bg-amber-500/25 text-amber-50",
+  },
+  {
+    id: "coverage",
+    label: "Global coverage",
+    value: "140+",
+    description: "Carriers and partners monitored in real time.",
+    icon: Globe2,
+    accent: "bg-sky-500/20 text-sky-50",
+  },
+];
+
+const walkthroughSteps = [
+  {
+    id: "choose",
+    title: "Pick your check",
+    description: "Clear pricing for IMEI or serial lookups before you start.",
+    icon: Wand2,
+  },
+  {
+    id: "enter",
+    title: "Enter device ID",
+    description: "Guided formatting avoids typos for both IMEI and serials.",
+    icon: ScanLine,
+  },
+  {
+    id: "result",
+    title: "Get secure results",
+    description: "Receive verified summaries you can export or revisit later.",
+    icon: ShieldCheck,
+  },
+];
+
 function Home() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -76,54 +124,6 @@ function Home() {
   const handleSearchClick = () => {
     navigate("/imei-checker");
   };
-
-  const highlightStats = [
-    {
-      id: "accuracy",
-      label: "Verified accuracy",
-      value: "99.9%",
-      description: "Match rate across blacklist & carrier sources.",
-      icon: ShieldCheck,
-      accent: "bg-emerald-300/20 text-emerald-100",
-    },
-    {
-      id: "speed",
-      label: "Average response time",
-      value: "15s",
-      description: "Optimized to stay quick even on mobile data.",
-      icon: Clock3,
-      accent: "bg-amber-300/25 text-amber-100",
-    },
-    {
-      id: "coverage",
-      label: "Global coverage",
-      value: "140+",
-      description: "Carriers and partners monitored in real time.",
-      icon: Globe2,
-      accent: "bg-sky-300/20 text-sky-100",
-    },
-  ];
-
-  const walkthroughSteps = [
-    {
-      id: "choose",
-      title: "Pick your check",
-      description: "Clear pricing for IMEI or serial lookups before you start.",
-      icon: Wand2,
-    },
-    {
-      id: "enter",
-      title: "Enter device ID",
-      description: "Guided formatting avoids typos for both IMEI and serials.",
-      icon: ScanLine,
-    },
-    {
-      id: "result",
-      title: "Get secure results",
-      description: "Receive verified summaries you can export or revisit later.",
-      icon: ShieldCheck,
-    },
-  ];
 
   if (isProcessing) {
     return (

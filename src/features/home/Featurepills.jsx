@@ -6,28 +6,28 @@ const features = [
     icon: ShieldCheck,
     label: 'Global Blacklist',
     description: 'Instantly spot stolen or blocked devices with live database checks.',
-    accent: 'bg-emerald-300/15 text-emerald-200',
+    accent: 'bg-emerald-500/20 text-emerald-50',
   },
   {
     id: 2,
     icon: Lock,
     label: 'Carrier & Activation Lock',
     description: 'See SIM, network, and activation status before you buy or sell.',
-    accent: 'bg-amber-300/15 text-amber-100',
+    accent: 'bg-amber-500/25 text-amber-50',
   },
   {
     id: 3,
     icon: Cloud,
     label: 'iCloud & Warranty',
     description: 'Confirm iCloud pairing and warranty timelines in one scan.',
-    accent: 'bg-sky-300/15 text-sky-100',
+    accent: 'bg-sky-500/20 text-sky-50',
   },
   {
     id: 4,
     icon: Clock3,
     label: 'Live Status Updates',
     description: 'Watch verification progress in real time across every source.',
-    accent: 'bg-light/10 text-light',
+    accent: 'bg-primary/20 text-light',
   },
 ];
 
