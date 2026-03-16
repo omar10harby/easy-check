@@ -100,7 +100,7 @@ function Home() {
       value: "140+",
       description: "Carriers and partners monitored in real time.",
       icon: Globe2,
-      accent: "bg-light/20 text-light",
+      accent: "bg-sky-300/20 text-sky-100",
     },
   ];
 
@@ -213,7 +213,7 @@ function Home() {
               <div className="space-y-0.5">
                 <p className="text-sm font-semibold">Quick tip</p>
                 <p className="text-sm text-light/80">
-                  Save results to your history, top up your wallet, and retry payments without leaving Easy Check.
+                  Save results to your history, top up your wallet, and retry payments without leaving the app.
                 </p>
               </div>
             </div>
