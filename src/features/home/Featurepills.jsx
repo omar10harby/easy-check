@@ -25,8 +25,8 @@ const features = [
   {
     id: 4,
     icon: Clock3,
-    label: 'Results in Seconds',
-    description: 'Optimized flows keep lookups fast, even on mobile data.',
+    label: 'Real-time Processing',
+    description: 'Watch live status as we verify across carriers and sources.',
     accent: 'bg-light/10 text-light',
   },
 ];

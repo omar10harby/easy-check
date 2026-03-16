@@ -36,9 +36,8 @@ function HeroSection({ onSearchClick }) {
 
       {/* Description */}
       <p className="max-w-2xl text-sm sm:text-base lg:text-lg text-light/80 leading-relaxed">
-        Check blacklist, warranty, and carrier lock status in seconds.
-        Easy Check keeps you informed with real-time results and a streamlined,
-        guided flow for any device.
+        Check blacklist, warranty, and carrier lock status in seconds. Easy Check keeps you
+        informed with real-time results and a streamlined, guided flow for any device.
       </p>
 
       {/* CTA Button */}
